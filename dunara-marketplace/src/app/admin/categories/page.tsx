@@ -1,3 +1,4 @@
+import { asFormAction } from "@/lib/forms/as-form-action";
 import type { Metadata } from "next";
 import { AdminPageHeader } from "@/features/admin/components/admin-page-header";
 import { redirect } from "next/navigation";
@@ -26,7 +27,7 @@ export default async function AdminCategoriesPage() {
 
       <section className="adm-panel">
         <h2>Add category</h2>
-        <form action={upsertCategory} className="seller-form">
+        <form action={asFormAction(upsertCategory)} className="seller-form">
           <label>
             Name *
             <input name="name" required maxLength={80} />
@@ -60,7 +61,7 @@ export default async function AdminCategoriesPage() {
                 {c.is_active ? "Active" : "Inactive"} · order {c.sort_order}
               </p>
             </div>
-            <form action={upsertCategory}>
+            <form action={asFormAction(upsertCategory)}>
               <input type="hidden" name="id" value={c.id} />
               <input type="hidden" name="is_active" value={c.is_active ? "false" : "true"} />
               <button type="submit" className="button button-secondary button-sm">

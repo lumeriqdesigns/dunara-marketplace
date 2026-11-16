@@ -1,3 +1,4 @@
+import { asFormAction } from "@/lib/forms/as-form-action";
 import { BuyerPageHeader } from "@/features/buyer/components/buyer-page-header";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
@@ -25,7 +26,7 @@ export default async function BuyerSettingsPage() {
         <h2>Session</h2>
         <p className="buy-muted">Signed in as {ctx.user.email ?? ctx.user.id}</p>
         <p className="muted small">Roles: {ctx.user.roles.join(", ") || "none"}</p>
-        <form action={logout}>
+        <form action={asFormAction(logout)}>
           <button type="submit" className="button button-secondary">
             Sign out
           </button>

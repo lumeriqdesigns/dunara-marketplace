@@ -1,3 +1,4 @@
+import { asFormAction } from "@/lib/forms/as-form-action";
 import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
 import Link from "next/link";
@@ -29,7 +30,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
         </Link>
         <div className="adm-topbar-right">
           <RoleSwitcher user={user} />
-          <form action={logout}>
+          <form action={asFormAction(logout)}>
             <button type="submit" className="button button-secondary button-sm">
               Sign out
             </button>

@@ -1,3 +1,4 @@
+import { asFormAction } from "@/lib/forms/as-form-action";
 import { BuyerPageHeader } from "@/features/buyer/components/buyer-page-header";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
@@ -40,7 +41,7 @@ export default async function BuyerReviewsPage() {
             {b.title ?? "Completed booking"} · {b.seller?.business_name}
           </h2>
           <p className="muted small">{b.reference_code}</p>
-          <form className="seller-form" action={submitReview}>
+          <form className="seller-form" action={asFormAction(submitReview)}>
             <input type="hidden" name="booking_id" value={b.id} />
             <label>
               Rating *

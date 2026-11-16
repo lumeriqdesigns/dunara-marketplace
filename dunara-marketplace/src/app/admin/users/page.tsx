@@ -1,3 +1,4 @@
+import { asFormAction } from "@/lib/forms/as-form-action";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/auth/session";
@@ -65,7 +66,7 @@ export default async function AdminUsersPage() {
                 {maySuspend && (
                   <td>
                     {u.id !== user.id && (
-                      <form action={suspendUser}>
+                      <form action={asFormAction(suspendUser)}>
                         <input type="hidden" name="user_id" value={u.id} />
                         <input
                           type="hidden"

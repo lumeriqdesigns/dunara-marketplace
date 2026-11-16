@@ -1,3 +1,4 @@
+import { asFormAction } from "@/lib/forms/as-form-action";
 import type { Metadata } from "next";
 import { AdminPageHeader } from "@/features/admin/components/admin-page-header";
 import { redirect } from "next/navigation";
@@ -27,7 +28,7 @@ export default async function AdminSettingsPage() {
 
       <section className="adm-panel">
         <h2>Set value</h2>
-        <form action={setPlatformSetting} className="seller-form">
+        <form action={asFormAction(setPlatformSetting)} className="seller-form">
           <label>
             Key
             <input name="key" required placeholder="e.g. maintenance_mode" />

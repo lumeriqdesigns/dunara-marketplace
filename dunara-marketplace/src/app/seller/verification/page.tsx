@@ -1,3 +1,4 @@
+import { asFormAction } from "@/lib/forms/as-form-action";
 import { SellerPageHeader } from "@/features/seller/components/seller-page-header";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
@@ -47,7 +48,7 @@ export default async function SellerVerificationPage() {
 
       <section className="dashboard-panel mt-4">
         <h2>Submit application</h2>
-        <form action={submitVerificationApplication} className="seller-form space-y-3">
+        <form action={asFormAction(submitVerificationApplication)} className="seller-form space-y-3">
           <label className="block">
             Level requested
             <select
@@ -92,7 +93,7 @@ export default async function SellerVerificationPage() {
                     <p className="muted small mt-1">
                       Upload any requested documents below, then resubmit.
                     </p>
-                    <form action={resubmitVerification} className="mt-2">
+                    <form action={asFormAction(resubmitVerification)} className="mt-2">
                       <input type="hidden" name="verification_id" value={app.id} />
                       <button type="submit" className="button button-primary button-sm">
                         Resubmit for review
@@ -113,7 +114,7 @@ export default async function SellerVerificationPage() {
 
                 {["draft", "submitted", "additional_info_required"].includes(app.status) && (
                   <form
-                    action={uploadVerificationDocument}
+                    action={asFormAction(uploadVerificationDocument)}
                     className="mt-3 space-y-2 border-t pt-3"
                   >
                     <input type="hidden" name="verification_id" value={app.id} />

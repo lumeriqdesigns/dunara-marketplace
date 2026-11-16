@@ -1,3 +1,4 @@
+import { asFormAction } from "@/lib/forms/as-form-action";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/auth/session";
@@ -56,7 +57,7 @@ export default async function AdminListingsPage() {
                   <td>
                     <div className="adm-inline-actions">
                       {l.status !== "published" && (
-                        <form action={moderateListing}>
+                        <form action={asFormAction(moderateListing)}>
                           <input type="hidden" name="listing_id" value={l.id} />
                           <input type="hidden" name="status" value="published" />
                           <button
@@ -68,7 +69,7 @@ export default async function AdminListingsPage() {
                         </form>
                       )}
                       {l.status !== "suspended" && (
-                        <form action={moderateListing}>
+                        <form action={asFormAction(moderateListing)}>
                           <input type="hidden" name="listing_id" value={l.id} />
                           <input type="hidden" name="status" value="suspended" />
                           <input
@@ -85,7 +86,7 @@ export default async function AdminListingsPage() {
                         </form>
                       )}
                       {l.status !== "archived" && (
-                        <form action={moderateListing}>
+                        <form action={asFormAction(moderateListing)}>
                           <input type="hidden" name="listing_id" value={l.id} />
                           <input type="hidden" name="status" value="archived" />
                           <button

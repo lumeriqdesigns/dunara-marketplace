@@ -1,3 +1,4 @@
+import { asFormAction } from "@/lib/forms/as-form-action";
 import type { Metadata } from "next";
 import { AdminPageHeader } from "@/features/admin/components/admin-page-header";
 import { redirect } from "next/navigation";
@@ -82,7 +83,7 @@ export default async function AdminVerificationQueuePage() {
                 <p className="muted small mt-2">No documents uploaded yet.</p>
               )}
 
-              <form action={officerDecideVerification} className="mt-4 grid gap-2 max-w-md">
+              <form action={asFormAction(officerDecideVerification)} className="mt-4 grid gap-2 max-w-md">
                 <input type="hidden" name="verification_id" value={app.id} />
                 <label className="text-sm">
                   Notes

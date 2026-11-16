@@ -1,3 +1,4 @@
+import { asFormAction } from "@/lib/forms/as-form-action";
 import { BuyerPageHeader } from "@/features/buyer/components/buyer-page-header";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
@@ -55,14 +56,14 @@ export default async function BuyerQuotesPage() {
             </div>
             {q.status === "pending" && (
               <div className="booking-actions">
-                <form action={respondToQuote}>
+                <form action={asFormAction(respondToQuote)}>
                   <input type="hidden" name="quote_id" value={q.id} />
                   <input type="hidden" name="action" value="accept" />
                   <button type="submit" className="button button-primary button-sm">
                     Accept
                   </button>
                 </form>
-                <form action={respondToQuote}>
+                <form action={asFormAction(respondToQuote)}>
                   <input type="hidden" name="quote_id" value={q.id} />
                   <input type="hidden" name="action" value="decline" />
                   <button type="submit" className="button button-secondary button-sm">

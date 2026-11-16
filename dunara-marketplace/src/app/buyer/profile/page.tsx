@@ -1,3 +1,4 @@
+import { asFormAction } from "@/lib/forms/as-form-action";
 import { BuyerPageHeader } from "@/features/buyer/components/buyer-page-header";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
@@ -22,7 +23,7 @@ export default async function BuyerProfilePage() {
 
       <section className="buy-panel">
         <h2>Account</h2>
-        <form className="seller-form" action={updateBuyerAccount}>
+        <form className="seller-form" action={asFormAction(updateBuyerAccount)}>
           <label>
             Display name
             <input
@@ -43,7 +44,7 @@ export default async function BuyerProfilePage() {
 
       <section className="buy-panel">
         <h2>Preferences</h2>
-        <form className="seller-form" action={updateBuyerPreferences}>
+        <form className="seller-form" action={asFormAction(updateBuyerPreferences)}>
           <label>
             Preferred city
             <input

@@ -1,3 +1,4 @@
+import { asFormAction } from "@/lib/forms/as-form-action";
 import type { Metadata } from "next";
 import { AdminPageHeader } from "@/features/admin/components/admin-page-header";
 import { redirect } from "next/navigation";
@@ -80,21 +81,21 @@ export default async function AdminReportsPage() {
             </div>
             {canTriage && r.status === "open" && (
               <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-                <form action={triageReport}>
+                <form action={asFormAction(triageReport)}>
                   <input type="hidden" name="report_id" value={r.id} />
                   <input type="hidden" name="status" value="under_review" />
                   <button type="submit" className="button button-secondary button-sm">
                     Under review
                   </button>
                 </form>
-                <form action={triageReport}>
+                <form action={asFormAction(triageReport)}>
                   <input type="hidden" name="report_id" value={r.id} />
                   <input type="hidden" name="status" value="resolved" />
                   <button type="submit" className="button button-primary button-sm">
                     Resolve
                   </button>
                 </form>
-                <form action={triageReport}>
+                <form action={asFormAction(triageReport)}>
                   <input type="hidden" name="report_id" value={r.id} />
                   <input type="hidden" name="status" value="dismissed" />
                   <button type="submit" className="button button-secondary button-sm">

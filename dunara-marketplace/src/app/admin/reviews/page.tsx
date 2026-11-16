@@ -1,3 +1,4 @@
+import { asFormAction } from "@/lib/forms/as-form-action";
 import type { Metadata } from "next";
 import { AdminPageHeader } from "@/features/admin/components/admin-page-header";
 import { redirect } from "next/navigation";
@@ -45,7 +46,7 @@ export default async function AdminReviewsPage() {
               {r.body && <p className="prose">{r.body}</p>}
             </div>
             <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-              <form action={moderateReview}>
+              <form action={asFormAction(moderateReview)}>
                 <input type="hidden" name="review_id" value={r.id} />
                 <input type="hidden" name="is_public" value="false" />
                 <input type="hidden" name="is_moderated" value="true" />
@@ -58,7 +59,7 @@ export default async function AdminReviewsPage() {
                   Hide
                 </button>
               </form>
-              <form action={moderateReview}>
+              <form action={asFormAction(moderateReview)}>
                 <input type="hidden" name="review_id" value={r.id} />
                 <input type="hidden" name="is_public" value="true" />
                 <input type="hidden" name="is_moderated" value="false" />

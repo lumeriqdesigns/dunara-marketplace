@@ -1,3 +1,4 @@
+import { asFormAction } from "@/lib/forms/as-form-action";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -183,7 +184,7 @@ export default async function ProviderProfilePage({
                         </p>
                         {r.body && <p className="prose">{r.body}</p>}
                       </div>
-                      <form action={reportReview}>
+                      <form action={asFormAction(reportReview)}>
                         <input type="hidden" name="review_id" value={r.id} />
                         <input type="hidden" name="reason" value="Inappropriate content" />
                         <button

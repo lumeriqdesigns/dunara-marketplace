@@ -1,3 +1,4 @@
+import { asFormAction } from "@/lib/forms/as-form-action";
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -33,7 +34,7 @@ export default async function BuyerLayout({ children }: { children: ReactNode })
             Browse services
           </Link>
           <RoleSwitcher user={user} />
-          <form action={logout}>
+          <form action={asFormAction(logout)}>
             <button type="submit" className="button button-secondary button-sm">
               Sign out
             </button>

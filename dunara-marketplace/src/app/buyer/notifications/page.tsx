@@ -1,3 +1,4 @@
+import { asFormAction } from "@/lib/forms/as-form-action";
 import { BuyerPageHeader } from "@/features/buyer/components/buyer-page-header";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
@@ -27,7 +28,7 @@ export default async function BuyerNotificationsPage() {
       />
         </div>
         {unread > 0 && (
-          <form action={markAllNotificationsRead}>
+          <form action={asFormAction(markAllNotificationsRead)}>
             <button type="submit" className="button button-secondary button-sm">
               Mark all read
             </button>

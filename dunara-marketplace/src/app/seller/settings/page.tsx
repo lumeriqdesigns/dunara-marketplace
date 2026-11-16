@@ -1,3 +1,4 @@
+import { asFormAction } from "@/lib/forms/as-form-action";
 import { SellerPageHeader } from "@/features/seller/components/seller-page-header";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
@@ -22,7 +23,7 @@ export default async function SellerSettingsPage() {
         <h2>Account</h2>
         <p className="sel-muted">Signed in as {ctx.user.email ?? ctx.user.id}</p>
         <p className="muted small">Roles: {ctx.user.roles.join(", ") || "none"}</p>
-        <form action={logout}>
+        <form action={asFormAction(logout)}>
           <button type="submit" className="button button-secondary">
             Sign out
           </button>
