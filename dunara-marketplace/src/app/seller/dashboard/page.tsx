@@ -92,7 +92,7 @@ export default async function SellerDashboardPage() {
         </div>
         <div className="sel-stat-card">
           <span className="sel-stat-label">Open bookings</span>
-          <strong>{stats.openBookings}</strong>
+          <strong>{stats.pendingBookings}</strong>
           <span className="sel-stat-sub">Need your response</span>
         </div>
         <div className="sel-stat-card">
