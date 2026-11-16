@@ -204,14 +204,13 @@ export async function getEligibleReviewBookings(userId: string) {
       const reviews = b.reviews as unknown as { id: string }[] | { id: string } | null;
       const existing =
         Array.isArray(reviews) ? reviews[0]?.id : reviews?.id ?? null;
-      const sellerRelation = b.seller as unknown as
-        | { business_name: string }[]
+      const sellerRelation = b.seller as
         | { business_name: string }
+        | { business_name: string }[]
         | null;
       const seller = Array.isArray(sellerRelation)
         ? sellerRelation[0] ?? null
         : sellerRelation;
-
       return {
         id: b.id,
         reference_code: b.reference_code,
