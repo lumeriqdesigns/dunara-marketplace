@@ -3,8 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { getSessionUser } from "@/lib/auth/session";
-import {
 import { mapClientError, logServerError } from "@/lib/security/errors";
+import {
   ALLOWED_ATTACHMENT_MIME,
   MAX_ATTACHMENT_BYTES,
 } from "@/features/messaging/lib/types";

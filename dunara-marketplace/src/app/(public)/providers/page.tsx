@@ -99,7 +99,7 @@ export default async function ProvidersPage({ searchParams }: Props) {
                       : "No providers listed yet"
                   }
                   description={
-                    filters.city or filters.q
+                    filters.city || filters.q
                       ? "Try another city or clear filters. Providers appear when they activate a seller profile on Dúnarà."
                       : "Be among the first skilled professionals and businesses on Dúnarà. Create an account, activate seller tools, and publish your profile."
                   }

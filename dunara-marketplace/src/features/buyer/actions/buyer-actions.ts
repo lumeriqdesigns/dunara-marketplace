@@ -1,5 +1,7 @@
 "use server";
 
+import { submitReview as submitReviewAction } from "@/features/reviews/actions/review-actions";
+
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { requireBuyer } from "@/features/buyer/lib/context";
@@ -219,7 +221,11 @@ export async function markAllNotificationsRead(): Promise<ActionResult> {
  * Submit a review for a completed booking owned by this buyer.
  * Delegates to the hardened reviews feature (RPC + eligibility + self-review block).
  */
-export { submitReview } from "@/features/reviews/actions/review-actions";
+export async function submitReview(
+  ...args: Parameters<typeof submitReviewAction>
+): Promise<Awaited<ReturnType<typeof submitReviewAction>>> {
+  return submitReviewAction(...args);
+}
 
 /**
  * Buyer cancels own booking when status allows (requested / quoted).
