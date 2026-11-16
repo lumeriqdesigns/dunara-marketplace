@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
-import { getSessionUser, type SessionUser } from "@/lib/auth/session";
+import { getSessionUser } from "@/lib/auth/session";
+import type { SessionUser } from "@/lib/permissions";
 import { canAccessBuyerDashboard } from "@/lib/permissions";
 
 export type BuyerProfile = {

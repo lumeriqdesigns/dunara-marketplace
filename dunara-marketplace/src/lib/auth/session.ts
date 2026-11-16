@@ -2,6 +2,8 @@ import { createClient } from "@/lib/supabase/server";
 import type { SessionUser } from "@/lib/permissions";
 import type { MarketplaceRole } from "@/lib/permissions/roles";
 
+export type { SessionUser };
+
 /**
  * Load the current authenticated user and their active roles from the database.
  * Uses the anon key + user session (never the service-role key).
