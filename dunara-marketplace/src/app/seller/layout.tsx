@@ -1,66 +1,22 @@
-import { asFormAction } from "@/lib/forms/as-form-action";
-import type { ReactNode } from "react";
-import Link from "next/link";
-import { redirect } from "next/navigation";
-import { brand } from "@/config/brand";
-import { getSessionUser } from "@/lib/auth/session";
-import { isSeller, isAdmin } from "@/lib/permissions";
-import { SellerNav } from "@/features/seller/components/seller-nav";
-import { RoleSwitcher } from "@/components/layout/role-switcher";
-import { logout } from "@/features/auth/actions/auth-actions";
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
-export default async function SellerLayout({ children }: { children: ReactNode }) {
-  const user = await getSessionUser();
+import { requireUser } from "@/features/auth/lib/require-user";
+import { getOwnShop } from "@/features/shop/lib/get-shop";
+import { SellerNav } from "@/features/seller/components/SellerNav";
 
-  if (!user) {
-    redirect("/login?next=/seller/dashboard");
-  }
-
-  const canUseSellerTools = isSeller(user) || isAdmin(user);
+export default async function SellerLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const user = await requireUser("/seller");
+  const shop = await getOwnShop(user.id);
 
   return (
-    <div className="sel-shell">
-      <header className="sel-topbar">
-        <Link href="/" className="sel-brand">
-          <span className="sel-brand-mark" aria-hidden="true" />
-          {brand.shortName}
-          <span className="role-badge role-badge-seller">Seller</span>
-        </Link>
-        <div className="sel-topbar-right">
-          <Link href="/services" className="sel-top-link">
-            Marketplace
-          </Link>
-          <RoleSwitcher user={user} />
-          <form action={asFormAction(logout)}>
-            <button type="submit" className="button button-secondary button-sm">
-              Sign out
-            </button>
-          </form>
-        </div>
-      </header>
-      <div className="sel-body">
-        {canUseSellerTools ? (
-          <aside className="sel-sidebar">
-            <SellerNav />
-          </aside>
-        ) : (
-          <aside className="sel-sidebar">
-            <p className="sel-nav-group-label">Get started</p>
-            <p className="sel-sidebar-hint">
-              Activate seller on the overview page to unlock tools.
-            </p>
-            <nav className="sel-nav" aria-label="Seller limited">
-              <Link href="/seller/dashboard" className="sel-nav-link">
-                Activate seller
-              </Link>
-              <Link href="/buyer/dashboard" className="sel-nav-link">
-                Back to buyer
-              </Link>
-            </nav>
-          </aside>
-        )}
-        <div className="sel-content">{children}</div>
-      </div>
+    <div className="min-h-[70vh] bg-[var(--color-canvas)]">
+      <SellerNav email={user.email} shopName={shop?.name ?? null} />
+      <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">{children}</div>
     </div>
   );
 }

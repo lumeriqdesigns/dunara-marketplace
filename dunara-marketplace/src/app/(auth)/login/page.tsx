@@ -1,29 +1,36 @@
+import Link from "next/link";
 import type { Metadata } from "next";
-import { AuthForm } from "@/features/auth/components/auth-form";
-import { brand } from "@/config/brand";
-import { safeNextPath } from "@/lib/auth/safe-next";
+import { Suspense } from "react";
+import { AuthCard } from "@/features/auth/components/AuthCard";
+import { LoginForm } from "@/features/auth/components/LoginForm";
+import { getUser } from "@/features/auth/lib/get-user";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Sign in",
-  description: `Sign in to ${brand.name}`
+  description: "Sign in to your Dunara seller account.",
 };
 
-type Props = {
-  searchParams: Promise<{ next?: string; error?: string }>;
-};
-
-export default async function LoginPage({ searchParams }: Props) {
-  const params = await searchParams;
-  const next = safeNextPath(params.next, "/buyer/dashboard");
+export default async function LoginPage() {
+  const user = await getUser();
+  if (user) redirect("/seller");
 
   return (
-    <main className="auth-page">
-      {params.error === "auth_callback_failed" && (
-        <p className="auth-banner-error" role="alert">
-          Sign-in link was invalid or expired. Please try again.
-        </p>
-      )}
-      <AuthForm mode="login" nextPath={next} />
-    </main>
+    <AuthCard
+      title="Sign in"
+      description="Access your seller dashboard with the email you registered."
+      footer={
+        <>
+          New to Dunara?{" "}
+          <Link href="/register" className="font-medium text-[var(--color-primary)] hover:underline">
+            Create an account
+          </Link>
+        </>
+      }
+    >
+      <Suspense fallback={<div className="h-40 animate-pulse rounded-md bg-[var(--color-border)]" />}>
+        <LoginForm />
+      </Suspense>
+    </AuthCard>
   );
 }

@@ -1,46 +1,20 @@
-import { asFormAction } from "@/lib/forms/as-form-action";
-import type { ReactNode } from "react";
-import { redirect } from "next/navigation";
-import Link from "next/link";
-import { getSessionUser } from "@/lib/auth/session";
-import { canAccessAdminArea } from "@/lib/permissions";
-import { brand } from "@/config/brand";
-import { RoleSwitcher } from "@/components/layout/role-switcher";
-import { AdminSidebar } from "@/features/admin/components/admin-sidebar";
-import { logout } from "@/features/auth/actions/auth-actions";
+import { requireAdmin } from "@/features/admin/lib/require-admin";
+import { AdminNav } from "@/features/admin/components/AdminNav";
 
-export default async function AdminLayout({ children }: { children: ReactNode }) {
-  const user = await getSessionUser();
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
-  if (!user) {
-    redirect("/login?next=/admin/dashboard");
-  }
-
-  if (!canAccessAdminArea(user)) {
-    redirect("/buyer/dashboard");
-  }
+export default async function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const user = await requireAdmin("/admin");
 
   return (
-    <div className="adm-shell">
-      <header className="adm-topbar">
-        <Link href="/" className="adm-brand">
-          <span className="adm-brand-mark" aria-hidden="true" />
-          {brand.shortName}
-          <span className="role-badge role-badge-admin">Admin</span>
-        </Link>
-        <div className="adm-topbar-right">
-          <RoleSwitcher user={user} />
-          <form action={asFormAction(logout)}>
-            <button type="submit" className="button button-secondary button-sm">
-              Sign out
-            </button>
-          </form>
-        </div>
-      </header>
-      <div className="adm-body">
-        <AdminSidebar user={user} />
-        <div className="adm-content">{children}</div>
-      </div>
+    <div className="min-h-[70vh] bg-[var(--color-canvas)]">
+      <AdminNav email={user.email} />
+      <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">{children}</div>
     </div>
   );
 }

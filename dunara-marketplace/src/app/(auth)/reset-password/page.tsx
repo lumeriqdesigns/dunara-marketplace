@@ -1,14 +1,25 @@
 import type { Metadata } from "next";
-import { AuthForm } from "@/features/auth/components/auth-form";
+import { AuthCard } from "@/features/auth/components/AuthCard";
+import { ResetPasswordForm } from "@/features/auth/components/ResetPasswordForm";
+import { getUser } from "@/features/auth/lib/get-user";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "Reset password"
+  title: "Set new password",
 };
 
-export default function ResetPasswordPage() {
+export default async function ResetPasswordPage() {
+  const user = await getUser();
+  if (!user) {
+    redirect("/forgot-password");
+  }
+
   return (
-    <main className="auth-page">
-      <AuthForm mode="reset" />
-    </main>
+    <AuthCard
+      title="Choose a new password"
+      description="Enter a new password for your Dunara account."
+    >
+      <ResetPasswordForm />
+    </AuthCard>
   );
 }

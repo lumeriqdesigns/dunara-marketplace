@@ -1,96 +1,61 @@
-# Dúnarà Marketplace — Seller Verification (Prompt 10)
+# Dunara Seller Verification (Module 11)
 
-**Product:** Dúnarà Marketplace  
-**Owner:** Lumeriq Designs
+## Product rules
 
-## Scope
+- Eligible: **Pulse** and **Apex** only (`canApplyVerification` from server entitlements).
+- Open cannot apply (UI + server action).
+- Manual admin review only — no external KYC, liveness, or biometrics.
+- Apex `priority` is snapshotted at submission time (queue order only).
+- Earned `shops.verification_status = verified` is **not** cleared on plan downgrade.
 
-Verification levels: `basic`, `identity`, `business`, `professional`.
+## Data
 
-Sellers submit applications and private documents. Only `verification_officer` or
-`super_admin` may approve, reject, or request additional information. Sellers
-**cannot** set `is_verified` or approve their own applications.
+Table `verification_requests` (core schema):
 
-Public badges reflect `seller_profiles.is_verified` and `verification_level` only.
-They indicate completed checks — **not** a guarantee of service quality or full legal identity.
+- `document_paths text[]` — private object paths only (never public URLs)
+- One pending request per shop (partial unique index)
+- `rejection_reason` seller-visible; `admin_note` internal
 
-## Flow
+Shop fields: `verification_status`, `verified_at`, `verification_note`
 
-```
-Seller creates application (submitted)
-        │
-        ├── uploads private documents (verification-documents bucket)
-        ▼
-Officer queue (submitted / under_review / additional_info_required)
-        │
-        ├── under_review
-        ├── request_info → seller uploads + resubmit → submitted
-        ├── approve → set_seller_verification(true, level) + audit + notify
-        └── reject → rejection_reason + audit + notify
-```
+## Storage
 
-## RPCs
+Bucket: **`verification-documents`** (private)
 
-| Function | Who | Purpose |
-|----------|-----|---------|
-| `verification_officer_decide` | Officer / super_admin | approve, reject, request_info, under_review |
-| `verification_seller_resubmit` | Owning seller | additional_info_required → submitted |
-| `set_seller_verification` | Officer / super_admin | Authoritative profile flags + audit |
+- MIME: `image/jpeg`, `image/png`, `application/pdf`
+- Max 5MB / object, max 5 files per submission
+- Path: `{shop_id}/{request_id}/{uuid}.{ext}`
+- Seller storage policies: own shop path only
+- Admin document access: `requireAdmin` → service-role **signed URL** (~120s)
+- Never store signed URLs in the database
 
-## Security
+Migration: `20261119190000_seller_verification.sql`
 
-- Private bucket `verification-documents` (not public)
-- Document paths prefixed by uploader user id
-- Signed URLs only (5 minutes) for authorised viewers
-- Status transition trigger blocks illegal seller status changes
-- Officers cannot decide applications where they are the seller
-- Decision columns not granted for client UPDATE
-- All decisions written to `audit_logs`
+## Routes
 
-## Application routes
+| Path | Role |
+|------|------|
+| `/seller/verification` | Seller status, upload, history |
+| `/admin/verifications` | Pending queue |
+| `/admin/verifications/[id]` | Secure preview + approve/reject |
 
-| Route | Audience |
-|-------|----------|
-| `/seller/verification` | Submit, upload docs, resubmit, history |
-| `/admin/verification` | Officer review queue |
+## Server operations
 
-## Storage setup
+- `getSellerVerificationStatus`
+- `submitVerificationRequest` (entitlement check, validate files, upload, insert, shop → pending)
+- `getAdminVerificationDetail` (signed URLs)
+- `approveVerification` → RPC `admin_approve_verification`
+- `rejectVerification` → RPC `admin_reject_verification`
 
-Migration best-effort creates bucket `verification-documents`. Confirm in dashboard:
+Approve/reject are atomic: request status + shop badge fields + audit log, conditional on `status = 'pending'`.
 
-- Public: **false**
-- MIME: PDF, JPEG, PNG, WebP
-- Max size: 10 MiB
+## Badge
 
-## Tests to run live
+Public UI reads `shops.verification_status === 'verified'` only. No document paths, rejection notes, or admin notes on public pages.
 
-1. Seller cannot `UPDATE seller_profiles SET is_verified = true`
-2. Seller cannot set application status to `approved`
-3. Non-officer cannot call `verification_officer_decide`
-4. Officer cannot decide own seller application
-5. Non-owner cannot SELECT other sellers’ documents
-6. Approve sets badge fields and audit row
+## Manual setup
 
----
-
-## Hardening (Prompt 10.1)
-
-| Change | Detail |
-|--------|--------|
-| Status/decision writes | RPC-only; `UPDATE` revoked from authenticated |
-| Seller submit | `verification_seller_submit(level)` |
-| Document INSERT | Only when application is draft/submitted/additional_info_required |
-| Reject + badge | Clears `is_verified` when no other approved application remains |
-| Open apps | Unique index one open app per seller+level |
-| Rate limit | Max 5 applications created per seller per day |
-| Officer app gate | `verification_officer` \| `super_admin` only |
-| Document view | `/api/verification/document?id=` → 5-minute signed redirect after RLS |
-
-### Live checks after `20261115190000_verification_hardening.sql`
-
-1. Seller `UPDATE provider_verifications SET status = 'approved'` → denied
-2. Officer direct `UPDATE status` → denied (no UPDATE privilege)
-3. Non-officer `verification_officer_decide` → 42501
-4. Document INSERT on approved application → denied
-5. Reject sole approval → profile `is_verified = false`
-6. Second open app same level → unique violation / error
+1. Apply migration `20261119190000_seller_verification.sql` (bucket + RPCs + storage policies).
+2. Confirm storage policies in Supabase Dashboard if SQL bucket creation is restricted.
+3. Provision at least one admin (Module 10).
+4. Smoke-test: Pulse seller upload → admin approve → public shop shows Verified.

@@ -1,54 +1,37 @@
-import { asFormAction } from "@/lib/forms/as-form-action";
-import { SellerPageHeader } from "@/features/seller/components/seller-page-header";
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
-import Link from "next/link";
-import { getSellerContext } from "@/features/seller/lib/context";
-import { logout } from "@/features/auth/actions/auth-actions";
-import { getNotificationPreferences } from "@/features/notifications/actions/notification-actions";
-import { NotificationPreferencesForm } from "@/features/notifications/components/preferences-form";
+import { requireUser } from "@/features/auth/lib/require-user";
+import { createClient } from "@/lib/supabase/server";
+import { PageHeader } from "@/features/seller/components/PageHeader";
+import { SettingsForm } from "@/features/seller/components/SettingsForm";
 
-export const metadata: Metadata = { title: "Seller settings — Dúnarà Marketplace" };
+export const metadata: Metadata = {
+  title: "Account settings",
+};
 
 export default async function SellerSettingsPage() {
-  const ctx = await getSellerContext();
-  if (!ctx?.user) redirect("/login?next=/seller/settings");
+  const user = await requireUser("/seller/settings");
+  const supabase = await createClient();
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("full_name, email")
+    .eq("id", user.id)
+    .maybeSingle();
 
-  const { data: prefs } = await getNotificationPreferences();
+  const fullName =
+    profile?.full_name ||
+    (user.user_metadata?.full_name as string | undefined) ||
+    "";
+  const email = profile?.email || user.email || "";
 
   return (
-    <main className="sel-page">
-      <h1>Account settings</h1>
-      <section className="sel-panel">
-        <h2>Account</h2>
-        <p className="sel-muted">Signed in as {ctx.user.email ?? ctx.user.id}</p>
-        <p className="muted small">Roles: {ctx.user.roles.join(", ") || "none"}</p>
-        <form action={asFormAction(logout)}>
-          <button type="submit" className="button button-secondary">
-            Sign out
-          </button>
-        </form>
-      </section>
-      <section className="sel-panel">
-        <h2>Notifications</h2>
-        <p className="muted small mb-3">
-          Choose which updates you receive. Email and push require a configured provider.
-        </p>
-        <NotificationPreferencesForm initial={prefs} />
-      </section>
-      <section className="sel-panel">
-        <h2>Password</h2>
-        <p>
-          Use <Link href="/forgot-password">password recovery</Link> to reset your
-          password securely via email.
-        </p>
-      </section>
-      <section className="sel-panel">
-        <h2>Business</h2>
-        <p>
-          <Link href="/seller/profile">Edit business profile</Link>
-        </p>
-      </section>
-    </main>
+    <div className="space-y-6">
+      <PageHeader
+        title="Settings"
+        description="Account details for your Dunara login. Shop contact details live under Shop."
+      />
+      <div className="rounded-lg border border-[var(--color-border)] bg-white p-5 shadow-sm">
+        <SettingsForm fullName={fullName} email={email} />
+      </div>
+    </div>
   );
 }

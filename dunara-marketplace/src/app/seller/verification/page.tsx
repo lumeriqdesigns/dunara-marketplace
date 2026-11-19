@@ -1,162 +1,152 @@
-import { asFormAction } from "@/lib/forms/as-form-action";
-import { SellerPageHeader } from "@/features/seller/components/seller-page-header";
-import type { Metadata } from "next";
-import { redirect } from "next/navigation";
-import { getSellerContext } from "@/features/seller/lib/context";
-import { isSeller } from "@/lib/permissions";
-import {
-  listSellerVerifications,
-  listVerificationDocuments,
-} from "@/features/verification/lib/queries";
-import {
-  submitVerificationApplication,
-  uploadVerificationDocument,
-  resubmitVerification,
-} from "@/features/verification/actions/verification-actions";
-import { LEVEL_LABELS, STATUS_LABELS } from "@/features/verification/lib/types";
-import { VerificationBadge } from "@/features/marketplace/components/verification-badge";
-import type { VerificationDocument } from "@/features/verification/lib/types";
+import Link from "next/link";
+import { getSellerVerificationStatus } from "@/features/verification/actions";
+import { VerificationSubmitForm } from "@/features/verification/components/VerificationSubmitForm";
+import { EmptyState } from "@/components/ui/empty-state";
+import { verificationBadge } from "@/features/admin/components/StatusBadge";
 
-export const metadata: Metadata = { title: "Verification — Dúnarà Marketplace" };
+export const metadata = {
+  title: "Verification · Seller · Dunara",
+  description: "Apply for a Dunara verified badge",
+};
 
 export default async function SellerVerificationPage() {
-  const ctx = await getSellerContext();
-  if (!ctx?.user) redirect("/login?next=/seller/verification");
-  if (!isSeller(ctx.user) || !ctx.profile) redirect("/seller/dashboard");
+  const result = await getSellerVerificationStatus();
 
-  const { data: applications, error } = await listSellerVerifications(ctx.profile.id);
-
-  const docsByApp = new Map<string, VerificationDocument[]>();
-  for (const app of applications) {
-    const { data: docs } = await listVerificationDocuments(app.id);
-    docsByApp.set(app.id, docs);
+  if (!result.ok || !result.data) {
+    if (result.message?.includes("Create a shop")) {
+      return (
+        <div className="space-y-4">
+          <EmptyState
+            title="Create a shop first"
+            description="Verification is tied to your public shop profile."
+          />
+          <div className="flex justify-center">
+            <Link
+              href="/seller/shop"
+              className="inline-flex h-10 items-center rounded-md bg-[var(--color-primary)] px-4 text-sm font-medium text-white"
+            >
+              Create shop
+            </Link>
+          </div>
+        </div>
+      );
+    }
+    return (
+      <EmptyState
+        title="Could not load verification"
+        description={result.message ?? "Try again shortly."}
+      />
+    );
   }
 
+  const d = result.data;
+
   return (
-    <main className="sel-page">
-      <SellerPageHeader
-        title="Verification"
-        description="Submit documents for review. Status is set by verification officers only."
-      />
-      <p className="muted small">
-        Dúnarà verification means an officer reviewed the documents you submitted.
-        It does not guarantee the quality of services or full legal identity.
-        You cannot approve your own application.
-      </p>
+    <div className="mx-auto max-w-2xl space-y-8">
+      <header className="space-y-2">
+        <h1 className="text-2xl font-semibold text-[var(--color-ink)]">Verification</h1>
+        <p className="text-sm text-[var(--color-muted)]">
+          A verified badge means Dunara completed a manual document review for this shop. It does
+          not guarantee product quality, delivery, or payment safety.
+        </p>
+        <div className="flex flex-wrap items-center gap-2">
+          {verificationBadge(d.shopStatus === "verified" ? "verified" : d.shopStatus === "pending" ? "pending" : d.shopStatus === "rejected" ? "rejected" : "none")}
+          <span className="text-xs text-[var(--color-muted)]">
+            Current plan: {d.planName}
+          </span>
+        </div>
+      </header>
 
-      {error && <p className="sel-banner-error">{error}</p>}
+      {!d.eligible ? (
+        <section className="rounded-lg border border-[var(--color-border)] bg-white p-5 shadow-sm">
+          <h2 className="text-base font-semibold text-[var(--color-ink)]">
+            Upgrade to apply
+          </h2>
+          <p className="mt-2 text-sm text-[var(--color-muted)]">
+            Verification is available on <strong>Pulse</strong> and <strong>Apex</strong>. Open plan
+            shops cannot submit documents.
+          </p>
+          <Link
+            href="/seller/billing"
+            className="mt-4 inline-flex h-10 items-center rounded-md bg-[var(--color-primary)] px-4 text-sm font-medium text-white"
+          >
+            View plans
+          </Link>
+        </section>
+      ) : null}
 
-      <section className="dashboard-panel mt-4">
-        <h2>Submit application</h2>
-        <form action={asFormAction(submitVerificationApplication)} className="seller-form space-y-3">
-          <label className="block">
-            Level requested
-            <select
-              name="level"
-              defaultValue="basic"
-              className="mt-1 block w-full rounded-md border px-3 py-2"
-            >
-              <option value="basic">Basic account</option>
-              <option value="identity">Identity</option>
-              <option value="business">Business</option>
-              <option value="professional">Professional / qualification</option>
-            </select>
-          </label>
-          <button type="submit" className="button button-primary">
-            Submit application
-          </button>
-        </form>
-      </section>
+      {d.shopStatus === "verified" ? (
+        <section className="rounded-lg border border-[var(--color-soft-green)] bg-[var(--color-soft-green)]/40 p-5">
+          <h2 className="text-base font-semibold text-[var(--color-ink)]">You are verified</h2>
+          <p className="mt-2 text-sm text-[var(--color-muted)]">
+            Your public shop page shows the verified badge
+            {d.verifiedAt
+              ? ` (since ${new Date(d.verifiedAt).toLocaleDateString("en-NG")})`
+              : ""}
+            . An earned badge stays if you later change plans.
+          </p>
+        </section>
+      ) : null}
 
-      <section className="dashboard-panel mt-6">
-        <h2>Application history</h2>
-        {applications.length === 0 && <p className="sel-muted">No applications yet.</p>}
-        <ul className="space-y-4">
-          {applications.map((app) => {
-            const docs = docsByApp.get(app.id) ?? [];
-            return (
-              <li key={app.id} className="rounded-md border p-4">
-                <p>
-                  <strong>{LEVEL_LABELS[app.level] ?? app.level}</strong>
-                  {" · "}
-                  {STATUS_LABELS[app.status] ?? app.status}
-                </p>
-                {app.submitted_at && (
-                  <p className="muted small">
-                    Submitted {new Date(app.submitted_at).toLocaleString()}
-                  </p>
-                )}
-                {app.status === "additional_info_required" && (
-                  <div className="mt-2 rounded bg-amber-50 p-3 text-sm">
-                    <p className="font-medium">More information required</p>
-                    <p>{app.additional_info_request}</p>
-                    <p className="muted small mt-1">
-                      Upload any requested documents below, then resubmit.
-                    </p>
-                    <form action={asFormAction(resubmitVerification)} className="mt-2">
-                      <input type="hidden" name="verification_id" value={app.id} />
-                      <button type="submit" className="button button-primary button-sm">
-                        Resubmit for review
-                      </button>
-                    </form>
-                  </div>
-                )}
-                {app.status === "rejected" && app.rejection_reason && (
-                  <p className="mt-2 text-sm text-red-700">
-                    Reason: {app.rejection_reason}
-                  </p>
-                )}
-                {app.status === "approved" && (
-                  <p className="mt-2 text-sm text-green-700">
-                    Approved. Your public profile shows a verification badge for this level.
-                  </p>
-                )}
+      {d.latest?.status === "pending" ? (
+        <section className="rounded-lg border border-[var(--color-border)] bg-white p-5 shadow-sm">
+          <h2 className="text-base font-semibold text-[var(--color-ink)]">
+            Awaiting review
+          </h2>
+          <p className="mt-2 text-sm text-[var(--color-muted)]">
+            Submitted {new Date(d.latest.created_at).toLocaleString("en-NG")}
+            {d.latest.priority ? " · Apex priority queue" : ""}. We do not promise a fixed review
+            time. You cannot submit another request while this one is pending.
+          </p>
+        </section>
+      ) : null}
 
-                {["draft", "submitted", "additional_info_required"].includes(app.status) && (
-                  <form
-                    action={asFormAction(uploadVerificationDocument)}
-                    className="mt-3 space-y-2 border-t pt-3"
-                  >
-                    <input type="hidden" name="verification_id" value={app.id} />
-                    <label className="block text-sm">
-                      Document type
-                      <input
-                        name="document_type"
-                        defaultValue="identity_document"
-                        className="mt-1 block w-full rounded-md border px-2 py-1"
-                      />
-                    </label>
-                    <label className="block text-sm">
-                      File (PDF or image, max 10 MB)
-                      <input
-                        type="file"
-                        name="file"
-                        accept=".pdf,image/jpeg,image/png,image/webp"
-                        required
-                        className="mt-1 block w-full text-sm"
-                      />
-                    </label>
-                    <button type="submit" className="button button-secondary button-sm">
-                      Upload document
-                    </button>
-                  </form>
-                )}
+      {d.latest?.status === "rejected" && d.shopStatus !== "verified" ? (
+        <section className="rounded-lg border border-red-100 bg-red-50/50 p-5">
+          <h2 className="text-base font-semibold text-[var(--color-ink)]">
+            Application rejected
+          </h2>
+          <p className="mt-2 text-sm text-[var(--color-error)]">
+            {d.latest.rejection_reason || d.verificationNote || "Please correct and resubmit."}
+          </p>
+          {d.canSubmit ? (
+            <p className="mt-2 text-sm text-[var(--color-muted)]">
+              You can upload corrected documents below.
+            </p>
+          ) : null}
+        </section>
+      ) : null}
 
-                {docs.length > 0 && (
-                  <ul className="mt-2 text-sm muted">
-                    {docs.map((d) => (
-                      <li key={d.id}>
-                        {d.document_type}: {d.file_name} (
-                        {Math.round(d.file_size_bytes / 1024)} KB)
-                      </li>
-                    ))}
-                  </ul>
-                )}
+      {d.canSubmit ? (
+        <section className="space-y-3 rounded-lg border border-[var(--color-border)] bg-white p-5 shadow-sm">
+          <h2 className="text-base font-semibold text-[var(--color-ink)]">
+            Submit documents
+          </h2>
+          <p className="text-sm text-[var(--color-muted)]">{d.evidenceHelp}</p>
+          <VerificationSubmitForm />
+        </section>
+      ) : null}
+
+      {d.history.length > 0 ? (
+        <section className="space-y-3">
+          <h2 className="text-sm font-semibold text-[var(--color-ink)]">History</h2>
+          <ul className="divide-y divide-[var(--color-border)] rounded-lg border border-[var(--color-border)] bg-white">
+            {d.history.map((h) => (
+              <li key={h.id} className="flex flex-wrap items-center justify-between gap-2 px-4 py-3 text-sm">
+                <div className="flex items-center gap-2">
+                  {verificationBadge(h.status === "approved" ? "verified" : h.status)}
+                  {h.priority ? (
+                    <span className="text-xs text-[var(--color-primary)]">Priority</span>
+                  ) : null}
+                </div>
+                <span className="text-xs text-[var(--color-muted)]">
+                  {new Date(h.created_at).toLocaleDateString("en-NG")}
+                </span>
               </li>
-            );
-          })}
-        </ul>
-      </section>
-    </main>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+    </div>
   );
 }
