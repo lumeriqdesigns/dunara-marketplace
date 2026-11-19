@@ -168,7 +168,7 @@ export async function updateShopAction(
   }
 
   const data = parsed.data;
-  let slug = data.slug;
+  const slug = data.slug;
   if (slug !== shop.slug && !(await isSlugAvailable(slug, shop.id))) {
     return {
       ok: false,

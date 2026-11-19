@@ -151,7 +151,7 @@ export async function updateListingAction(
     };
   }
 
-  let slug = parsed.data.slug;
+  const slug = parsed.data.slug;
   if (
     slug !== existing.slug &&
     !(await isListingSlugAvailable(shop.id, slug, listingId))
