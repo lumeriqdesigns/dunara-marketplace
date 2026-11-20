@@ -7,6 +7,8 @@ import { ReplyDraftForm } from "@/features/ai/components/ReplyDraftForm";
 import { GuidePanel } from "@/features/ai/components/GuidePanel";
 import { EmptyState } from "@/components/ui/empty-state";
 import Link from "next/link";
+import { Sparkles } from "lucide-react";
+import { PageHeader } from "@/features/seller/components/PageHeader";
 
 export const metadata = {
   title: "AI Assistant · Dunara",
@@ -21,13 +23,14 @@ export default async function SellerAiPage() {
     return (
       <div className="space-y-4">
         <EmptyState
+          icon={<Sparkles aria-hidden="true" />}
           title="Create a shop first"
           description="The AI assistant helps you set up your shop and draft replies. Start by creating your shop profile."
         />
         <div className="flex justify-center">
           <Link
             href="/seller/shop"
-            className="inline-flex h-10 items-center justify-center rounded-md bg-[var(--color-primary)] px-4 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)]"
+            className="inline-flex min-h-11 items-center justify-center rounded-xl bg-[var(--color-primary)] px-5 text-sm font-semibold text-white hover:bg-[var(--color-primary-hover)]"
           >
             Create shop
           </Link>
@@ -40,7 +43,7 @@ export default async function SellerAiPage() {
   if (!result.ok || !result.data) {
     return (
       <EmptyState
-        title="Could not load AI assistant"
+        title="Couldn’t load the AI assistant"
         description={result.message ?? "Try again in a moment."}
       />
     );
@@ -49,21 +52,16 @@ export default async function SellerAiPage() {
   const { settings, usage } = result.data;
 
   return (
-    <div className="space-y-8">
-      <header className="space-y-1">
-        <h1 className="text-2xl font-semibold tracking-tight text-[var(--color-ink)]">
-          AI Assistant
-        </h1>
-        <p className="max-w-2xl text-sm text-[var(--color-muted)]">
-          Get help with shop setup and draft WhatsApp replies. You always review and copy messages
-          yourself — Dunara never sends messages or connects to WhatsApp on your behalf.
-        </p>
-      </header>
+    <div className="space-y-6">
+      <PageHeader
+        title="AI Assistant"
+        description="Get help with shop setup and draft WhatsApp replies. You always review and copy messages yourself. Dunara never sends messages or connects to WhatsApp on your behalf."
+      />
 
       <UsageMeter usage={usage} />
 
-      <div className="grid gap-8 lg:grid-cols-2">
-        <section className="space-y-3 rounded-lg border border-[var(--color-border)] bg-white p-5 shadow-sm">
+      <div className="grid gap-6 lg:grid-cols-2">
+        <section className="space-y-3 rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-[var(--shadow-card)]">
           <h2 className="text-base font-semibold text-[var(--color-ink)]">Draft a reply</h2>
           <p className="text-xs text-[var(--color-muted)]">
             Paste what the buyer said, add any facts they need to know, then copy the draft into
@@ -72,7 +70,7 @@ export default async function SellerAiPage() {
           <ReplyDraftForm initialUsage={usage} />
         </section>
 
-        <section className="space-y-3 rounded-lg border border-[var(--color-border)] bg-white p-5 shadow-sm">
+        <section className="space-y-3 rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-[var(--shadow-card)]">
           <h2 className="text-base font-semibold text-[var(--color-ink)]">Seller guide</h2>
           <p className="text-xs text-[var(--color-muted)]">
             Ask how to complete your profile, listings, billing, or verification. Guide answers do
@@ -82,8 +80,8 @@ export default async function SellerAiPage() {
         </section>
       </div>
 
-      <section className="rounded-lg border border-[var(--color-border)] bg-white p-5 shadow-sm">
-        <h2 className="text-base font-semibold text-[var(--color-ink)]">Language & personality</h2>
+      <section className="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-[var(--shadow-card)]">
+        <h2 className="text-base font-semibold text-[var(--color-ink)]">Language and personality</h2>
         <p className="mt-1 mb-4 text-xs text-[var(--color-muted)]">
           Defaults for drafts and guide answers. You can change them anytime.
         </p>

@@ -1,12 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ExternalLink, ImageOff, Package, Plus, Search, Store } from "lucide-react";
 import { requireUser } from "@/features/auth/lib/require-user";
 import { getOwnShop } from "@/features/shop/lib/get-shop";
 import { getShopListings } from "@/features/listings/lib/get-listings";
 import { formatPriceLabel } from "@/features/listings/lib/price";
 import { PageHeader } from "@/features/seller/components/PageHeader";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Badge } from "@/components/ui/badge";
+import { Select } from "@/components/ui/select";
 
 export const metadata: Metadata = { title: "Listings" };
+
+const primaryLink =
+  "inline-flex min-h-11 items-center gap-2 rounded-xl bg-[var(--color-primary)] px-5 text-sm font-semibold text-white hover:bg-[var(--color-primary-hover)]";
 
 export default async function SellerListingsPage({
   searchParams,
@@ -19,14 +26,18 @@ export default async function SellerListingsPage({
 
   if (!shop) {
     return (
-      <div className="space-y-4">
-        <h1 className="text-2xl font-semibold">Listings</h1>
-        <p className="text-sm text-[var(--color-muted)]">
-          Create a shop first, then add product or service listings.
-        </p>
-        <Link href="/seller/shop" className="text-sm font-medium text-[var(--color-primary)]">
-          Set up your shop →
-        </Link>
+      <div className="space-y-6">
+        <PageHeader title="Listings" />
+        <EmptyState
+          icon={<Store aria-hidden="true" />}
+          title="Create your shop first"
+          description="Once your shop exists, you can add product and service listings."
+          action={
+            <Link href="/seller/shop" className={primaryLink}>
+              Set up your shop
+            </Link>
+          }
+        />
       </div>
     );
   }
@@ -36,77 +47,111 @@ export default async function SellerListingsPage({
       ? params.status
       : "all";
   const listings = await getShopListings(shop.id, { q: params.q, status });
+  const isFiltered = Boolean(params.q?.trim()) || status !== "all";
 
   return (
     <div className="space-y-6">
       <PageHeader
         title="Listings"
-        description={`Manage products and services for ${shop.name}`}
+        description={`Manage the products and services for ${shop.name}.`}
         actions={
-          <Link
-            href="/seller/listings/new"
-            className="inline-flex h-10 items-center rounded-md bg-[var(--color-primary)] px-4 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)]"
-          >
+          <Link href="/seller/listings/new" className={primaryLink}>
+            <Plus aria-hidden="true" className="size-4" />
             Add listing
           </Link>
         }
       />
 
-      <form className="flex flex-wrap gap-2">
-        <input
-          name="q"
-          defaultValue={params.q ?? ""}
-          placeholder="Search title…"
-          className="h-10 min-w-[200px] flex-1 rounded-md border border-[var(--color-border)] px-3 text-sm"
-        />
-        <select
-          name="status"
-          defaultValue={status}
-          className="h-10 rounded-md border border-[var(--color-border)] bg-white px-3 text-sm"
-        >
-          <option value="all">All</option>
+      <form
+        method="get"
+        role="search"
+        className="flex flex-wrap items-center gap-2 rounded-2xl border border-[var(--color-border)] bg-white p-3 shadow-[var(--shadow-card)]"
+      >
+        <div className="relative min-w-[200px] flex-1">
+          <Search
+            aria-hidden="true"
+            className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-[var(--color-muted)]"
+          />
+          <input
+            name="q"
+            defaultValue={params.q ?? ""}
+            placeholder="Search by title"
+            aria-label="Search listings"
+            className="h-11 w-full rounded-xl border border-[var(--color-border)] bg-white pl-10 pr-3 text-sm placeholder:text-[var(--color-muted)]"
+          />
+        </div>
+        <Select name="status" defaultValue={status} aria-label="Status" wrapperClassName="w-full sm:w-auto">
+          <option value="all">All listings</option>
           <option value="published">Published</option>
           <option value="draft">Drafts</option>
-        </select>
+        </Select>
         <button
           type="submit"
-          className="h-10 rounded-md border border-[var(--color-border)] px-4 text-sm font-medium"
+          className="inline-flex h-11 items-center justify-center rounded-xl border border-[var(--color-border)] bg-white px-5 text-sm font-semibold text-[var(--color-ink)] hover:bg-[var(--color-soft-green)]"
         >
-          Filter
+          Apply
         </button>
       </form>
 
       {listings.length === 0 ? (
-        <p className="rounded-lg border border-dashed border-[var(--color-border)] bg-white p-8 text-center text-sm text-[var(--color-muted)]">
-          No listings yet.{" "}
-          <Link href="/seller/listings/new" className="text-[var(--color-primary)]">
-            Create your first listing
-          </Link>
-        </p>
+        isFiltered ? (
+          <EmptyState
+            icon={<Search aria-hidden="true" />}
+            title="No listings match"
+            description="Try a different title or clear the status filter."
+            action={
+              <Link
+                href="/seller/listings"
+                className="inline-flex min-h-11 items-center rounded-xl border border-[var(--color-border)] bg-white px-5 text-sm font-semibold hover:bg-[var(--color-soft-green)]"
+              >
+                Clear filters
+              </Link>
+            }
+          />
+        ) : (
+          <EmptyState
+            icon={<Package aria-hidden="true" />}
+            title="No listings yet"
+            description="Add a product or service with a photo and a clear price so buyers can find you."
+            action={
+              <Link href="/seller/listings/new" className={primaryLink}>
+                <Plus aria-hidden="true" className="size-4" />
+                Create your first listing
+              </Link>
+            }
+          />
+        )
       ) : (
-        <ul className="divide-y divide-[var(--color-border)] rounded-lg border border-[var(--color-border)] bg-white">
+        <ul className="divide-y divide-[var(--color-border)] overflow-hidden rounded-2xl border border-[var(--color-border)] bg-white shadow-[var(--shadow-card)]">
           {listings.map((l) => (
-            <li key={l.id} className="flex flex-wrap items-center justify-between gap-3 p-4">
-              <div className="min-w-0">
-                <Link
-                  href={`/seller/listings/${l.id}`}
-                  className="font-medium text-[var(--color-ink)] hover:text-[var(--color-primary)]"
-                >
-                  {l.title}
-                </Link>
-                <p className="mt-1 text-xs text-[var(--color-muted)]">
-                  {l.listing_type} · {formatPriceLabel(l.price_kobo, l.price_type)} ·{" "}
-                  {l.is_published ? (
-                    <span className="text-[var(--color-primary)]">Published</span>
+            <li key={l.id} className="flex flex-wrap items-center gap-4 p-4 sm:px-5">
+              <Link
+                href={`/seller/listings/${l.id}`}
+                className="flex min-w-0 flex-1 items-center gap-4"
+                aria-label={`Edit ${l.title}`}
+              >
+                <span className="flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[var(--color-soft-green)] text-[var(--color-muted)]">
+                  {l.cover_image_url ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={l.cover_image_url} alt="" loading="lazy" className="size-full object-cover" />
                   ) : (
-                    "Draft"
+                    <ImageOff aria-hidden="true" className="size-5" />
                   )}
-                </p>
-              </div>
-              <div className="flex gap-2 text-sm">
+                </span>
+                <span className="min-w-0">
+                  <span className="block truncate font-medium text-[var(--color-ink)]">{l.title}</span>
+                  <span className="mt-0.5 block text-xs capitalize text-[var(--color-muted)]">
+                    {l.listing_type} · {formatPriceLabel(l.price_kobo, l.price_type)}
+                  </span>
+                </span>
+              </Link>
+              <div className="flex items-center gap-3">
+                <Badge variant={l.is_published ? "success" : "outline"}>
+                  {l.is_published ? "Published" : "Draft"}
+                </Badge>
                 <Link
                   href={`/seller/listings/${l.id}`}
-                  className="text-[var(--color-primary)] hover:underline"
+                  className="inline-flex min-h-10 items-center rounded-xl border border-[var(--color-border)] px-4 text-sm font-semibold text-[var(--color-ink)] hover:bg-[var(--color-soft-green)]"
                 >
                   Edit
                 </Link>
@@ -115,9 +160,10 @@ export default async function SellerListingsPage({
                     href={`/listing/${shop.slug}/${l.slug}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-[var(--color-muted)] hover:underline"
+                    aria-label={`View ${l.title} on the public site`}
+                    className="inline-flex size-10 items-center justify-center rounded-xl text-[var(--color-muted)] hover:bg-[var(--color-soft-green)] hover:text-[var(--color-primary)]"
                   >
-                    View
+                    <ExternalLink aria-hidden="true" className="size-4" />
                   </a>
                 ) : null}
               </div>

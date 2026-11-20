@@ -1,9 +1,16 @@
 import Link from "next/link";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import {
   type MarketplaceFilters,
   PAGE_SIZE,
   filtersToQueryString,
 } from "../lib/search-params";
+
+const base =
+  "inline-flex h-10 items-center gap-1.5 rounded-xl border px-4 text-sm font-medium transition-colors";
+const enabled =
+  "border-[var(--color-border)] bg-white text-[var(--color-ink)] hover:border-[#9EBEAA] hover:bg-[var(--color-soft-green)]";
+const disabled = "border-transparent text-[#A3ABA5]";
 
 export function Pagination({
   filters,
@@ -21,34 +28,40 @@ export function Pagination({
 
   return (
     <nav
-      className="mt-8 flex items-center justify-center gap-4 text-sm"
+      className="mt-10 flex items-center justify-center gap-3"
       aria-label="Pagination"
     >
       {prev ? (
         <Link
           href={`/explore${filtersToQueryString(filters, { page: prev })}`}
-          className="rounded-md border border-[var(--color-border)] px-3 py-2 hover:bg-white"
+          rel="prev"
+          className={`${base} ${enabled}`}
         >
+          <ChevronLeft aria-hidden="true" className="size-4" />
           Previous
         </Link>
       ) : (
-        <span className="rounded-md border border-transparent px-3 py-2 text-[var(--color-muted)]">
+        <span aria-disabled="true" className={`${base} ${disabled}`}>
+          <ChevronLeft aria-hidden="true" className="size-4" />
           Previous
         </span>
       )}
-      <span className="text-[var(--color-muted)]">
+      <span className="min-w-24 text-center text-sm text-[var(--color-muted)]">
         Page {page} of {totalPages}
       </span>
       {next ? (
         <Link
           href={`/explore${filtersToQueryString(filters, { page: next })}`}
-          className="rounded-md border border-[var(--color-border)] px-3 py-2 hover:bg-white"
+          rel="next"
+          className={`${base} ${enabled}`}
         >
           Next
+          <ChevronRight aria-hidden="true" className="size-4" />
         </Link>
       ) : (
-        <span className="rounded-md border border-transparent px-3 py-2 text-[var(--color-muted)]">
+        <span aria-disabled="true" className={`${base} ${disabled}`}>
           Next
+          <ChevronRight aria-hidden="true" className="size-4" />
         </span>
       )}
     </nav>

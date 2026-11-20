@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { ExternalLink } from "lucide-react";
 import Link from "next/link";
+import { PageHeader } from "@/features/seller/components/PageHeader";
 import { requireUser } from "@/features/auth/lib/require-user";
 import { getOwnShop, getCategories } from "@/features/shop/lib/get-shop";
 import { ShopCreateForm } from "@/features/shop/components/ShopCreateForm";
@@ -19,15 +21,10 @@ export default async function SellerShopPage() {
   if (!shop) {
     return (
       <div className="space-y-6">
-        <div>
-          <h1 className="text-2xl font-semibold text-[var(--color-ink)]">
-            Create your shop
-          </h1>
-          <p className="mt-2 max-w-xl text-sm text-[var(--color-muted)]">
-            Start with a name, category, and what you offer. You can add WhatsApp,
-            location, logo, and bio next — then publish when ready.
-          </p>
-        </div>
+        <PageHeader
+          title="Create your shop"
+          description="Start with a name, category, and what you offer. You can add WhatsApp, location, logo, and bio next, then publish when you’re ready."
+        />
         {categories.length === 0 ? (
           <p className="text-sm text-[var(--color-error)]">
             No categories found. Run the database seed script first.
@@ -41,22 +38,23 @@ export default async function SellerShopPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-semibold text-[var(--color-ink)]">
-            {shop.name}
-          </h1>
-          <p className="mt-1 text-sm text-[var(--color-muted)]">
-            Manage your public shop profile
-          </p>
-        </div>
-        <Link
-          href="/seller"
-          className="text-sm font-medium text-[var(--color-primary)] hover:underline"
-        >
-          ← Seller home
-        </Link>
-      </div>
+      <PageHeader
+        title={shop.name}
+        description="Manage your public shop profile."
+        actions={
+          shop.is_published ? (
+            <Link
+              href={`/shop/${shop.slug}`}
+              target="_blank"
+              rel="noreferrer"
+              className="interactive inline-flex min-h-10 items-center gap-2 rounded-xl border border-[var(--color-border)] bg-white px-4 text-sm font-semibold text-[var(--color-ink)] hover:bg-[var(--color-soft-green)]"
+            >
+              View public shop
+              <ExternalLink aria-hidden="true" className="size-4" />
+            </Link>
+          ) : null
+        }
+      />
       <ShopEditForm shop={shop} categories={categories} />
     </div>
   );

@@ -2,6 +2,8 @@
 
 import { useActionState } from "react";
 import { resendConfirmationAction, type AuthActionState } from "../actions";
+import { Button } from "@/components/ui/button";
+import { Alert } from "@/components/ui/alert";
 
 const initial: AuthActionState = { ok: false };
 
@@ -12,24 +14,13 @@ export function ResendConfirmationForm({ email }: { email: string }) {
     <form action={formAction} className="mt-4 space-y-3">
       <input type="hidden" name="email" value={email} />
       {state.message ? (
-        <p
-          className={
-            state.ok
-              ? "text-sm text-[var(--color-primary)]"
-              : "text-sm text-[var(--color-error)]"
-          }
-          role="status"
-        >
+        <Alert variant={state.ok ? "success" : "destructive"} role="status">
           {state.message}
-        </p>
+        </Alert>
       ) : null}
-      <button
-        type="submit"
-        disabled={pending}
-        className="text-sm font-medium text-[var(--color-primary)] underline-offset-2 hover:underline disabled:opacity-50"
-      >
+      <Button type="submit" variant="outline" size="lg" disabled={pending} className="w-full">
         {pending ? "Sending…" : "Resend confirmation email"}
-      </button>
+      </Button>
     </form>
   );
 }

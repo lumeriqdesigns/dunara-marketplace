@@ -4,7 +4,10 @@ import { useActionState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { loginAction, type AuthActionState } from "../actions";
-import { FormFieldError } from "./FormFieldError";
+import { Alert } from "@/components/ui/alert";
+import { TextField } from "./TextField";
+import { PasswordField } from "./PasswordField";
+import { SubmitButton } from "./SubmitButton";
 
 const initial: AuthActionState = { ok: false };
 
@@ -14,65 +17,42 @@ export function LoginForm() {
   const [state, formAction, pending] = useActionState(loginAction, initial);
 
   return (
-    <form action={formAction} className="space-y-4" noValidate>
+    <form action={formAction} className="space-y-5" noValidate>
       <input type="hidden" name="next" value={next} />
 
-      {state.message && !state.ok ? (
-        <div
-          className="rounded-md border border-[var(--color-error)]/30 bg-red-50 px-3 py-2 text-sm text-[var(--color-error)]"
-          role="alert"
-        >
-          {state.message}
-        </div>
-      ) : null}
+      {state.message && !state.ok ? <Alert variant="destructive">{state.message}</Alert> : null}
 
-      <div>
-        <label htmlFor="email" className="block text-sm font-medium text-[var(--color-ink)]">
-          Email
-        </label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          autoComplete="email"
-          required
-          disabled={pending}
-          className="mt-1 flex h-10 w-full rounded-md border border-[var(--color-border)] bg-white px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] disabled:opacity-50"
-        />
-        <FormFieldError messages={state.fieldErrors?.email} />
-      </div>
+      <TextField
+        id="email"
+        name="email"
+        label="Email"
+        type="email"
+        autoComplete="email"
+        inputMode="email"
+        required
+        disabled={pending}
+        errors={state.fieldErrors?.email}
+      />
 
-      <div>
-        <div className="flex items-center justify-between">
-          <label htmlFor="password" className="block text-sm font-medium text-[var(--color-ink)]">
-            Password
-          </label>
+      <PasswordField
+        id="password"
+        name="password"
+        label="Password"
+        autoComplete="current-password"
+        required
+        disabled={pending}
+        errors={state.fieldErrors?.password}
+        labelAside={
           <Link
             href="/forgot-password"
             className="text-xs font-medium text-[var(--color-primary)] hover:underline"
           >
             Forgot password?
           </Link>
-        </div>
-        <input
-          id="password"
-          name="password"
-          type="password"
-          autoComplete="current-password"
-          required
-          disabled={pending}
-          className="mt-1 flex h-10 w-full rounded-md border border-[var(--color-border)] bg-white px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] disabled:opacity-50"
-        />
-        <FormFieldError messages={state.fieldErrors?.password} />
-      </div>
+        }
+      />
 
-      <button
-        type="submit"
-        disabled={pending}
-        className="flex h-11 w-full items-center justify-center rounded-md bg-[var(--color-primary)] text-sm font-medium text-white transition-colors hover:bg-[var(--color-primary-hover)] disabled:opacity-50"
-      >
-        {pending ? "Signing in…" : "Sign in"}
-      </button>
+      <SubmitButton pending={pending} idleLabel="Sign in" pendingLabel="Signing in…" />
     </form>
   );
 }

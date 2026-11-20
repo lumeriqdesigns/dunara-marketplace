@@ -29,7 +29,7 @@ export default async function SellerSettingsPage() {
         title="Settings"
         description="Account details for your Dunara login. Shop contact details live under Shop."
       />
-      <div className="rounded-lg border border-[var(--color-border)] bg-white p-5 shadow-sm">
+      <div className="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-[var(--shadow-card)] sm:p-6">
         <SettingsForm fullName={fullName} email={email} />
       </div>
     </div>

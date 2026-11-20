@@ -23,8 +23,11 @@ export default async function SellerBillingPage() {
     return (
       <div className="space-y-4">
         <PageHeader title="Billing" description="Create a shop to manage your plan." />
-        <Link href="/seller/shop" className="text-sm font-medium text-[var(--color-primary)]">
-          Create shop →
+        <Link
+          href="/seller/shop"
+          className="inline-flex min-h-11 items-center rounded-xl bg-[var(--color-primary)] px-5 text-sm font-semibold text-white hover:bg-[var(--color-primary-hover)]"
+        >
+          Create your shop
         </Link>
       </div>
     );

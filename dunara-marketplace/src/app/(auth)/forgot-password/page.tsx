@@ -11,9 +11,9 @@ export default function ForgotPasswordPage() {
   return (
     <AuthCard
       title="Reset your password"
-      description="Enter the email associated with your account. We will send a secure reset link if an account exists."
+      description="Enter your account email and we’ll send you a link to choose a new password."
       footer={
-        <Link href="/login" className="font-medium text-[var(--color-primary)] hover:underline">
+        <Link href="/login" className="font-semibold text-[var(--color-primary)] hover:underline">
           Back to sign in
         </Link>
       }

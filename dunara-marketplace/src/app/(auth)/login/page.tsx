@@ -18,17 +18,25 @@ export default async function LoginPage() {
   return (
     <AuthCard
       title="Sign in"
-      description="Access your seller dashboard with the email you registered."
+      description="Sign in with the email you registered to manage your shop."
       footer={
         <>
           New to Dunara?{" "}
-          <Link href="/register" className="font-medium text-[var(--color-primary)] hover:underline">
+          <Link href="/register" className="font-semibold text-[var(--color-primary)] hover:underline">
             Create an account
           </Link>
         </>
       }
     >
-      <Suspense fallback={<div className="h-40 animate-pulse rounded-md bg-[var(--color-border)]" />}>
+      <Suspense
+        fallback={
+          <div className="space-y-5" aria-busy="true" aria-label="Loading sign in form">
+            <div className="h-11 animate-pulse rounded-xl bg-[var(--color-border)]" />
+            <div className="h-11 animate-pulse rounded-xl bg-[var(--color-border)]" />
+            <div className="h-12 animate-pulse rounded-xl bg-[var(--color-border)]" />
+          </div>
+        }
+      >
         <LoginForm />
       </Suspense>
     </AuthCard>

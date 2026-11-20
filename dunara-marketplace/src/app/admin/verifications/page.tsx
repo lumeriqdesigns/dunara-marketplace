@@ -1,7 +1,9 @@
 import Link from "next/link";
+import { ArrowRight, ShieldCheck } from "lucide-react";
 import { getAdminVerificationQueueSummary } from "@/features/admin/actions";
 import { verificationBadge } from "@/features/admin/components/StatusBadge";
 import { EmptyState } from "@/components/ui/empty-state";
+import { PageHeader } from "@/features/seller/components/PageHeader";
 
 export const metadata = { title: "Admin verifications · Dunara" };
 
@@ -10,7 +12,7 @@ export default async function AdminVerificationsPage() {
   if (!result.ok || !result.data) {
     return (
       <EmptyState
-        title="Could not load verification queue"
+        title="Couldn’t load the verification queue"
         description={result.message}
       />
     );
@@ -20,49 +22,42 @@ export default async function AdminVerificationsPage() {
 
   return (
     <div className="space-y-6">
-      <header>
-        <h1 className="text-2xl font-semibold text-[var(--color-ink)]">
-          Verifications
-        </h1>
-        <p className="mt-1 text-sm text-[var(--color-muted)]">
-          {pendingCount} pending · Apex priority first, then oldest. Apex priority first, then oldest first.
-        </p>
-      </header>
+      <PageHeader
+        title="Verifications"
+        description={`${pendingCount} pending. Apex shops are reviewed first, then the oldest requests.`}
+      />
 
       {rows.length === 0 ? (
         <EmptyState
+          icon={<ShieldCheck aria-hidden="true" />}
           title="No pending requests"
-          description="When sellers submit verification on Pulse/Apex, they appear here."
+          description="When sellers on Pulse or Apex submit verification, their requests appear here."
         />
       ) : (
-        <ul className="divide-y divide-[var(--color-border)] rounded-lg border border-[var(--color-border)] bg-white shadow-sm">
+        <ul className="divide-y divide-[var(--color-border)] overflow-hidden rounded-2xl border border-[var(--color-border)] bg-white shadow-[var(--shadow-card)]">
           {rows.map((row) => (
-            <li
-              key={row.id}
-              className="flex flex-wrap items-center justify-between gap-3 px-4 py-4"
-            >
-              <div>
-                <p className="font-medium text-[var(--color-ink)]">
-                  {row.shop_name ?? "Shop"}
-                </p>
-                <div className="mt-1 flex flex-wrap items-center gap-2">
-                  {verificationBadge(row.status)}
-                  {row.priority ? (
-                    <span className="text-xs font-medium text-[var(--color-primary)]">
-                      Apex priority
-                    </span>
-                  ) : null}
-                  <span className="text-xs text-[var(--color-muted)]">
-                    {row.plan_slug_at_submission ?? ""} ·{" "}
-                    {new Date(row.created_at).toLocaleString("en-NG")}
-                  </span>
-                </div>
-              </div>
+            <li key={row.id}>
               <Link
                 href={`/admin/verifications/${row.id}`}
-                className="text-sm font-medium text-[var(--color-primary)] hover:underline"
+                className="interactive group flex flex-wrap items-center justify-between gap-3 px-5 py-4 hover:bg-[#FBFCF8]"
               >
-                Open
+                <div className="min-w-0">
+                  <p className="truncate font-medium text-[var(--color-ink)]">{row.shop_name ?? "Shop"}</p>
+                  <div className="mt-1.5 flex flex-wrap items-center gap-2">
+                    {verificationBadge(row.status)}
+                    {row.priority ? (
+                      <span className="text-xs font-semibold text-[var(--color-primary)]">Apex priority</span>
+                    ) : null}
+                    <span className="text-xs text-[var(--color-muted)]">
+                      {row.plan_slug_at_submission ? `${row.plan_slug_at_submission} · ` : ""}
+                      {new Date(row.created_at).toLocaleString("en-NG")}
+                    </span>
+                  </div>
+                </div>
+                <span className="inline-flex items-center gap-1 text-sm font-semibold text-[var(--color-primary)]">
+                  Review
+                  <ArrowRight aria-hidden="true" className="size-4 transition-transform group-hover:translate-x-0.5" />
+                </span>
               </Link>
             </li>
           ))}

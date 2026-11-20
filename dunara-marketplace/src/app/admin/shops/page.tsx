@@ -6,7 +6,11 @@ import {
   verificationBadge,
   subscriptionBadge,
 } from "@/features/admin/components/StatusBadge";
+import { FilterBar } from "@/features/admin/components/FilterBar";
+import { Pager } from "@/features/admin/components/Pager";
 import { EmptyState } from "@/components/ui/empty-state";
+import { Select } from "@/components/ui/select";
+import { PageHeader } from "@/features/seller/components/PageHeader";
 
 export const metadata = { title: "Admin shops · Dunara" };
 
@@ -42,83 +46,68 @@ export default async function AdminShopsPage({
 
   if (!result.ok || !result.data) {
     return (
-      <EmptyState title="Could not load shops" description={result.message} />
+      <EmptyState title="Couldn’t load shops" description={result.message} />
     );
   }
 
   const { rows, total, pageSize } = result.data;
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
 
+  const hrefFor = (p: number) => {
+    const params = new URLSearchParams();
+    if (q) params.set("q", q);
+    if (published !== "all") params.set("published", published);
+    if (suspended !== "all") params.set("suspended", suspended);
+    if (verification !== "all") params.set("verification", verification);
+    if (p > 1) params.set("page", String(p));
+    const s = params.toString();
+    return `/admin/shops${s ? `?${s}` : ""}`;
+  };
+
   return (
     <div className="space-y-6">
-      <header>
-        <h1 className="text-2xl font-semibold text-[var(--color-ink)]">Shops</h1>
-        <p className="mt-1 text-sm text-[var(--color-muted)]">
-          {total} shop{total === 1 ? "" : "s"} · search and moderate
-        </p>
-      </header>
+      <PageHeader
+        title="Shops"
+        description={`${total} shop${total === 1 ? "" : "s"}. Search, review and moderate.`}
+      />
 
-      <form className="flex flex-wrap gap-2" method="get">
-        <input
-          name="q"
-          defaultValue={q ?? ""}
-          placeholder="Search name or slug"
-          className="h-10 min-w-[180px] flex-1 rounded-md border border-[var(--color-border)] bg-white px-3 text-sm"
-        />
-        <select
-          name="published"
-          defaultValue={published}
-          className="h-10 rounded-md border border-[var(--color-border)] bg-white px-2 text-sm"
-        >
-          <option value="all">Published: all</option>
+      <FilterBar searchDefault={q} searchPlaceholder="Search by name or slug" searchLabel="Search shops">
+        <Select name="published" defaultValue={published} aria-label="Published status" wrapperClassName="w-full sm:w-auto">
+          <option value="all">Published: any</option>
           <option value="yes">Published</option>
           <option value="no">Unpublished</option>
-        </select>
-        <select
-          name="suspended"
-          defaultValue={suspended}
-          className="h-10 rounded-md border border-[var(--color-border)] bg-white px-2 text-sm"
-        >
-          <option value="all">Suspended: all</option>
+        </Select>
+        <Select name="suspended" defaultValue={suspended} aria-label="Suspension status" wrapperClassName="w-full sm:w-auto">
+          <option value="all">Suspension: any</option>
           <option value="yes">Suspended</option>
           <option value="no">Not suspended</option>
-        </select>
-        <select
-          name="verification"
-          defaultValue={verification}
-          className="h-10 rounded-md border border-[var(--color-border)] bg-white px-2 text-sm"
-        >
-          <option value="all">Verification: all</option>
-          <option value="none">None</option>
+        </Select>
+        <Select name="verification" defaultValue={verification} aria-label="Verification status" wrapperClassName="w-full sm:w-auto">
+          <option value="all">Verification: any</option>
+          <option value="none">Not applied</option>
           <option value="pending">Pending</option>
           <option value="verified">Verified</option>
           <option value="rejected">Rejected</option>
-        </select>
-        <button
-          type="submit"
-          className="h-10 rounded-md bg-[var(--color-primary)] px-4 text-sm font-medium text-white"
-        >
-          Filter
-        </button>
-      </form>
+        </Select>
+      </FilterBar>
 
       {rows.length === 0 ? (
-        <EmptyState title="No shops match" description="Try clearing filters." />
+        <EmptyState title="No shops match" description="Try clearing a filter or searching a different name." />
       ) : (
-        <div className="overflow-x-auto rounded-lg border border-[var(--color-border)] bg-white shadow-sm">
+        <div className="overflow-x-auto rounded-2xl border border-[var(--color-border)] bg-white shadow-[var(--shadow-card)]">
           <table className="min-w-full text-left text-sm">
-            <thead className="border-b border-[var(--color-border)] bg-[var(--color-canvas)] text-xs uppercase text-[var(--color-muted)]">
+            <thead>
               <tr>
-                <th className="px-4 py-3 font-medium">Shop</th>
-                <th className="px-4 py-3 font-medium">Owner</th>
-                <th className="px-4 py-3 font-medium">Status</th>
-                <th className="px-4 py-3 font-medium">Plan</th>
+                <th scope="col">Shop</th>
+                <th scope="col">Owner</th>
+                <th scope="col">Status</th>
+                <th scope="col">Plan</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[var(--color-border)]">
+            <tbody>
               {rows.map((row) => (
                 <tr key={row.id} className="align-top">
-                  <td className="px-4 py-3">
+                  <td>
                     <Link
                       href={`/admin/shops/${row.id}`}
                       className="font-medium text-[var(--color-primary)] hover:underline"
@@ -127,24 +116,18 @@ export default async function AdminShopsPage({
                     </Link>
                     <p className="text-xs text-[var(--color-muted)]">/{row.slug}</p>
                   </td>
-                  <td className="px-4 py-3 text-[var(--color-muted)]">
-                    {row.owner_email ?? "—"}
-                  </td>
-                  <td className="px-4 py-3">
+                  <td className="text-[var(--color-muted)]">{row.owner_email ?? "—"}</td>
+                  <td>
                     <div className="flex flex-wrap gap-1">
                       {publishedBadge(row.is_published)}
                       {suspendedBadge(row.is_suspended)}
                       {verificationBadge(row.verification_status)}
                     </div>
                   </td>
-                  <td className="px-4 py-3">
+                  <td>
                     <div className="space-y-1">
-                      <p className="text-xs text-[var(--color-muted)]">
-                        {row.plan_slug ?? "—"}
-                      </p>
-                      {row.subscription_status
-                        ? subscriptionBadge(row.subscription_status)
-                        : null}
+                      <p className="text-xs text-[var(--color-muted)]">{row.plan_slug ?? "—"}</p>
+                      {row.subscription_status ? subscriptionBadge(row.subscription_status) : null}
                     </div>
                   </td>
                 </tr>
@@ -154,29 +137,7 @@ export default async function AdminShopsPage({
         </div>
       )}
 
-      {totalPages > 1 ? (
-        <div className="flex gap-2 text-sm">
-          {page > 1 ? (
-            <Link
-              href={`/admin/shops?page=${page - 1}&q=${q ?? ""}&published=${published}&suspended=${suspended}&verification=${verification}`}
-              className="text-[var(--color-primary)]"
-            >
-              Previous
-            </Link>
-          ) : null}
-          <span className="text-[var(--color-muted)]">
-            Page {page} of {totalPages}
-          </span>
-          {page < totalPages ? (
-            <Link
-              href={`/admin/shops?page=${page + 1}&q=${q ?? ""}&published=${published}&suspended=${suspended}&verification=${verification}`}
-              className="text-[var(--color-primary)]"
-            >
-              Next
-            </Link>
-          ) : null}
-        </div>
-      ) : null}
+      <Pager page={page} totalPages={totalPages} hrefFor={hrefFor} />
     </div>
   );
 }

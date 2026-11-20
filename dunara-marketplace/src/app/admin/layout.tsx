@@ -17,7 +17,7 @@ export default async function AdminLayout({
         <AdminNav email={user.email} />
         <div className="flex min-w-0 flex-1 flex-col">
           <div className="workspace-topbar sticky top-0 z-20 hidden items-center px-8 lg:flex">
-            <p className="text-sm font-medium text-[var(--color-muted)]">Operations</p>
+            <p className="text-sm font-medium text-[var(--color-muted)]">Operations console</p>
           </div>
           <div className="workspace-content mx-auto flex-1">
             {children}

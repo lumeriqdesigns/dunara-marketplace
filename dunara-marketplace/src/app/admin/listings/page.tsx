@@ -5,7 +5,11 @@ import {
 } from "@/features/admin/actions";
 import { ConfirmReasonForm } from "@/features/admin/components/ConfirmReasonForm";
 import { publishedBadge } from "@/features/admin/components/StatusBadge";
+import { FilterBar } from "@/features/admin/components/FilterBar";
+import { Pager } from "@/features/admin/components/Pager";
 import { EmptyState } from "@/components/ui/empty-state";
+import { Select } from "@/components/ui/select";
+import { PageHeader } from "@/features/seller/components/PageHeader";
 
 export const metadata = { title: "Admin listings · Dunara" };
 
@@ -30,67 +34,58 @@ export default async function AdminListingsPage({
 
   if (!result.ok || !result.data) {
     return (
-      <EmptyState title="Could not load listings" description={result.message} />
+      <EmptyState title="Couldn’t load listings" description={result.message} />
     );
   }
 
   const { rows, total, pageSize } = result.data;
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
 
+  const hrefFor = (p: number) => {
+    const params = new URLSearchParams();
+    if (q) params.set("q", q);
+    if (published !== "all") params.set("published", published);
+    if (p > 1) params.set("page", String(p));
+    const s = params.toString();
+    return `/admin/listings${s ? `?${s}` : ""}`;
+  };
+
   return (
     <div className="space-y-6">
-      <header>
-        <h1 className="text-2xl font-semibold text-[var(--color-ink)]">Listings</h1>
-        <p className="mt-1 text-sm text-[var(--color-muted)]">
-          {total} listing{total === 1 ? "" : "s"} · unpublish does not delete content
-        </p>
-      </header>
+      <PageHeader
+        title="Listings"
+        description={`${total} listing${total === 1 ? "" : "s"}. Unpublishing hides a listing but never deletes its content.`}
+      />
 
-      <form className="flex flex-wrap gap-2" method="get">
-        <input
-          name="q"
-          defaultValue={q ?? ""}
-          placeholder="Search title"
-          className="h-10 min-w-[180px] flex-1 rounded-md border border-[var(--color-border)] bg-white px-3 text-sm"
-        />
-        <select
-          name="published"
-          defaultValue={published}
-          className="h-10 rounded-md border border-[var(--color-border)] bg-white px-2 text-sm"
-        >
-          <option value="all">All</option>
+      <FilterBar searchDefault={q} searchPlaceholder="Search by title" searchLabel="Search listings">
+        <Select name="published" defaultValue={published} aria-label="Published status" wrapperClassName="w-full sm:w-auto">
+          <option value="all">All listings</option>
           <option value="yes">Published</option>
           <option value="no">Unpublished</option>
-        </select>
-        <button
-          type="submit"
-          className="h-10 rounded-md bg-[var(--color-primary)] px-4 text-sm font-medium text-white"
-        >
-          Filter
-        </button>
-      </form>
+        </Select>
+      </FilterBar>
 
       {rows.length === 0 ? (
-        <EmptyState title="No listings match" />
+        <EmptyState title="No listings match" description="Try clearing a filter or searching a different title." />
       ) : (
-        <ul className="divide-y divide-[var(--color-border)] rounded-lg border border-[var(--color-border)] bg-white shadow-sm">
+        <ul className="divide-y divide-[var(--color-border)] overflow-hidden rounded-2xl border border-[var(--color-border)] bg-white shadow-[var(--shadow-card)]">
           {rows.map((row) => (
             <li
               key={row.id}
-              className="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between"
+              className="flex flex-col gap-3 px-5 py-4 sm:flex-row sm:items-center sm:justify-between"
             >
-              <div>
-                <p className="font-medium text-[var(--color-ink)]">{row.title}</p>
-                <p className="text-xs text-[var(--color-muted)]">
+              <div className="min-w-0">
+                <p className="truncate font-medium text-[var(--color-ink)]">{row.title}</p>
+                <p className="mt-0.5 text-xs capitalize text-[var(--color-muted)]">
                   {row.shop_name ?? "Shop"} · {row.listing_type}
                 </p>
-                <div className="mt-1">{publishedBadge(row.is_published)}</div>
+                <div className="mt-2">{publishedBadge(row.is_published)}</div>
               </div>
-              <div className="flex flex-wrap items-center gap-2">
+              <div className="flex flex-wrap items-center gap-3">
                 {row.shop_slug ? (
                   <Link
                     href={`/listing/${row.shop_slug}/${row.slug}`}
-                    className="text-xs text-[var(--color-primary)] hover:underline"
+                    className="text-sm font-medium text-[var(--color-primary)] hover:underline"
                   >
                     Public page
                   </Link>
@@ -120,11 +115,7 @@ export default async function AdminListingsPage({
         </ul>
       )}
 
-      {totalPages > 1 ? (
-        <p className="text-sm text-[var(--color-muted)]">
-          Page {page} of {totalPages}
-        </p>
-      ) : null}
+      <Pager page={page} totalPages={totalPages} hrefFor={hrefFor} />
     </div>
   );
 }

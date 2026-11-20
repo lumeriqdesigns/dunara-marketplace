@@ -17,11 +17,11 @@ export default async function RegisterPage() {
   return (
     <AuthCard
       title="Create your account"
-      description="Use your email to get started. WhatsApp number is collected later on your shop profile."
+      description="Start with your email. You’ll add your WhatsApp number when you set up your shop."
       footer={
         <>
           Already have an account?{" "}
-          <Link href="/login" className="font-medium text-[var(--color-primary)] hover:underline">
+          <Link href="/login" className="font-semibold text-[var(--color-primary)] hover:underline">
             Sign in
           </Link>
         </>
