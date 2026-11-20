@@ -1,0 +1,8 @@
+-- Module 11 verification negative checks (manual / CI)
+-- 1) Open plan seller: submitVerificationRequest returns denial
+-- 2) Seller A cannot select verification_requests for Seller B shop
+-- 3) Anonymous cannot select storage.objects in verification-documents
+-- 4) Duplicate pending blocked by verification_one_pending_per_shop
+-- 5) admin_approve_verification on non-pending returns conflict
+-- 6) admin_reject_verification without reason returns invalid_reason
+-- 7) Public shop select exposes verification_status only, never document_paths

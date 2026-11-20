@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 120" role="img" aria-label="Dunara">
+  <g transform="translate(0,0)">
+    <path d="M95 22 L85 12 L35 12 L12 60 L35 108 L85 108 L95 98"
+          fill="none" stroke="#111111" stroke-width="6.5" stroke-linejoin="round" stroke-linecap="round"/>
+    <g fill="#2E5C0A" stroke="#2E5C0A" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="48" cy="52" r="6" stroke="none"/>
+      <path d="M48 60 v20 M48 68 l-10 8 M48 68 l10 8 M48 80 l-8 14 M48 80 l8 14" fill="none"/>
+      <circle cx="78" cy="52" r="6" stroke="none"/>
+      <path d="M78 60 v20 M78 68 l-10 8 M78 68 l10 8 M78 80 l-8 14 M78 80 l8 14" fill="none"/>
+    </g>
+    <circle cx="63" cy="38" r="9" fill="#2E5C0A"/>
+    <path d="M58 38 l3.5 3.5 7-7" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <g stroke="#2E5C0A" stroke-width="1.8" stroke-linecap="round">
+      <line x1="63" y1="24" x2="63" y2="28"/>
+      <line x1="52" y1="29" x2="55" y2="32"/>
+      <line x1="74" y1="29" x2="71" y2="32"/>
+    </g>
+  </g>
+  <text x="120" y="78" font-family="Arial Black, Impact, system-ui, sans-serif"
+        font-size="48" font-weight="900" letter-spacing="0.5" fill="#111111">DUNARA</text>
+</svg>
