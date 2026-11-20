@@ -18,7 +18,7 @@ export function StatCard({
   return (
     <div
       className={cn(
-        "interactive rounded-2xl p-4 shadow-sm",
+        "interactive rounded-2xl p-5 shadow-[var(--shadow-card)] transition duration-300 hover:-translate-y-0.5 hover:shadow-lg",
         glass
           ? "glass-panel ring-1 ring-black/5"
           : "border border-[var(--color-border)] bg-white",

@@ -16,7 +16,7 @@ function NavLinks({
   onNavigate?: () => void;
 }) {
   return (
-    <nav className="flex flex-col gap-0.5 p-2" aria-label="Seller">
+    <nav className="workspace-nav flex flex-col gap-1" aria-label="Seller">
       {sellerNav.map((item) => {
         const active = isNavActive(pathname, item);
         return (
@@ -57,8 +57,8 @@ export function SellerNav({
 
   return (
     <>
-      <aside className="hidden w-56 shrink-0 flex-col border-r border-[var(--color-border)] bg-white lg:flex">
-        <div className="flex h-14 items-center gap-2 border-b border-[var(--color-border)] px-4">
+      <aside className="workspace-sidebar hidden shrink-0 flex-col lg:flex">
+        <div className="workspace-brand flex items-center gap-2">
           <Link
             href="/seller"
             className="interactive text-sm font-semibold tracking-tight text-[var(--color-ink)]"
@@ -79,7 +79,7 @@ export function SellerNav({
         </div>
       </aside>
 
-      <header className="glass-chrome sticky top-0 z-40 border-b lg:hidden">
+      <header className="workspace-topbar sticky top-0 z-40 border-b lg:hidden">
         <div className="flex h-14 items-center justify-between gap-3 px-4">
           <div className="flex min-w-0 items-center gap-2">
             <button
@@ -130,7 +130,7 @@ export function SellerNav({
 
 export function SellerTopBar() {
   return (
-    <div className="glass-chrome sticky top-0 z-20 hidden h-14 items-center justify-end gap-3 border-b px-6 lg:flex">
+    <div className="workspace-topbar sticky top-0 z-20 hidden items-center justify-end gap-3 px-8 lg:flex">
       <Link
         href="/seller/listings/new"
         className="interactive rounded-lg bg-[var(--color-primary)] px-3 py-1.5 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)]"

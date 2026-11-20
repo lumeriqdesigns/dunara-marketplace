@@ -116,7 +116,7 @@ npm run build
 |-------|-----------|------------|--------------------|----------|
 | Open  | ₦0        | ₦0         | 5                  | No       |
 | Pulse | ₦4,000    | ₦38,400    | 30                 | Yes      |
-| Apex  | ₦30,000   | ₦288,000   | Unlimited          | Yes + priority |
+| Apex  | ₦20,000   | ₦192,000   | Unlimited          | Yes + priority |
 
 New shops receive a **3-day Pulse trial** (no card). Then Open unless they subscribe.
 

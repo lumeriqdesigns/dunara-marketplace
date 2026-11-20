@@ -2,8 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { Toaster } from "sonner";
 import { brand, brandAssets, metadataDefaults, colors } from "@/config/brand";
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
+import { SiteChrome } from "@/components/layout/SiteChrome";
 import "./globals.css";
 
 const inter = Inter({
@@ -65,11 +64,7 @@ export default function RootLayout({
           Skip to main content
         </a>
         <div className="flex min-h-screen flex-col">
-          <Header />
-          <main id="main-content" className="flex-1">
-            {children}
-          </main>
-          <Footer />
+          <SiteChrome>{children}</SiteChrome>
         </div>
         <Toaster position="top-center" richColors closeButton />
       </body>

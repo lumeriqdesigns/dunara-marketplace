@@ -98,8 +98,8 @@ A shop or listing is publicly readable only when:
 | open | none | 0 | 5 | no | no |
 | pulse_monthly | monthly | 400_000 (₦4,000) | 30 | yes | no |
 | pulse_annual | annual | 3_840_000 (₦38,400) | 30 | yes | no |
-| apex_monthly | monthly | 3_000_000 (₦30,000) | unlimited (-1) | yes | yes |
-| apex_annual | annual | 28_800_000 (₦288,000) | unlimited (-1) | yes | yes |
+| apex_monthly | monthly | 2_000_000 (₦20,000) | unlimited (-1) | yes | yes |
+| apex_annual | annual | 19_200_000 (₦192,000) | unlimited (-1) | yes | yes |
 
 `paystack_plan_code` is null until you create matching plans in Paystack and update the rows.
 

@@ -10,7 +10,7 @@ interface AuthCardProps {
 
 export function AuthCard({ title, description, children, footer }: AuthCardProps) {
   return (
-    <div className="mx-auto w-full max-w-md px-4 py-10 sm:py-16">
+    <div className="auth-stage mx-auto w-full max-w-md px-4 py-12 sm:py-20">
       <div className="mb-8 text-center">
         <Link
           href="/"
@@ -19,7 +19,7 @@ export function AuthCard({ title, description, children, footer }: AuthCardProps
           {brand.name}
         </Link>
       </div>
-      <div className="rounded-xl border border-[var(--color-border)] bg-white p-6 shadow-sm sm:p-8">
+      <div className="auth-card p-6 sm:p-9">
         <h1 className="text-xl font-semibold text-[var(--color-ink)]">{title}</h1>
         {description ? (
           <p className="mt-2 text-sm text-[var(--color-muted)]">{description}</p>

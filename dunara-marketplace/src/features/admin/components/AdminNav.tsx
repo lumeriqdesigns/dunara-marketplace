@@ -16,7 +16,7 @@ function NavLinks({
   onNavigate?: () => void;
 }) {
   return (
-    <nav className="flex flex-col gap-0.5 p-2" aria-label="Admin">
+    <nav className="workspace-nav flex flex-col gap-1" aria-label="Admin">
       {adminNav.map((item) => {
         const active = isAdminNavActive(pathname, item);
         return (
@@ -50,8 +50,8 @@ export function AdminNav({ email }: { email?: string | null }) {
 
   return (
     <>
-      <aside className="hidden w-56 shrink-0 flex-col border-r border-[var(--color-border)] bg-white lg:flex">
-        <div className="flex h-14 items-center gap-2 border-b border-[var(--color-border)] px-4">
+      <aside className="workspace-sidebar hidden shrink-0 flex-col lg:flex">
+        <div className="workspace-brand flex items-center gap-2">
           <Link
             href="/admin"
             className="interactive text-sm font-semibold tracking-tight text-[var(--color-ink)]"
@@ -69,7 +69,7 @@ export function AdminNav({ email }: { email?: string | null }) {
         </div>
       </aside>
 
-      <header className="glass-chrome sticky top-0 z-40 border-b lg:hidden">
+      <header className="workspace-topbar sticky top-0 z-40 border-b lg:hidden">
         <div className="flex h-14 items-center justify-between gap-3 px-4">
           <div className="flex min-w-0 items-center gap-2">
             <button

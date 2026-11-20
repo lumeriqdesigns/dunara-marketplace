@@ -9,8 +9,8 @@ export function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[var(--color-border)] bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/90">
-      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
+    <header className="public-header sticky top-0 z-50 border-b">
+      <div className="public-header-inner mx-auto flex items-center justify-between gap-4 px-4 sm:px-6">
         <BrandLogo href="/" variant="primary" priority className="h-7 sm:h-8" />
 
         <nav className="hidden items-center gap-1 md:flex" aria-label="Primary">
@@ -18,7 +18,7 @@ export function Header() {
             <Link
               key={item.href}
               href={item.href}
-              className="rounded-md px-3 py-2 text-sm font-medium text-[var(--color-muted)] transition hover:bg-[var(--color-canvas)] hover:text-[var(--color-ink)]"
+              className="rounded-full px-3 py-2 text-sm font-medium text-[var(--color-muted)] transition hover:bg-[var(--color-canvas)] hover:text-[var(--color-ink)]"
             >
               {item.label}
             </Link>
@@ -34,7 +34,7 @@ export function Header() {
           </Link>
           <Link
             href={nav.sellerCta.href}
-            className="inline-flex h-9 items-center rounded-md bg-[var(--color-primary)] px-3 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2"
+            className="header-cta dunara-button inline-flex items-center bg-[var(--color-primary)] text-sm text-white hover:bg-[var(--color-primary-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2"
           >
             {nav.sellerCta.label}
           </Link>

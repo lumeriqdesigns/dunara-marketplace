@@ -7,8 +7,8 @@
 | Open | ₦0 | 5 | No | No |
 | Pulse monthly | ₦4,000 | 30 | Yes | Yes |
 | Pulse annual | ₦38,400 | 30 | Yes | Yes |
-| Apex monthly | ₦30,000 | Unlimited | Yes + priority | Yes |
-| Apex annual | ₦288,000 | Unlimited | Yes + priority | Yes |
+| Apex monthly | ₦20,000 | Unlimited | Yes + priority | Yes |
+| Apex annual | ₦192,000 | Unlimited | Yes + priority | Yes |
 
 New shops get a **3-day Pulse trial** (no card). On expiry → Open.
 

@@ -36,7 +36,7 @@ on conflict (slug) do update set
 -- price_kobo: Naira * 100
 -- Open: free, 5 listings
 -- Pulse: ₦4,000/mo or ₦38,400/yr, 30 listings, featured
--- Apex: ₦30,000/mo or ₦288,000/yr, unlimited, featured + priority
+-- Apex: ₦20,000/mo or ₦192,000/yr, unlimited, featured + priority
 -- ai_reply_limit_monthly left as placeholder (0 / TBD); update via admin later
 -- paystack_plan_code remains null until configured in Paystack dashboard
 -- ---------------------------------------------------------------------------
@@ -48,8 +48,8 @@ insert into public.plans (
   ('Open',  'open',          'none',    0,       null,  5,  false, false, 10,  10, true),
   ('Pulse', 'pulse_monthly', 'monthly', 400000,  null, 30,  true,  false, 50,  20, true),
   ('Pulse', 'pulse_annual',  'annual',  3840000, null, 30,  true,  false, 50,  21, true),
-  ('Apex',  'apex_monthly',  'monthly', 3000000, null, -1,  true,  true,  200, 30, true),
-  ('Apex',  'apex_annual',   'annual',  28800000,null, -1,  true,  true,  200, 31, true)
+  ('Apex',  'apex_monthly',  'monthly', 2000000, null, -1,  true,  true,  200, 30, true),
+  ('Apex',  'apex_annual',   'annual',  19200000,null, -1,  true,  true,  200, 31, true)
 on conflict (slug) do update set
   name = excluded.name,
   interval = excluded.interval,

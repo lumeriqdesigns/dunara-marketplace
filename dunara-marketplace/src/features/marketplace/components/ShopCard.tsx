@@ -20,17 +20,17 @@ export function ShopCard({ shop }: { shop: ShopCardShop }) {
   return (
     <Link
       href={`/shop/${shop.slug}`}
-      className="flex gap-4 rounded-lg border border-[var(--color-border)] bg-white p-4 shadow-sm transition hover:border-[var(--color-primary)]"
+      className="group flex gap-4 rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-[var(--shadow-card)] transition duration-300 hover:-translate-y-1 hover:border-[var(--color-primary)] hover:shadow-xl"
     >
       {shop.logo_url ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={shop.logo_url}
           alt=""
-          className="h-14 w-14 shrink-0 rounded-full object-cover"
+          className="h-16 w-16 shrink-0 rounded-2xl object-cover"
         />
       ) : (
-        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[var(--color-soft-green)] text-lg font-semibold text-[var(--color-primary)]">
+        <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-[var(--color-soft-green)] text-xl font-bold text-[var(--color-primary)]">
           {shop.name.slice(0, 1).toUpperCase()}
         </div>
       )}

@@ -47,15 +47,15 @@ export default async function HomePage() {
   return (
     <div>
       {/* Hero */}
-      <section className="border-b border-[var(--color-border)] bg-white">
-        <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
-          <p className="text-center text-sm font-medium uppercase tracking-wide text-[var(--color-primary)]">
+      <section className="home-hero border-b border-[var(--color-border)]">
+        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24">
+          <p className="dunara-eyebrow text-center">
             {brand.tagline}
           </p>
-          <h1 className="mx-auto mt-3 max-w-2xl text-center text-3xl font-semibold tracking-tight text-[var(--color-ink)] sm:text-4xl">
+          <h1 className="dunara-display mx-auto mt-5 max-w-4xl text-center text-4xl font-semibold text-[var(--color-ink)] sm:text-6xl">
             Find the products and services you need. Talk directly on WhatsApp.
           </h1>
-          <p className="mx-auto mt-4 max-w-xl text-center text-base text-[var(--color-muted)]">
+          <p className="mx-auto mt-5 max-w-2xl text-center text-base leading-7 text-[var(--color-muted)] sm:text-lg">
             Explore Nigerian sellers and service providers on Dunara, then connect
             with them directly on WhatsApp.
           </p>
@@ -80,7 +80,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <div className="mx-auto max-w-6xl space-y-16 px-4 py-12 sm:px-6 sm:py-16">
+      <div className="mx-auto max-w-7xl space-y-20 px-4 py-14 sm:px-6 sm:py-20">
         {/* Categories */}
         <section>
           <div className="flex items-end justify-between gap-4">
@@ -188,7 +188,7 @@ export default async function HomePage() {
         </section>
 
         {/* How it works */}
-        <section className="rounded-xl border border-[var(--color-border)] bg-white p-6 sm:p-8">
+        <section className="dunara-surface rounded-2xl p-7 sm:p-10">
           <h2 className="text-center text-xl font-semibold text-[var(--color-ink)]">
             How Dunara works
           </h2>
@@ -248,7 +248,7 @@ export default async function HomePage() {
         </section>
 
         {/* Seller CTA */}
-        <section className="rounded-xl bg-[var(--color-primary)] px-6 py-10 text-center text-white sm:px-10">
+        <section className="home-feature-panel px-7 py-12 text-center sm:px-12 sm:py-16">
           <h2 className="text-2xl font-semibold">Put your business where customers can find it</h2>
           <p className="mx-auto mt-3 max-w-lg text-sm text-white/90">
             Create a simple shop profile, showcase your products or services, and let

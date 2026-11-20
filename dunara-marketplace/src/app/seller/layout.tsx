@@ -14,12 +14,12 @@ export default async function SellerLayout({
   const shop = await getOwnShop(user.id);
 
   return (
-    <div className="min-h-screen bg-[var(--color-canvas)] text-[var(--color-ink)]">
+    <div className="workspace-shell min-h-screen text-[var(--color-ink)]">
       <div className="flex min-h-screen">
         <SellerNav email={user.email} shopName={shop?.name ?? null} />
         <div className="flex min-w-0 flex-1 flex-col">
           <SellerTopBar />
-          <div className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6 lg:py-8">
+          <div className="workspace-content mx-auto flex-1">
             {children}
           </div>
         </div>

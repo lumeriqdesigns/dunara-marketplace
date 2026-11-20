@@ -35,19 +35,19 @@ export const brandAssets = {
 /** Design tokens — use these via CSS variables / Tailwind theme. */
 export const colors = {
   primary: {
-    DEFAULT: "#167A52",
+    DEFAULT: "#176B4B",
     foreground: "#FFFFFF",
-    hover: "#10583D",
-    soft: "#EAF4EE",
+    hover: "#10533A",
+    soft: "#E8F1EB",
   },
-  ink: "#17211D",
-  canvas: "#F7F8F5",
+  ink: "#18251F",
+  canvas: "#F6F5EF",
   white: "#FFFFFF",
-  border: "#E4E9E5",
-  muted: "#68736C",
+  border: "#E5E8DF",
+  muted: "#737D75",
   warning: "#B7791F",
   error: "#B42318",
-  success: "#167A52",
+  success: "#176B4B",
 } as const;
 
 export const nav = {
@@ -55,6 +55,7 @@ export const nav = {
     { href: "/explore", label: "Explore" },
     { href: "/categories", label: "Categories" },
     { href: "/locations", label: "Locations" },
+    { href: "/pricing", label: "Pricing" },
   ],
   sellerCta: { href: "/register", label: "List your business" },
   login: { href: "/login", label: "Log in" },

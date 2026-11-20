@@ -10,7 +10,7 @@ const footerLinks = {
   ],
   sellers: [
     { href: "/register", label: "Create a shop" },
-    { href: "/pricing", label: "Seller plans" },
+    { href: "/pricing", label: "Pricing & seller guide" },
     { href: "/login", label: "Seller login" },
   ],
   help: [
@@ -28,18 +28,18 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-[var(--color-border)] bg-white">
-      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+    <footer className="public-footer">
+      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:py-16">
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-5">
           <div className="lg:col-span-2">
-            <BrandLogo href="/" variant="primary" className="h-8" />
-            <p className="mt-3 max-w-xs text-sm text-[var(--color-muted)]">
+            <BrandLogo href="/" variant="primary-white" className="h-8" />
+            <p className="footer-muted mt-4 max-w-xs text-sm leading-7">
               WhatsApp-first discovery for Nigerian product vendors and service
               providers. Find what you need, then talk directly on WhatsApp.
             </p>
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-[var(--color-ink)]">
+            <h3 className="text-sm font-semibold text-white">
               Discover
             </h3>
             <ul className="mt-3 space-y-2">
@@ -47,7 +47,7 @@ export function Footer() {
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-sm text-[var(--color-muted)] hover:text-[var(--color-ink)]"
+                    className="text-sm"
                   >
                     {l.label}
                   </Link>
@@ -56,7 +56,7 @@ export function Footer() {
             </ul>
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-[var(--color-ink)]">
+            <h3 className="text-sm font-semibold text-white">
               For sellers
             </h3>
             <ul className="mt-3 space-y-2">
@@ -64,7 +64,7 @@ export function Footer() {
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-sm text-[var(--color-muted)] hover:text-[var(--color-ink)]"
+                    className="text-sm"
                   >
                     {l.label}
                   </Link>
@@ -73,7 +73,7 @@ export function Footer() {
             </ul>
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-[var(--color-ink)]">
+            <h3 className="text-sm font-semibold text-white">
               Help & legal
             </h3>
             <ul className="mt-3 space-y-2">
@@ -81,7 +81,7 @@ export function Footer() {
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-sm text-[var(--color-muted)] hover:text-[var(--color-ink)]"
+                    className="text-sm"
                   >
                     {l.label}
                   </Link>
@@ -90,7 +90,7 @@ export function Footer() {
             </ul>
           </div>
         </div>
-        <div className="mt-10 border-t border-[var(--color-border)] pt-6 text-center text-sm text-[var(--color-muted)]">
+        <div className="footer-muted mt-12 border-t border-white/15 pt-6 text-center text-sm">
           © {year} {brand.name}. Built by Lumeriq Designs. All rights reserved.
         </div>
       </div>
