@@ -56,6 +56,7 @@ export const nav = {
     { href: "/categories", label: "Categories" },
     { href: "/locations", label: "Locations" },
     { href: "/pricing", label: "Pricing" },
+    { href: "/contact", label: "Contact" },
   ],
   sellerCta: { href: "/register", label: "List your business" },
   login: { href: "/login", label: "Log in" },

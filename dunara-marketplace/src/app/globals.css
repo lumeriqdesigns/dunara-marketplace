@@ -126,3 +126,39 @@ input:not([type="checkbox"]):not([type="radio"]):focus, textarea:focus, select:f
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+/* Discovery experience refresh */
+.discovery-page { min-height: 65vh; }
+.discovery-hero { position: relative; overflow: hidden; padding: clamp(1.5rem, 4vw, 3rem); border: 1px solid #E2E9DE; border-radius: 1.75rem; background: linear-gradient(125deg, #F5F7F0 0%, #EAF2E9 65%, #E3EEDC 100%); }
+.discovery-hero::after { content: ""; position: absolute; right: -5rem; top: -8rem; width: 24rem; height: 24rem; border-radius: 50%; border: 1px solid rgb(23 107 75 / .09); box-shadow: 0 0 0 2.5rem rgb(23 107 75 / .035), 0 0 0 5rem rgb(23 107 75 / .025); pointer-events: none; }
+.discovery-hero > * { position: relative; z-index: 1; }
+.discovery-kicker { color: #176B4B; font-size: .68rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+.discovery-title { margin-top: .7rem; color: #18251F; font-size: clamp(2rem, 5vw, 3.65rem); font-weight: 700; letter-spacing: -.06em; line-height: 1.04; }
+.discovery-seller-link { flex-shrink: 0; color: #176B4B; font-size: .875rem; font-weight: 650; }
+.discovery-seller-link:hover { text-decoration: underline; }
+.discovery-hero form { border: 1px solid rgb(24 37 31 / .1); border-radius: 1rem; box-shadow: 0 16px 35px rgb(24 37 31 / .07); }
+.category-discovery-card { display: flex; min-height: 116px; align-items: center; gap: 1rem; border: 1px solid var(--color-border); border-radius: 1.25rem; background: white; padding: 1.15rem; box-shadow: var(--shadow-card); transition: border-color .2s, transform .2s, box-shadow .2s; }
+.category-discovery-card:hover { border-color: #9EBEAA; transform: translateY(-2px); box-shadow: 0 15px 35px rgb(24 37 31 / .08); }
+.category-card-index { display: flex; width: 2.8rem; height: 2.8rem; flex-shrink: 0; align-items: center; justify-content: center; border-radius: .9rem; background: #E8F1EB; color: #176B4B; font-size: .8rem; font-weight: 750; }
+.category-arrow { margin-left: auto; color: #176B4B; font-size: 1.25rem; transition: transform .2s; }
+.category-discovery-card:hover .category-arrow { transform: translate(2px,-2px); }
+.state-discovery-card { display: flex; min-height: 58px; align-items: center; justify-content: space-between; gap: .5rem; border: 1px solid var(--color-border); border-radius: .9rem; background: white; padding: .8rem .95rem; color: var(--color-ink); font-size: .875rem; font-weight: 600; transition: border-color .18s, background .18s, transform .18s; }
+a.state-discovery-card:hover { border-color: #A7C4B0; background: #F8FBF7; transform: translateY(-1px); }
+.state-inactive { color: #9AA29A; background: #F8F8F5; font-weight: 450; }
+.state-active-dot { width: .45rem; height: .45rem; flex-shrink: 0; border-radius: 50%; background: #176B4B; box-shadow: 0 0 0 3px #E8F1EB; }
+.discovery-empty { display: flex; flex-direction: column; align-items: center; border: 1px dashed #C8D4C9; border-radius: 1.5rem; background: #FBFCF8; padding: 3rem 1.5rem; text-align: center; }
+.empty-orbit { display: grid; width: 3.5rem; height: 3.5rem; place-items: center; border-radius: 50%; background: #E8F1EB; color: #176B4B; font-size: 1.8rem; }
+.home-hero { background: linear-gradient(135deg, #F6F7F0 0%, #EAF2E8 70%, #E5EFDD 100%); }
+.home-hero h1 { max-width: 900px; font-size: clamp(2.6rem, 6vw, 5rem); line-height: .99; letter-spacing: -.065em; }
+.home-hero p:not(.dunara-eyebrow) { max-width: 44rem; }
+.home-search-wrap form { border-radius: 1.25rem; padding: 1rem; box-shadow: 0 18px 45px rgb(24 37 31 / .085); }
+.category-tile { min-height: 110px; border-radius: 1.1rem; }
+.home-section-title { font-size: clamp(1.45rem, 2.5vw, 2rem); }
+.home-feature-panel { background: linear-gradient(130deg, #173D2D, #22583E); box-shadow: 0 20px 45px rgb(23 61 45 / .14); }
+@media (max-width: 640px) {
+  .discovery-hero { border-radius: 1.25rem; }
+  .discovery-hero::after { right: -10rem; top: -8rem; }
+  .home-hero h1 { font-size: clamp(2.45rem, 12vw, 3.5rem); }
+  .home-search-wrap form { padding: .75rem; }
+  .category-discovery-card { min-height: 100px; padding: .85rem; }
+}

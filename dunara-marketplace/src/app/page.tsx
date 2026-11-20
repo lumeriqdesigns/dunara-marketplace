@@ -53,16 +53,17 @@ export default async function HomePage() {
             {brand.tagline}
           </p>
           <h1 className="dunara-display mx-auto mt-5 max-w-4xl text-center text-4xl font-semibold text-[var(--color-ink)] sm:text-6xl">
-            Find the products and services you need. Talk directly on WhatsApp.
+            Find what you need.
+            Meet who has it.
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-center text-base leading-7 text-[var(--color-muted)] sm:text-lg">
-            Explore Nigerian sellers and service providers on Dunara, then connect
-            with them directly on WhatsApp.
+            Discover products, trusted local businesses, and services from across Nigeria.
+            Connect directly with sellers on WhatsApp.
           </p>
-          <div className="mx-auto mt-8 max-w-4xl">
+          <div className="mx-auto mt-8 max-w-4xl home-search-wrap">
             <SearchForm categories={categories} />
           </div>
-          <div className="mt-6 flex justify-center gap-3">
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
             <Link
               href="/explore"
               className="text-sm font-medium text-[var(--color-primary)] hover:underline"
@@ -84,7 +85,7 @@ export default async function HomePage() {
         {/* Categories */}
         <section>
           <div className="flex items-end justify-between gap-4">
-            <h2 className="text-xl font-semibold text-[var(--color-ink)]">
+            <h2 className="home-section-title text-2xl font-semibold text-[var(--color-ink)] sm:text-3xl">
               Popular categories
             </h2>
             <Link
@@ -99,7 +100,7 @@ export default async function HomePage() {
               <li key={c.id}>
                 <Link
                   href={`/categories/${c.slug}`}
-                  className="flex h-full flex-col rounded-lg border border-[var(--color-border)] bg-white px-4 py-4 text-sm font-medium text-[var(--color-ink)] shadow-sm transition hover:border-[var(--color-primary)]"
+                  className="category-tile flex h-full flex-col rounded-xl border border-[var(--color-border)] bg-white px-4 py-5 text-sm font-medium text-[var(--color-ink)] shadow-sm transition hover:border-[var(--color-primary)] hover:-translate-y-0.5"
                 >
                   {c.name}
                   <span className="mt-1 text-xs font-normal capitalize text-[var(--color-muted)]">
@@ -119,7 +120,7 @@ export default async function HomePage() {
         {/* Recent listings */}
         <section>
           <div className="flex items-end justify-between gap-4">
-            <h2 className="text-xl font-semibold text-[var(--color-ink)]">
+            <h2 className="home-section-title text-2xl font-semibold text-[var(--color-ink)] sm:text-3xl">
               Recently added
             </h2>
             <Link
@@ -157,7 +158,7 @@ export default async function HomePage() {
         {/* Locations */}
         <section>
           <div className="flex items-end justify-between gap-4">
-            <h2 className="text-xl font-semibold text-[var(--color-ink)]">
+            <h2 className="home-section-title text-2xl font-semibold text-[var(--color-ink)] sm:text-3xl">
               Browse by location
             </h2>
             <Link
@@ -224,7 +225,7 @@ export default async function HomePage() {
         {/* Featured shops */}
         <section>
           <div className="flex items-end justify-between gap-4">
-            <h2 className="text-xl font-semibold text-[var(--color-ink)]">Shops on Dunara</h2>
+            <h2 className="home-section-title text-2xl font-semibold text-[var(--color-ink)] sm:text-3xl">Shops on Dunara</h2>
             <Link
               href="/explore"
               className="text-sm font-medium text-[var(--color-primary)] hover:underline"
@@ -273,7 +274,7 @@ export default async function HomePage() {
         {/* Trust + FAQ */}
         <section className="grid gap-10 lg:grid-cols-2">
           <div>
-            <h2 className="text-xl font-semibold text-[var(--color-ink)]">
+            <h2 className="home-section-title text-2xl font-semibold text-[var(--color-ink)] sm:text-3xl">
               Trust & safety
             </h2>
             <ul className="mt-4 space-y-3 text-sm text-[var(--color-muted)]">
@@ -298,7 +299,7 @@ export default async function HomePage() {
             </Link>
           </div>
           <div>
-            <h2 className="text-xl font-semibold text-[var(--color-ink)]">FAQ</h2>
+            <h2 className="home-section-title text-2xl font-semibold text-[var(--color-ink)] sm:text-3xl">FAQ</h2>
             <dl className="mt-4 space-y-4 text-sm">
               <div>
                 <dt className="font-medium text-[var(--color-ink)]">What is Dunara?</dt>
