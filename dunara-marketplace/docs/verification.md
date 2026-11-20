@@ -23,7 +23,7 @@ Shop fields: `verification_status`, `verified_at`, `verification_note`
 Bucket: **`verification-documents`** (private)
 
 - MIME: `image/jpeg`, `image/png`, `application/pdf`
-- Max 5MB / object, max 5 files per submission
+- Max 1MB / object, max 5 files per submission
 - Path: `{shop_id}/{request_id}/{uuid}.{ext}`
 - Seller storage policies: own shop path only
 - Admin document access: `requireAdmin` → service-role **signed URL** (~120s)

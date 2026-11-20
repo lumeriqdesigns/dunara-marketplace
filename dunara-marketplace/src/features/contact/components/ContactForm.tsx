@@ -1,7 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowUpRight, Send } from "lucide-react";
+import { Send } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Select } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 
 const WHATSAPP_NUMBER = "2349031512760";
 
@@ -42,39 +47,79 @@ export function ContactForm() {
     <form onSubmit={handleSubmit} className="space-y-5" noValidate>
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
-          <label htmlFor="contact-name" className="mb-2 block text-sm font-semibold text-[var(--color-ink)]">Your name</label>
-          <input id="contact-name" name="name" autoComplete="name" required value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Ada Okafor" className="h-12 w-full rounded-xl border border-[var(--color-border)] bg-white px-4 text-sm outline-none transition focus:border-[var(--color-primary)] focus:ring-4 focus:ring-[var(--color-primary)]/10" />
+          <Label htmlFor="contact-name" className="mb-2 block">
+            Your name
+          </Label>
+          <Input
+            id="contact-name"
+            name="name"
+            autoComplete="name"
+            required
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="e.g. Ada Okafor"
+          />
         </div>
         <div>
-          <label htmlFor="contact-email" className="mb-2 block text-sm font-semibold text-[var(--color-ink)]">Email address</label>
-          <input id="contact-email" name="email" type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" className="h-12 w-full rounded-xl border border-[var(--color-border)] bg-white px-4 text-sm outline-none transition focus:border-[var(--color-primary)] focus:ring-4 focus:ring-[var(--color-primary)]/10" />
+          <Label htmlFor="contact-email" className="mb-2 block">
+            Email address
+          </Label>
+          <Input
+            id="contact-email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="you@example.com"
+          />
         </div>
       </div>
 
       <div>
-        <label htmlFor="contact-topic" className="mb-2 block text-sm font-semibold text-[var(--color-ink)]">What can we help with?</label>
-        <select id="contact-topic" name="topic" value={topic} onChange={(e) => setTopic(e.target.value)} className="h-12 w-full rounded-xl border border-[var(--color-border)] bg-white px-4 text-sm text-[var(--color-ink)] outline-none transition focus:border-[var(--color-primary)] focus:ring-4 focus:ring-[var(--color-primary)]/10">
+        <Label htmlFor="contact-topic" className="mb-2 block">
+          What can we help with?
+        </Label>
+        <Select
+          id="contact-topic"
+          name="topic"
+          value={topic}
+          onChange={(e) => setTopic(e.target.value)}
+        >
           <option>General enquiry</option>
-          <option>Seller account or shop</option>
-          <option>Pricing and subscription</option>
+          <option>Seller support</option>
+          <option>Billing & plans</option>
           <option>Verification</option>
-          <option>Technical support</option>
-          <option>Report a listing or safety concern</option>
-          <option>Partnership or business enquiry</option>
-        </select>
+          <option>Report a problem</option>
+        </Select>
       </div>
 
       <div>
-        <label htmlFor="contact-message" className="mb-2 block text-sm font-semibold text-[var(--color-ink)]">Your message</label>
-        <textarea id="contact-message" name="message" required rows={6} value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Tell us a little about what you need help with..." className="w-full resize-y rounded-xl border border-[var(--color-border)] bg-white px-4 py-3 text-sm leading-6 outline-none transition focus:border-[var(--color-primary)] focus:ring-4 focus:ring-[var(--color-primary)]/10" />
+        <Label htmlFor="contact-message" className="mb-2 block">
+          Message
+        </Label>
+        <Textarea
+          id="contact-message"
+          name="message"
+          required
+          rows={6}
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          placeholder="Tell us a little about what you need help with..."
+          className="min-h-[140px]"
+        />
       </div>
 
-      {error ? <p role="alert" className="text-sm font-medium text-[var(--color-error)]">{error}</p> : null}
+      {error ? <p className="text-sm font-medium text-[var(--color-error)]">{error}</p> : null}
 
-      <button type="submit" className="dunara-button inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-[var(--color-primary)] px-6 text-sm font-semibold text-white hover:bg-[var(--color-primary-hover)] sm:w-auto">
+      <Button type="submit" size="lg" className="w-full sm:w-auto">
         Continue to WhatsApp <Send className="h-4 w-4" />
-      </button>
-      <p className="text-xs leading-5 text-[var(--color-muted)]">Your message will open in WhatsApp for you to review and send. This form does not submit or store messages on this website.</p>
+      </Button>
+      <p className="text-xs leading-5 text-[var(--color-muted)]">
+        Your message will open in WhatsApp for you to review and send. This form does not submit or
+        store messages on this website.
+      </p>
     </form>
   );
 }

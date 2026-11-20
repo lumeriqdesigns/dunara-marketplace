@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
+import { CompressedFileInput } from "@/components/ui/compressed-file-input";
 import {
   updateShopAction,
   setShopPublishedAction,
@@ -11,6 +12,10 @@ import { formatPhoneDisplay } from "../lib/phone";
 import { LocationFields } from "./LocationFields";
 import { canPublishShop } from "../schemas";
 import type { Category, Shop } from "@/types";
+import { Input } from "@/components/ui/input";
+import { Select } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 
 const initial: ShopActionState = { ok: false };
 
@@ -24,6 +29,7 @@ export function ShopEditForm({
   const [saveState, saveAction, savePending] = useActionState(updateShopAction, initial);
   const [pubState, pubAction, pubPending] = useActionState(setShopPublishedAction, initial);
   const [logoState, logoAction, logoPending] = useActionState(uploadShopLogoAction, initial);
+  const [logoBusy, setLogoBusy] = useState(false);
 
   const publishCheck = canPublishShop({
     name: shop.name,
@@ -57,7 +63,7 @@ export function ShopEditForm({
             <button
               type="submit"
               disabled={pubPending || shop.is_suspended}
-              className="rounded-md border border-[var(--color-border)] px-4 py-2 text-sm font-medium hover:bg-[var(--color-canvas)] disabled:opacity-50"
+              className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[var(--color-border)] bg-white px-4 text-sm font-semibold hover:bg-[var(--color-canvas)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] disabled:opacity-50"
             >
               {pubPending
                 ? "Updating…"
@@ -107,16 +113,16 @@ export function ShopEditForm({
             </div>
           )}
           <form action={logoAction} className="flex flex-wrap items-center gap-2">
-            <input
-              type="file"
+            <CompressedFileInput
               name="logo"
               accept="image/jpeg,image/png,image/webp,image/gif"
-              className="text-sm"
+              what="Logo"
+              onBusyChange={setLogoBusy}
             />
             <button
               type="submit"
-              disabled={logoPending}
-              className="rounded-md bg-[var(--color-primary)] px-3 py-2 text-sm font-medium text-white disabled:opacity-50"
+              disabled={logoPending || logoBusy}
+              className="inline-flex min-h-11 items-center justify-center rounded-xl bg-[var(--color-primary)] px-4 text-sm font-semibold text-white disabled:opacity-50"
             >
               {logoPending ? "Uploading…" : "Upload logo"}
             </button>
@@ -155,7 +161,7 @@ export function ShopEditForm({
                 defaultValue={shop.name}
                 required
                 disabled={savePending}
-                className="mt-1 h-10 w-full rounded-md border border-[var(--color-border)] px-3 text-sm"
+                className="mt-1.5 h-12 w-full rounded-xl border border-[var(--color-border)] bg-white px-4 text-sm text-[var(--color-ink)] shadow-[inset_0_1px_2px_rgb(24_37_31/.04)] focus-visible:border-[var(--color-primary)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--color-primary)]/12"
               />
             </div>
 
@@ -171,7 +177,7 @@ export function ShopEditForm({
                   defaultValue={shop.slug}
                   required
                   disabled={savePending}
-                  className="h-10 w-full rounded-md border border-[var(--color-border)] px-3 text-sm text-[var(--color-ink)]"
+                  className="h-12 w-full rounded-xl border border-[var(--color-border)] bg-white px-4 text-sm text-[var(--color-ink)] shadow-[inset_0_1px_2px_rgb(24_37_31/.04)] focus-visible:border-[var(--color-primary)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--color-primary)]/12"
                 />
               </div>
               {saveState.fieldErrors?.slug?.[0] ? (
@@ -191,7 +197,7 @@ export function ShopEditForm({
                 rows={3}
                 defaultValue={shop.bio ?? ""}
                 disabled={savePending}
-                className="mt-1 w-full rounded-md border border-[var(--color-border)] px-3 py-2 text-sm"
+                className="mt-1.5 min-h-[112px] w-full rounded-xl border border-[var(--color-border)] bg-white px-4 py-3 text-sm leading-6 text-[var(--color-ink)] shadow-[inset_0_1px_2px_rgb(24_37_31/.04)] focus-visible:border-[var(--color-primary)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--color-primary)]/12"
                 placeholder="Short description of what you sell or offer"
               />
             </div>
@@ -205,7 +211,7 @@ export function ShopEditForm({
                 name="categoryId"
                 defaultValue={shop.category_id ?? ""}
                 disabled={savePending}
-                className="mt-1 h-10 w-full rounded-md border border-[var(--color-border)] bg-white px-3 text-sm"
+                className="mt-1.5 h-12 w-full rounded-xl border border-[var(--color-border)] bg-white px-4 text-sm text-[var(--color-ink)] shadow-[inset_0_1px_2px_rgb(24_37_31/.04)] focus-visible:border-[var(--color-primary)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--color-primary)]/12"
               >
                 <option value="">Select…</option>
                 {categories.map((c) => (
@@ -225,7 +231,7 @@ export function ShopEditForm({
                 name="shopType"
                 defaultValue={shop.shop_type}
                 disabled={savePending}
-                className="mt-1 h-10 w-full rounded-md border border-[var(--color-border)] bg-white px-3 text-sm"
+                className="mt-1.5 h-12 w-full rounded-xl border border-[var(--color-border)] bg-white px-4 text-sm text-[var(--color-ink)] shadow-[inset_0_1px_2px_rgb(24_37_31/.04)] focus-visible:border-[var(--color-primary)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--color-primary)]/12"
               >
                 <option value="product">Products</option>
                 <option value="service">Services</option>
@@ -246,7 +252,7 @@ export function ShopEditForm({
                 placeholder="0801 234 5678"
                 required
                 disabled={savePending}
-                className="mt-1 h-10 w-full rounded-md border border-[var(--color-border)] px-3 text-sm"
+                className="mt-1.5 h-12 w-full rounded-xl border border-[var(--color-border)] bg-white px-4 text-sm text-[var(--color-ink)] shadow-[inset_0_1px_2px_rgb(24_37_31/.04)] focus-visible:border-[var(--color-primary)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--color-primary)]/12"
               />
               {saveState.fieldErrors?.phone?.[0] ? (
                 <p className="mt-1 text-sm text-[var(--color-error)]">
@@ -265,7 +271,7 @@ export function ShopEditForm({
                 type="email"
                 defaultValue={shop.email ?? ""}
                 disabled={savePending}
-                className="mt-1 h-10 w-full rounded-md border border-[var(--color-border)] px-3 text-sm"
+                className="mt-1.5 h-12 w-full rounded-xl border border-[var(--color-border)] bg-white px-4 text-sm text-[var(--color-ink)] shadow-[inset_0_1px_2px_rgb(24_37_31/.04)] focus-visible:border-[var(--color-primary)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--color-primary)]/12"
               />
             </div>
 
@@ -295,7 +301,7 @@ export function ShopEditForm({
                   name={name}
                   defaultValue={(shop[name] as string | null) ?? ""}
                   disabled={savePending}
-                  className="mt-1 h-10 w-full rounded-md border border-[var(--color-border)] px-3 text-sm"
+                  className="mt-1.5 h-12 w-full rounded-xl border border-[var(--color-border)] bg-white px-4 text-sm text-[var(--color-ink)] shadow-[inset_0_1px_2px_rgb(24_37_31/.04)] focus-visible:border-[var(--color-primary)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--color-primary)]/12"
                   placeholder={name === "website" ? "https://" : "@handle or URL"}
                 />
               </div>
@@ -305,7 +311,7 @@ export function ShopEditForm({
           <button
             type="submit"
             disabled={savePending}
-            className="h-11 rounded-md bg-[var(--color-primary)] px-6 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-50"
+            className="inline-flex h-12 items-center justify-center rounded-xl bg-[var(--color-primary)] px-6 text-sm font-semibold text-white hover:bg-[var(--color-primary-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 disabled:opacity-50"
           >
             {savePending ? "Saving…" : "Save changes"}
           </button>

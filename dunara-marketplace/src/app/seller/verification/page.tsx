@@ -23,7 +23,7 @@ export default async function SellerVerificationPage() {
           <div className="flex justify-center">
             <Link
               href="/seller/shop"
-              className="inline-flex h-10 items-center rounded-md bg-[var(--color-primary)] px-4 text-sm font-medium text-white"
+              className="inline-flex min-h-11 items-center rounded-xl bg-[var(--color-primary)] px-5 text-sm font-semibold text-white"
             >
               Create shop
             </Link>
@@ -68,7 +68,7 @@ export default async function SellerVerificationPage() {
           </p>
           <Link
             href="/seller/billing"
-            className="mt-4 inline-flex h-10 items-center rounded-md bg-[var(--color-primary)] px-4 text-sm font-medium text-white"
+            className="mt-4 inline-flex min-h-11 items-center rounded-xl bg-[var(--color-primary)] px-5 text-sm font-semibold text-white"
           >
             View plans
           </Link>

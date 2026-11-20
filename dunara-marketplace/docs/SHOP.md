@@ -17,7 +17,7 @@
 
 ## Storage
 
-Bucket: **`shop-logos`** (public read, 2MB, jpeg/png/webp/gif)
+Bucket: **`shop-logos`** (public read, 1MB, jpeg/png/webp/gif)
 
 ```sql
 -- see supabase/migrations/20261119150000_shop_logos_storage.sql

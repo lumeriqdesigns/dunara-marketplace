@@ -9,6 +9,7 @@ import { slugify, withSlugSuffix, isValidSlug } from "./lib/slug";
 import { normalizePhone } from "./lib/phone";
 import { isSlugAvailable, getOwnShop } from "./lib/get-shop";
 import { startPulseTrial } from "@/features/billing/lib/subscription-service";
+import { isOverUploadLimit, uploadTooLargeMessage } from "@/lib/upload-limits";
 
 export type ShopActionState = {
   ok: boolean;
@@ -306,9 +307,8 @@ export async function uploadShopLogoAction(
     return { ok: false, message: "Choose an image file." };
   }
 
-  const maxBytes = 2 * 1024 * 1024; // 2MB
-  if (file.size > maxBytes) {
-    return { ok: false, message: "Logo must be 2MB or smaller." };
+  if (isOverUploadLimit(file)) {
+    return { ok: false, message: uploadTooLargeMessage("Logo") };
   }
 
   const allowed = ["image/jpeg", "image/png", "image/webp", "image/gif"];

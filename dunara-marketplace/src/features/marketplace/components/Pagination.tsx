@@ -6,11 +6,12 @@ import {
   filtersToQueryString,
 } from "../lib/search-params";
 
+// Pill shapes and the green hover match the segmented control, filter rows and chips on /explore.
 const base =
-  "inline-flex h-10 items-center gap-1.5 rounded-xl border px-4 text-sm font-medium transition-colors";
+  "inline-flex h-11 items-center gap-1.5 rounded-full border px-3.5 text-sm font-semibold transition-colors sm:px-5";
 const enabled =
-  "border-[var(--color-border)] bg-white text-[var(--color-ink)] hover:border-[#9EBEAA] hover:bg-[var(--color-soft-green)]";
-const disabled = "border-transparent text-[#A3ABA5]";
+  "border-[var(--color-border)] bg-white text-[var(--color-ink)] shadow-[0_1px_2px_rgb(24_37_31/.05)] hover:border-[#9EBEAA] hover:bg-[var(--color-soft-green)] hover:text-[var(--color-primary)]";
+const disabled = "border-transparent text-[#8A958D]";
 
 export function Pagination({
   filters,
@@ -28,7 +29,7 @@ export function Pagination({
 
   return (
     <nav
-      className="mt-10 flex items-center justify-center gap-3"
+      className="mt-10 flex items-center justify-center gap-2 border-t border-[var(--color-border)] pt-6 sm:gap-3"
       aria-label="Pagination"
     >
       {prev ? (
@@ -46,8 +47,8 @@ export function Pagination({
           Previous
         </span>
       )}
-      <span className="min-w-24 text-center text-sm text-[var(--color-muted)]">
-        Page {page} of {totalPages}
+      <span className="whitespace-nowrap rounded-full bg-[var(--color-soft-green)] px-3 py-2 text-sm text-[var(--color-ink-soft)] sm:px-4">
+        Page <strong className="font-semibold text-[var(--color-ink)]">{page}</strong> of {totalPages}
       </span>
       {next ? (
         <Link

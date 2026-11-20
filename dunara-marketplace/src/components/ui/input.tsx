@@ -1,5 +1,6 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
+import { fieldBase } from "./field-styles";
 
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
@@ -8,10 +9,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <input
         type={type}
-        className={cn(
-          "flex h-11 w-full rounded-xl border border-[var(--color-border)] bg-white px-3 py-2 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-muted)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50",
-          className
-        )}
+        className={cn(fieldBase, "flex h-12 px-4 py-2 file:mr-3 file:border-0 file:bg-transparent file:text-sm file:font-medium", className)}
         ref={ref}
         {...props}
       />

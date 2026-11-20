@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, MapPin } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { getActiveStates } from "@/features/marketplace/lib/queries";
-import { NIGERIAN_STATES, KWARA_LOCATIONS } from "@/features/shop/lib/nigerian-locations";
+import { NIGERIAN_STATES } from "@/features/shop/lib/nigerian-locations";
+import { LocationsGrid } from "@/features/marketplace/components/LocationsGrid";
 
 export const metadata: Metadata = {
   title: "Locations",
@@ -41,48 +42,7 @@ export default async function LocationsPage() {
         </div>
       </section>
 
-      {activeStates.length > 0 ? (
-        <section className="mt-10" aria-labelledby="active-states">
-          <h2 id="active-states" className="text-xl font-semibold tracking-tight text-[var(--color-ink)]">
-            Active now
-          </h2>
-          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {activeStates.map((state) => (
-              <li key={state}>
-                <Link href={`/locations/${encodeURIComponent(state)}`} className="state-discovery-card">
-                  <span className="flex items-center gap-2">
-                    <MapPin aria-hidden="true" className="size-4 text-[var(--color-primary)]" />
-                    {state}
-                  </span>
-                  <span className="text-xs font-medium text-[var(--color-primary)]">View shops</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
-      ) : null}
-
-      <section className="mt-10" aria-labelledby="coming-soon">
-        <h2 id="coming-soon" className="text-xl font-semibold tracking-tight text-[var(--color-ink)]">
-          {activeStates.length > 0 ? "Coming soon" : "All states"}
-        </h2>
-        <p className="mt-1 text-sm text-[var(--color-muted)]">
-          We’re growing state by state. Know a business that should be here? Ask them to list.
-        </p>
-        <ul className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
-          {upcomingStates.map((state) => (
-            <li key={state}>
-              <div className="state-discovery-card state-inactive">
-                <span>{state}</span>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <p className="mt-8 text-xs text-[var(--color-muted)]">
-        Kwara includes {KWARA_LOCATIONS.length} local areas, so you can narrow down within Ilorin and beyond.
-      </p>
+      <LocationsGrid activeStates={activeStates} upcomingStates={upcomingStates} />
     </div>
   );
 }

@@ -19,6 +19,7 @@ import {
 import type { VerificationRequest, VerificationStatus } from "@/types";
 import { z } from "zod";
 import { rateLimit } from "@/lib/rate-limit";
+import { uploadTooLargeMessage } from "@/lib/upload-limits";
 
 export type ActionResult<T = undefined> =
   | { ok: true; data?: T; message?: string }
@@ -165,7 +166,7 @@ export async function submitVerificationRequest(
 
   for (const file of files) {
     if (file.size > MAX_FILE_BYTES) {
-      return { ok: false, message: `Each file must be ${MAX_FILE_BYTES / 1024 / 1024}MB or smaller.` };
+      return { ok: false, message: uploadTooLargeMessage("Each file") };
     }
     if (!ALLOWED_MIME.includes(file.type as (typeof ALLOWED_MIME)[number])) {
       return { ok: false, message: "Only PDF, JPG, and PNG files are accepted." };

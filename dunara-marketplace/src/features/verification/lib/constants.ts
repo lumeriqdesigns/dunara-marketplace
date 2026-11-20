@@ -1,6 +1,8 @@
 export const VERIFICATION_BUCKET = "verification-documents";
 
-export const MAX_FILE_BYTES = 5 * 1024 * 1024; // 5MB
+import { MAX_UPLOAD_BYTES } from "@/lib/upload-limits";
+
+export const MAX_FILE_BYTES = MAX_UPLOAD_BYTES; // 1MB
 export const MAX_FILES = 5;
 
 export const ALLOWED_MIME = [

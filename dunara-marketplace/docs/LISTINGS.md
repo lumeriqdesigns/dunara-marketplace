@@ -23,7 +23,7 @@ Publish requires:
 
 ## Media
 
-Bucket **`listing-images`** (public, 3MB, jpeg/png/webp/gif)  
+Bucket **`listing-images`** (public, 1MB, jpeg/png/webp/gif)  
 Path: `{shop_id}/{listing_id}/{cover|gallery}-{ts}.ext`  
 Max 6 gallery images.
 

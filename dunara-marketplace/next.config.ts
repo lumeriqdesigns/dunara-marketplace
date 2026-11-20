@@ -1,6 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  experimental: {
+    serverActions: {
+      // Default is 1MB. Verification allows up to 5 files x 1MB (+ form overhead).
+      bodySizeLimit: "6mb",
+    },
+  },
   images: {
     remotePatterns: [
       {

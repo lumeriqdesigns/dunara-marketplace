@@ -49,7 +49,7 @@ export function RegisterForm() {
         required
         minLength={8}
         disabled={pending}
-        hint="Use at least 8 characters."
+        showStrength
         errors={state.fieldErrors?.password}
       />
 
@@ -74,7 +74,7 @@ export function RegisterForm() {
             required
             disabled={pending}
             aria-describedby={state.fieldErrors?.acceptTerms?.length ? "acceptTerms-error" : undefined}
-            className="mt-0.5 size-5 shrink-0 rounded-md border-[var(--color-border)] accent-[var(--color-primary)]"
+            className="mt-0.5 size-5 min-h-5 min-w-5 shrink-0 rounded-md border-[var(--color-border)] accent-[var(--color-primary)]"
           />
           <label htmlFor="acceptTerms" className="text-sm leading-6 text-[var(--color-muted)]">
             I agree to the{" "}

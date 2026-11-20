@@ -16,6 +16,7 @@ export default async function RegisterPage() {
 
   return (
     <AuthCard
+      variant="register"
       title="Create your account"
       description="Start with your email. You’ll add your WhatsApp number when you set up your shop."
       footer={

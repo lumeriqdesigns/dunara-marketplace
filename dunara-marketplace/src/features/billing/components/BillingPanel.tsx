@@ -159,7 +159,7 @@ export function BillingPanel({
                   <button
                     type="submit"
                     disabled={pending || isCurrent}
-                    className="h-10 w-full rounded-md bg-[var(--color-primary)] text-sm font-medium text-white disabled:opacity-50"
+                    className="inline-flex h-12 w-full items-center justify-center rounded-xl bg-[var(--color-primary)] text-sm font-semibold text-white disabled:opacity-50"
                   >
                     {isCurrent
                       ? "Current plan"

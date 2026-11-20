@@ -15,6 +15,7 @@ import {
 } from "./lib/get-listings";
 import { getShopEntitlement, expireTrials } from "@/features/billing/lib/subscription-service";
 import { canPublishAnotherListing } from "@/features/billing/lib/entitlements";
+import { isOverUploadLimit, uploadTooLargeMessage } from "@/lib/upload-limits";
 
 export type ListingActionState = {
   ok: boolean;
@@ -265,7 +266,6 @@ export async function setListingPublishedAction(
 }
 
 const MAX_GALLERY = 6;
-const MAX_IMAGE_BYTES = 3 * 1024 * 1024;
 const ALLOWED_MIME = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 
 /**
@@ -290,8 +290,8 @@ export async function uploadListingImageAction(
   if (!file || file.size === 0) {
     return { ok: false, message: "Choose an image file." };
   }
-  if (file.size > MAX_IMAGE_BYTES) {
-    return { ok: false, message: "Image must be 3MB or smaller." };
+  if (isOverUploadLimit(file)) {
+    return { ok: false, message: uploadTooLargeMessage("Image") };
   }
   if (!ALLOWED_MIME.includes(file.type)) {
     return { ok: false, message: "Use JPEG, PNG, WebP, or GIF." };

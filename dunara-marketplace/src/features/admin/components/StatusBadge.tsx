@@ -8,11 +8,16 @@ export function StatusBadge({
   children: React.ReactNode;
 }) {
   const map: Record<typeof tone, string> = {
-    neutral: "bg-[var(--color-canvas)] text-[var(--color-muted)] border-[var(--color-border)]",
-    success: "bg-[var(--color-soft-green)] text-[var(--color-primary)] border-transparent",
-    warning: "bg-amber-50 text-[var(--color-warning)] border-amber-100",
-    danger: "bg-red-50 text-[var(--color-error)] border-red-100",
-    info: "bg-sky-50 text-sky-800 border-sky-100",
+    neutral:
+      "border-[var(--color-border)] bg-[var(--color-canvas)] text-[var(--color-ink-soft)]",
+    success:
+      "border-transparent bg-[var(--color-soft-green)] text-[var(--color-primary)]",
+    warning:
+      "border-amber-200/80 bg-amber-50 text-[var(--color-warning)]",
+    danger:
+      "border-red-200/80 bg-red-50 text-[var(--color-error)]",
+    info:
+      "border-sky-200/80 bg-sky-50 text-sky-800",
   };
   return (
     <Badge className={`border font-medium ${map[tone]}`} variant="outline">

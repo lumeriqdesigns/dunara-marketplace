@@ -1,24 +1,25 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SearchX } from "lucide-react";
 import { SearchForm, ActiveFilters } from "@/features/marketplace/components/SearchForm";
+import { TypeSegments } from "@/features/marketplace/components/TypeSegments";
+import { SortSelect } from "@/features/marketplace/components/SortSelect";
+import {
+  FilterPanel,
+  FiltersButton,
+  countPanelFilters,
+} from "@/features/marketplace/components/FilterPanel";
 import { Pagination } from "@/features/marketplace/components/Pagination";
 import { ListingCard } from "@/features/listings/components/ListingCard";
 import { EmptyState } from "@/components/ui/empty-state";
+import { buttonVariants } from "@/components/ui/button";
 import { getCategoriesWithCounts, searchListings } from "@/features/marketplace/lib/queries";
-import { parseMarketplaceFilters, filtersToQueryString, PAGE_SIZE } from "@/features/marketplace/lib/search-params";
+import { parseMarketplaceFilters, PAGE_SIZE } from "@/features/marketplace/lib/search-params";
 
 export const metadata: Metadata = {
   title: "Explore listings",
   description: "Search Nigerian products and services on Dunara.",
   alternates: { canonical: "/explore" },
 };
-
-const TYPE_TABS = [
-  { label: "Everything", type: "" },
-  { label: "Products", type: "product" },
-  { label: "Services", type: "service" },
-] as const;
 
 export default async function ExplorePage({
   searchParams,
@@ -29,19 +30,19 @@ export default async function ExplorePage({
   const filters = parseMarketplaceFilters(raw);
   const [categories, result] = await Promise.all([getCategoriesWithCounts(), searchListings(filters)]);
 
-  const hasFilters = Boolean(filters.q || filters.category || filters.state || filters.type);
+  const hasFilters = Boolean(filters.q || filters.category || filters.state || filters.city || filters.type);
   const first = (filters.page - 1) * PAGE_SIZE + 1;
   const last = Math.min(filters.page * PAGE_SIZE, result.total);
 
   return (
-    <div className="discovery-page mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12">
-      <section className="discovery-hero" aria-labelledby="explore-title">
-        <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+    <div className="discovery-page">
+      <section className="explore-hero" aria-labelledby="explore-title">
+        <div className="mx-auto flex max-w-7xl flex-col justify-between gap-3 px-4 py-7 sm:flex-row sm:items-end sm:px-6 sm:py-9">
           <div>
-            <h1 id="explore-title" className="discovery-title">
+            <h1 id="explore-title" className="explore-title">
               Explore the marketplace
             </h1>
-            <p className="mt-3 max-w-xl text-sm leading-6 text-[var(--color-muted)] sm:text-base">
+            <p className="mt-2.5 max-w-xl text-sm leading-6 text-[var(--color-ink-soft)] sm:text-base">
               Find products and services from businesses across Nigeria, then message them on WhatsApp.
             </p>
           </div>
@@ -49,105 +50,89 @@ export default async function ExplorePage({
             Have a business? Start a shop
           </Link>
         </div>
-        <div className="mt-6">
-          <SearchForm categories={categories} filters={filters} />
-        </div>
       </section>
 
-      <section className="mt-8" aria-label="Results">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <nav
-            aria-label="Listing type"
-            className="flex items-center gap-1 rounded-full bg-white p-1 ring-1 ring-[var(--color-border)]"
-          >
-            {TYPE_TABS.map((item) => {
-              const active = filters.type === item.type;
-              return (
-                <Link
-                  key={item.type}
-                  href={`/explore${filtersToQueryString(filters, { type: item.type, page: 1 })}`}
-                  aria-current={active ? "page" : undefined}
-                  className={`inline-flex min-h-9 items-center rounded-full px-4 text-sm font-medium transition-colors ${
-                    active
-                      ? "bg-[var(--color-primary)] text-white"
-                      : "text-[var(--color-muted)] hover:bg-[var(--color-soft-green)] hover:text-[var(--color-primary)]"
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              );
-            })}
-          </nav>
-          <ActiveFilters filters={filters} categories={categories} />
+      {/* Sticky compact search bar with glass chrome */}
+      <div className="explore-bar glass-chrome border-b border-[var(--color-border)]">
+        <div className="mx-auto max-w-7xl px-4 py-2.5 sm:px-6 sm:py-3">
+          <SearchForm categories={categories} filters={filters} compact showFilters={false} />
         </div>
+      </div>
 
-        <p className="mt-6 text-sm text-[var(--color-muted)]" aria-live="polite">
-          {result.total === 0 ? (
-            "No results"
-          ) : (
-            <>
-              Showing{" "}
-              <strong className="font-semibold text-[var(--color-ink)]">
-                {first}–{last}
-              </strong>{" "}
-              of {result.total.toLocaleString("en-NG")} {result.total === 1 ? "listing" : "listings"}
-            </>
-          )}
-        </p>
+      <div className="mx-auto max-w-7xl px-4 pb-28 pt-6 sm:px-6 sm:pt-8 lg:grid lg:grid-cols-[17rem_minmax(0,1fr)] lg:gap-8 lg:pb-14">
+        {/* Desktop left filter rail */}
+        <FilterPanel filters={filters} categories={categories} total={result.total} />
 
-        {result.items.length > 0 ? (
-          <ul className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {result.items.map((l) => (
-              <li key={l.id}>
-                <ListingCard
-                  listing={l}
-                  shopSlug={l.shops?.slug ?? ""}
-                  shopName={l.shops?.name}
-                  location={[l.shops?.city, l.shops?.state].filter(Boolean).join(", ")}
-                  verified={l.shops?.verification_status === "verified"}
-                />
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <EmptyState
-            className="mt-6"
-            icon={<SearchX aria-hidden="true" />}
-            title={hasFilters ? "No listings match your search" : "No listings yet"}
-            description={
-              hasFilters
-                ? "Try a broader keyword, remove a filter, or browse by category."
-                : "New businesses join Dunara every week. Check back soon, or list yours."
-            }
-            action={
+        <section id="results" aria-label="Results" className="min-w-0">
+          {/* Toolbar: segmented control + sort */}
+          <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
+            <TypeSegments filters={filters} />
+            <SortSelect filters={filters} />
+          </div>
+
+          {/* Removable active filter chips */}
+          <ActiveFilters filters={filters} categories={categories} className="mt-4" />
+
+          {/* Result count */}
+          <p className="mt-5 text-sm text-[var(--color-ink-soft)]" aria-live="polite">
+            {result.total === 0 ? (
+              "No results"
+            ) : (
               <>
-                {hasFilters ? (
-                  <Link
-                    href="/explore"
-                    className="inline-flex h-11 items-center rounded-xl bg-[var(--color-primary)] px-5 text-sm font-semibold text-white hover:bg-[var(--color-primary-hover)]"
-                  >
-                    Clear search
+                Showing{" "}
+                <strong className="font-semibold text-[var(--color-ink)]">
+                  {first}–{last}
+                </strong>{" "}
+                of {result.total.toLocaleString("en-NG")}{" "}
+                {result.total === 1 ? "listing" : "listings"}
+              </>
+            )}
+          </p>
+
+          {result.items.length > 0 ? (
+            <ul className="mt-4 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3">
+              {result.items.map((l) => (
+                <li key={l.id}>
+                  <ListingCard
+                    listing={l}
+                    shopSlug={l.shops?.slug ?? ""}
+                    shopName={l.shops?.name}
+                    location={[l.shops?.city, l.shops?.state].filter(Boolean).join(", ")}
+                    verified={l.shops?.verification_status === "verified"}
+                  />
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <EmptyState
+              className="mt-5"
+              kind={hasFilters ? "search" : "listings"}
+              title={hasFilters ? "No listings match your search" : "No listings yet"}
+              description={
+                hasFilters
+                  ? "Try a broader keyword or remove a filter to see more results."
+                  : "New businesses join Dunara every week. Check back soon, or list yours."
+              }
+              action={
+                hasFilters ? (
+                  <Link href="/explore" className={buttonVariants({ size: "lg" })}>
+                    Clear filters
                   </Link>
                 ) : (
-                  <Link
-                    href="/register"
-                    className="inline-flex h-11 items-center rounded-xl bg-[var(--color-primary)] px-5 text-sm font-semibold text-white hover:bg-[var(--color-primary-hover)]"
-                  >
+                  <Link href="/register" className={buttonVariants({ size: "lg" })}>
                     List your business
                   </Link>
-                )}
-                <Link
-                  href="/categories"
-                  className="inline-flex h-11 items-center rounded-xl border border-[var(--color-border)] bg-white px-5 text-sm font-semibold text-[var(--color-ink)] hover:bg-[var(--color-soft-green)]"
-                >
-                  Browse categories
-                </Link>
-              </>
-            }
-          />
-        )}
-        <Pagination filters={filters} total={result.total} />
-      </section>
+                )
+              }
+            />
+          )}
+
+          <Pagination filters={filters} total={result.total} />
+        </section>
+      </div>
+
+      {/* Mobile bottom-sheet trigger */}
+      <FiltersButton count={countPanelFilters(filters)} />
     </div>
   );
 }

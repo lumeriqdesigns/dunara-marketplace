@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, ChevronRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { getCategoriesWithCounts } from "@/features/marketplace/lib/queries";
 import { CategoryIcon, categoryTypeLabel } from "@/features/marketplace/components/CategoryIcon";
 
@@ -20,7 +20,8 @@ export default async function CategoriesPage() {
           Browse by category
         </h1>
         <p className="mt-3 max-w-xl text-sm leading-6 text-[var(--color-muted)] sm:text-base">
-          From fashion and food to tutoring and short stays. Pick a category to see what local businesses are offering.
+          From fashion and food to tutoring and short stays. Pick a category to see what local
+          businesses are offering.
         </p>
         <Link
           href="/explore"
@@ -36,21 +37,27 @@ export default async function CategoriesPage() {
           Categories will appear here soon.
         </p>
       ) : (
-        <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {categories.map((c) => (
-            <li key={c.id}>
-              <Link href={`/categories/${c.slug}`} className="category-discovery-card">
-                <span className="category-icon">
-                  <CategoryIcon name={c.icon} />
-                </span>
-                <span className="min-w-0">
-                  <span className="block truncate text-base font-semibold text-[var(--color-ink)]">{c.name}</span>
-                  <span className="mt-0.5 block text-xs text-[var(--color-muted)]">{categoryTypeLabel(c.type)}</span>
-                </span>
-                <ChevronRight aria-hidden="true" className="category-arrow size-5 shrink-0" />
-              </Link>
-            </li>
-          ))}
+        <ul className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+          {categories.map((c) => {
+            const count = c.listing_count ?? 0;
+            return (
+              <li key={c.id}>
+                <Link
+                  href={`/categories/${c.slug}`}
+                  className="category-tile flex h-full flex-col rounded-2xl border border-[var(--color-border)] bg-white px-4 py-5 shadow-[var(--shadow-card)] transition hover:-translate-y-0.5 hover:border-[var(--color-primary)]"
+                >
+                  <span className="icon-clay mb-3">
+                    <CategoryIcon name={c.icon} className="size-5" />
+                  </span>
+                  <span className="text-sm font-semibold text-[var(--color-ink)]">{c.name}</span>
+                  <span className="mt-1 text-xs font-normal capitalize text-[var(--color-muted)]">
+                    {categoryTypeLabel(c.type)}
+                    {count > 0 ? ` · ${count} listing${count === 1 ? "" : "s"}` : ""}
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>

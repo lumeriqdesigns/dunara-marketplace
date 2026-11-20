@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { EmptyState } from "@/components/ui/empty-state";
+import { buttonVariants } from "@/components/ui/button";
 import { ListingCard } from "@/features/listings/components/ListingCard";
 import {
   getCategoryBySlug,
@@ -59,9 +61,17 @@ export default async function CategoryPage({ params }: Props) {
           ))}
         </ul>
       ) : (
-        <p className="mt-8 text-sm text-[var(--color-muted)]">
-          No published listings in this category yet.
-        </p>
+        <EmptyState
+          className="mt-8"
+          kind="listings"
+          title={`No ${cat.name} listings yet`}
+          description="Nobody has published here yet. Be the first to list in this category."
+          action={
+            <Link href="/register" className={buttonVariants({ size: "lg" })}>
+              List your business
+            </Link>
+          }
+        />
       )}
       {total > items.length ? (
         <Link

@@ -1,11 +1,22 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, ExternalLink } from "lucide-react";
+import {
+  ArrowRight,
+  ExternalLink,
+  Package,
+  FileText,
+  Store,
+  BadgeCheck,
+} from "lucide-react";
 import { requireUser } from "@/features/auth/lib/require-user";
 import { getOwnShop } from "@/features/shop/lib/get-shop";
 import { getSellerDashboardStats } from "@/features/seller/lib/dashboard-stats";
 import { PageHeader } from "@/features/seller/components/PageHeader";
 import { StatCard } from "@/features/seller/components/StatCard";
+import {
+  GetStartedChecklist,
+  type ChecklistStep,
+} from "@/features/seller/components/GetStartedChecklist";
 import { Badge } from "@/components/ui/badge";
 
 export const metadata: Metadata = {
@@ -75,11 +86,42 @@ export default async function SellerHomePage() {
       : shop.verification_status.charAt(0).toUpperCase() + shop.verification_status.slice(1);
 
   const total = stats.totalListings;
-  const publishedPct = total > 0 ? (stats.publishedListings / total) * 100 : 0;
+  const publishedPct = total > 0 ? Math.round((stats.publishedListings / total) * 100) : 0;
   const limitText =
     stats.listingLimit === -1
       ? "Unlimited published listings"
       : `${stats.publishedListings} of ${stats.listingLimit} published listings used`;
+
+  const checklist: ChecklistStep[] = [
+    {
+      id: "shop",
+      title: "Create your shop",
+      description: "Name, category, and profile so buyers can find you.",
+      href: "/seller/shop",
+      done: Boolean(shop),
+    },
+    {
+      id: "listing",
+      title: "Add your first listing",
+      description: "A product or service with a photo and clear price.",
+      href: "/seller/listings/new",
+      done: Boolean(shop && stats.totalListings > 0),
+    },
+    {
+      id: "whatsapp",
+      title: "Connect WhatsApp",
+      description: "Add the number buyers will message on WhatsApp.",
+      href: "/seller/shop",
+      done: Boolean(shop?.phone),
+    },
+    {
+      id: "verification",
+      title: "Apply for verification",
+      description: "Build trust with a reviewed verified badge.",
+      href: "/seller/verification",
+      done: Boolean(shop && shop.verification_status !== "none"),
+    },
+  ];
 
   return (
     <div className="space-y-6">
@@ -92,7 +134,7 @@ export default async function SellerHomePage() {
               href={`/shop/${shop.slug}`}
               target="_blank"
               rel="noreferrer"
-              className="interactive inline-flex min-h-10 items-center gap-2 rounded-xl border border-[var(--color-border)] bg-white px-4 text-sm font-semibold text-[var(--color-ink)] hover:border-[#9EBEAA] hover:bg-[var(--color-soft-green)]"
+              className="interactive inline-flex min-h-10 items-center gap-2 rounded-xl border border-[var(--color-border)] bg-white px-4 text-sm font-semibold text-[var(--color-ink)] hover:border-[var(--color-primary)] hover:bg-[var(--color-soft-green)]"
             >
               View public shop
               <ExternalLink aria-hidden="true" className="size-4" />
@@ -101,139 +143,131 @@ export default async function SellerHomePage() {
         }
       />
 
+      <GetStartedChecklist steps={checklist} />
+
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <StatCard
+          label="Published listings"
+          value={stats.publishedListings}
+          hint={limitText}
+          tone="success"
+          icon={Package}
+          href="/seller/listings?status=published"
+        />
+        <StatCard
+          label="Drafts"
+          value={stats.draftListings}
+          hint={total > 0 ? `${publishedPct}% of catalogue is live` : "No listings yet"}
+          icon={FileText}
+          href="/seller/listings?status=draft"
+        />
         <StatCard
           label="Plan"
           value={stats.planLabel}
-          hint={stats.listingLimit === -1 ? "Unlimited published listings" : `Up to ${stats.listingLimit} published listings`}
+          hint={
+            stats.listingLimit === -1
+              ? "Unlimited listings"
+              : `Up to ${stats.listingLimit} published`
+          }
+          icon={Store}
           href="/seller/billing"
         />
-        <StatCard label="Published" value={stats.publishedListings} tone="success" hint="Visible to buyers" href="/seller/listings?status=published" />
-        <StatCard label="Drafts" value={stats.draftListings} hint="Not visible yet" href="/seller/listings?status=draft" />
-        <StatCard label="Total listings" value={stats.totalListings} href="/seller/listings" />
+        <StatCard
+          label="Verification"
+          value={verification}
+          hint={
+            shop?.verification_status === "verified"
+              ? "Badge is live on your shop"
+              : "Build trust with buyers"
+          }
+          tone={shop?.verification_status === "verified" ? "success" : "default"}
+          icon={BadgeCheck}
+          href="/seller/verification"
+        />
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-12">
-        <section className="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-[var(--shadow-card)] lg:col-span-7">
-          <div className="flex items-start justify-between gap-3">
-            <div>
-              <h2 className="text-base font-semibold text-[var(--color-ink)]">Your listings</h2>
-              <p className="mt-1 text-sm text-[var(--color-muted)]">{limitText}</p>
-            </div>
-            <Link
-              href="/seller/listings"
-              className="inline-flex items-center gap-1 text-sm font-semibold text-[var(--color-primary)] hover:underline"
-            >
-              Manage
-              <ArrowRight aria-hidden="true" className="size-4" />
-            </Link>
-          </div>
-
-          {total === 0 ? (
-            <p className="mt-6 rounded-xl bg-[var(--color-surface-warm)] px-4 py-6 text-center text-sm text-[var(--color-muted)]">
-              No listings yet. Your published and draft listings will show here.
-            </p>
-          ) : (
-            <>
-              <div
-                className="mt-6 flex h-3 overflow-hidden rounded-full bg-[#E9EBE4]"
-                role="img"
-                aria-label={`${stats.publishedListings} published and ${stats.draftListings} draft listings`}
-              >
-                <div
-                  className="h-full bg-[var(--color-primary)] motion-move transition-[width]"
-                  style={{ width: `${publishedPct}%` }}
-                />
-              </div>
-              <dl className="mt-4 flex flex-wrap gap-x-8 gap-y-2 text-sm">
-                <div className="flex items-center gap-2">
-                  <span aria-hidden="true" className="size-2.5 rounded-full bg-[var(--color-primary)]" />
-                  <dt className="text-[var(--color-muted)]">Published</dt>
-                  <dd className="font-semibold tabular-nums text-[var(--color-ink)]">{stats.publishedListings}</dd>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span aria-hidden="true" className="size-2.5 rounded-full bg-[#E9EBE4] ring-1 ring-[var(--color-border)]" />
-                  <dt className="text-[var(--color-muted)]">Drafts</dt>
-                  <dd className="font-semibold tabular-nums text-[var(--color-ink)]">{stats.draftListings}</dd>
-                </div>
-              </dl>
-            </>
-          )}
-        </section>
-
-        <section className="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-[var(--shadow-card)] lg:col-span-5">
-          <h2 className="text-base font-semibold text-[var(--color-ink)]">Next steps</h2>
-          <ul className="mt-4 space-y-3">
+      <div className="grid gap-6 lg:grid-cols-[1.1fr_.9fr]">
+        <section className="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-[var(--shadow-card)] sm:p-6">
+          <h2 className="text-base font-semibold text-[var(--color-ink)]">Next up</h2>
+          <ul className="mt-4 space-y-2">
             {nextActions.map((a) => (
               <li key={a.href + a.title}>
                 <Link
                   href={a.href}
-                  className="interactive group flex items-center justify-between gap-3 rounded-xl border border-[var(--color-border)] px-4 py-3 hover:border-[var(--color-primary)] hover:bg-[var(--color-soft-green)]/40"
+                  className="group flex items-start justify-between gap-3 rounded-xl border border-[var(--color-border)] px-4 py-3.5 transition hover:border-[#9EBEAA] hover:bg-[var(--color-canvas)]"
                 >
-                  <span className="min-w-0">
-                    <span className="block text-sm font-semibold text-[var(--color-ink)]">{a.title}</span>
-                    <span className="mt-0.5 block text-xs leading-5 text-[var(--color-muted)]">{a.body}</span>
+                  <span>
+                    <span className="block text-sm font-semibold text-[var(--color-ink)]">
+                      {a.title}
+                    </span>
+                    <span className="mt-0.5 block text-xs leading-5 text-[var(--color-muted)]">
+                      {a.body}
+                    </span>
                   </span>
                   <ArrowRight
                     aria-hidden="true"
-                    className="size-4 shrink-0 text-[var(--color-muted)] transition-transform group-hover:translate-x-0.5 group-hover:text-[var(--color-primary)]"
+                    className="mt-0.5 size-4 shrink-0 text-[var(--color-muted)] transition-transform group-hover:translate-x-0.5 group-hover:text-[var(--color-primary)]"
                   />
                 </Link>
               </li>
             ))}
           </ul>
         </section>
-      </div>
 
-      <section className="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-[var(--shadow-card)]">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="text-base font-semibold text-[var(--color-ink)]">Shop status</h2>
-          <Link
-            href="/seller/shop"
-            className="inline-flex items-center gap-1 text-sm font-semibold text-[var(--color-primary)] hover:underline"
-          >
-            {shop ? "Edit shop" : "Create shop"}
-            <ArrowRight aria-hidden="true" className="size-4" />
-          </Link>
-        </div>
-        {shop ? (
-          <dl className="mt-4 grid gap-5 text-sm sm:grid-cols-2 lg:grid-cols-4">
-            <div>
-              <dt className="text-[var(--color-muted)]">Shop name</dt>
-              <dd className="mt-1 font-medium text-[var(--color-ink)]">{shop.name}</dd>
-            </div>
-            <div>
-              <dt className="text-[var(--color-muted)]">Visibility</dt>
-              <dd className="mt-1">
-                <Badge variant={visibility.variant}>{visibility.label}</Badge>
-              </dd>
-            </div>
-            <div>
-              <dt className="text-[var(--color-muted)]">Public link</dt>
-              <dd className="mt-1 break-all">
-                {shop.is_published ? (
-                  <a
-                    href={`/shop/${shop.slug}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="interactive font-medium text-[var(--color-primary)] hover:underline"
-                  >
-                    /shop/{shop.slug}
-                  </a>
-                ) : (
-                  <span className="text-[var(--color-muted)]">/shop/{shop.slug} (not live yet)</span>
-                )}
-              </dd>
-            </div>
-            <div>
-              <dt className="text-[var(--color-muted)]">Verification</dt>
-              <dd className="mt-1 font-medium text-[var(--color-ink)]">{verification}</dd>
-            </div>
-          </dl>
-        ) : (
-          <p className="mt-3 text-sm text-[var(--color-muted)]">You haven’t created a shop yet.</p>
-        )}
-      </section>
+        <section className="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-[var(--shadow-card)] sm:p-6">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h2 className="text-base font-semibold text-[var(--color-ink)]">Shop status</h2>
+            <Link
+              href="/seller/shop"
+              className="inline-flex items-center gap-1 text-sm font-semibold text-[var(--color-primary)] hover:underline"
+            >
+              {shop ? "Edit shop" : "Create shop"}
+              <ArrowRight aria-hidden="true" className="size-4" />
+            </Link>
+          </div>
+          {shop ? (
+            <dl className="mt-4 grid gap-5 text-sm sm:grid-cols-2">
+              <div>
+                <dt className="text-[var(--color-muted)]">Shop name</dt>
+                <dd className="mt-1 font-medium text-[var(--color-ink)]">{shop.name}</dd>
+              </div>
+              <div>
+                <dt className="text-[var(--color-muted)]">Visibility</dt>
+                <dd className="mt-1">
+                  <Badge variant={visibility.variant}>{visibility.label}</Badge>
+                </dd>
+              </div>
+              <div>
+                <dt className="text-[var(--color-muted)]">Public link</dt>
+                <dd className="mt-1 break-all">
+                  {shop.is_published ? (
+                    <a
+                      href={`/shop/${shop.slug}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="interactive font-medium text-[var(--color-primary)] hover:underline"
+                    >
+                      /shop/{shop.slug}
+                    </a>
+                  ) : (
+                    <span className="text-[var(--color-muted)]">
+                      /shop/{shop.slug} (not live yet)
+                    </span>
+                  )}
+                </dd>
+              </div>
+              <div>
+                <dt className="text-[var(--color-muted)]">Verification</dt>
+                <dd className="mt-1 font-medium text-[var(--color-ink)]">{verification}</dd>
+              </div>
+            </dl>
+          ) : (
+            <p className="mt-3 text-sm text-[var(--color-muted)]">
+              You haven&apos;t created a shop yet.
+            </p>
+          )}
+        </section>
+      </div>
     </div>
   );
 }

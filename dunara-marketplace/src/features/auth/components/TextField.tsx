@@ -15,7 +15,7 @@ type TextFieldProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, "id" | "
 /** Labelled input with hint + error wiring (aria-invalid / aria-describedby). */
 export function TextField({ id, name, label, errors, hint, labelAside, ...props }: TextFieldProps) {
   const hasError = Boolean(errors?.length);
-  const describedBy = [hint ? `${id}-hint` : null, hasError ? `${id}-error` : null]
+  const describedBy = [hint && !hasError ? `${id}-hint` : null, hasError ? `${id}-error` : null]
     .filter(Boolean)
     .join(" ");
 
@@ -32,7 +32,6 @@ export function TextField({ id, name, label, errors, hint, labelAside, ...props 
         name={name}
         aria-invalid={hasError || undefined}
         aria-describedby={describedBy || undefined}
-        className={hasError ? "border-[var(--color-error)]" : undefined}
         {...props}
       />
       {hint && !hasError ? (

@@ -4,6 +4,12 @@ import { brand } from "@/config/brand";
 import { SearchForm } from "@/features/marketplace/components/SearchForm";
 import { ListingCard } from "@/features/listings/components/ListingCard";
 import { ShopCard } from "@/features/marketplace/components/ShopCard";
+import { CategoryIcon } from "@/features/marketplace/components/CategoryIcon";
+import { HeroScene } from "@/components/illustrations/HeroScene";
+import { StepArt } from "@/components/illustrations/StepArt";
+import { EmptyState } from "@/components/ui/empty-state";
+import { buttonVariants } from "@/components/ui/button";
+import { SellerScene } from "@/components/illustrations/SellerScene";
 import {
   getRecentListings,
   getFeaturedShops,
@@ -48,35 +54,57 @@ export default async function HomePage() {
     <div>
       {/* Hero */}
       <section className="home-hero border-b border-[var(--color-border)]">
-        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24">
-          <p className="dunara-eyebrow text-center">
-            {brand.tagline}
-          </p>
-          <h1 className="dunara-display mx-auto mt-5 max-w-4xl text-center text-4xl font-semibold text-[var(--color-ink)] sm:text-6xl">
-            Find what you need.
-            Meet who has it.
-          </h1>
-          <p className="mx-auto mt-5 max-w-2xl text-center text-base leading-7 text-[var(--color-muted)] sm:text-lg">
-            Discover products, trusted local businesses, and services from across Nigeria.
-            Connect directly with sellers on WhatsApp.
-          </p>
-          <div className="mx-auto mt-8 max-w-4xl home-search-wrap">
-            <SearchForm categories={categories} />
+        <div className="mx-auto grid max-w-7xl items-center gap-x-8 gap-y-10 px-4 pb-14 pt-12 sm:px-6 sm:pb-20 sm:pt-16 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,.95fr)]">
+          <div>
+            <p className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-white/80 py-1.5 pl-2.5 pr-3.5 text-xs font-semibold text-[var(--color-primary)] shadow-sm">
+              <span className="size-2 rounded-full bg-[var(--color-lime)] ring-2 ring-[var(--color-primary)]/20" />
+              {brand.tagline}
+            </p>
+            <h1 className="dunara-display mt-6 max-w-xl text-4xl font-semibold text-[var(--color-ink)] sm:text-6xl">
+              Find what you need.
+              <br />
+              Meet who has it.
+            </h1>
+            <p className="mt-5 max-w-lg text-base leading-7 text-[var(--color-muted)] sm:text-lg">
+              Discover products, trusted local businesses, and services from across Nigeria.
+              Connect directly with sellers on WhatsApp.
+            </p>
+            <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-2">
+              <Link
+                href="/explore"
+                className="inline-flex h-11 items-center rounded-full bg-[var(--color-ink)] px-5 text-sm font-semibold text-white transition hover:bg-[#2A3B32]"
+              >
+                Browse all listings
+              </Link>
+              <Link
+                href="/register"
+                className="text-sm font-semibold text-[var(--color-primary)] hover:underline"
+              >
+                List your business
+              </Link>
+            </div>
           </div>
-          <div className="mt-6 flex flex-wrap justify-center gap-3">
-            <Link
-              href="/explore"
-              className="text-sm font-medium text-[var(--color-primary)] hover:underline"
-            >
-              Browse all listings
-            </Link>
-            <span className="text-[var(--color-border)]">·</span>
-            <Link
-              href="/register"
-              className="text-sm font-medium text-[var(--color-muted)] hover:text-[var(--color-ink)]"
-            >
-              List your business
-            </Link>
+
+          <div className="relative hidden lg:block">
+            <HeroScene className="hero-scene mx-auto h-auto w-full max-w-[34rem]" />
+          </div>
+
+          <div className="home-search-wrap lg:col-span-2">
+            <SearchForm categories={categories} />
+            {popularCategories.length > 0 ? (
+              <div className="mt-4 flex flex-wrap items-center gap-2 px-1">
+                <span className="text-sm text-[var(--color-muted)]">Popular:</span>
+                {popularCategories.slice(0, 5).map((c) => (
+                  <Link
+                    key={c.id}
+                    href={`/categories/${c.slug}`}
+                    className="rounded-full border border-[var(--color-border)] bg-white/80 px-3.5 py-1.5 text-sm font-medium text-[var(--color-ink)] transition-colors hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]"
+                  >
+                    {c.name}
+                  </Link>
+                ))}
+              </div>
+            ) : null}
           </div>
         </div>
       </section>
@@ -100,8 +128,11 @@ export default async function HomePage() {
               <li key={c.id}>
                 <Link
                   href={`/categories/${c.slug}`}
-                  className="category-tile flex h-full flex-col rounded-xl border border-[var(--color-border)] bg-white px-4 py-5 text-sm font-medium text-[var(--color-ink)] shadow-sm transition hover:border-[var(--color-primary)] hover:-translate-y-0.5"
+                  className="category-tile flex h-full flex-col rounded-xl border border-[var(--color-border)] bg-white px-4 py-4 text-sm font-semibold text-[var(--color-ink)] shadow-sm transition hover:border-[var(--color-primary)] hover:-translate-y-0.5"
                 >
+                  <span className="icon-clay mb-3">
+                    <CategoryIcon name={c.icon} className="size-5" />
+                  </span>
                   {c.name}
                   <span className="mt-1 text-xs font-normal capitalize text-[var(--color-muted)]">
                     {c.type}
@@ -145,13 +176,17 @@ export default async function HomePage() {
               ))}
             </ul>
           ) : (
-            <p className="mt-4 rounded-lg border border-dashed border-[var(--color-border)] bg-white p-8 text-center text-sm text-[var(--color-muted)]">
-              No published listings yet. Be the first to{" "}
-              <Link href="/register" className="text-[var(--color-primary)]">
-                list your business
-              </Link>
-              .
-            </p>
+            <EmptyState
+              className="mt-6"
+              kind="listings"
+              title="No listings yet"
+              description="Be the first to put a product or service in front of buyers across Nigeria."
+              action={
+                <Link href="/register" className={buttonVariants({ size: "lg" })}>
+                  List your business
+                </Link>
+              }
+            />
           )}
         </section>
 
@@ -182,41 +217,50 @@ export default async function HomePage() {
               ))}
             </ul>
           ) : (
-            <p className="mt-4 text-sm text-[var(--color-muted)]">
-              Locations appear when sellers publish shops with a state set.
-            </p>
+            <EmptyState
+              className="mt-6"
+              compact
+              kind="locations"
+              title="No locations yet"
+              description="States appear here once sellers publish shops with a location."
+              action={
+                <Link href="/register" className={buttonVariants({ size: "lg" })}>
+                  List your business
+                </Link>
+              }
+            />
           )}
         </section>
 
         {/* How it works */}
-        <section className="dunara-surface rounded-2xl p-7 sm:p-10">
-          <h2 className="text-center text-xl font-semibold text-[var(--color-ink)]">
+        <section>
+          <h2 className="home-section-title text-center text-2xl font-semibold text-[var(--color-ink)] sm:text-3xl">
             How Dunara works
           </h2>
-          <ol className="mt-8 grid gap-6 sm:grid-cols-3">
-            {[
-              {
-                step: "1",
-                title: "Search",
-                body: "Find a product, service, or local business by keyword, category, or location.",
-              },
-              {
-                step: "2",
-                title: "Compare",
-                body: "Review the listing, shop details, location, and verification status.",
-              },
-              {
-                step: "3",
-                title: "Connect",
-                body: "Start a conversation with the seller directly on WhatsApp. You arrange the deal yourselves.",
-              },
-            ].map((item) => (
-              <li key={item.step} className="text-center sm:text-left">
-                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[var(--color-soft-green)] text-sm font-semibold text-[var(--color-primary)]">
-                  {item.step}
-                </span>
-                <h3 className="mt-3 font-semibold text-[var(--color-ink)]">{item.title}</h3>
-                <p className="mt-2 text-sm text-[var(--color-muted)]">{item.body}</p>
+          <ol className="mt-8 grid gap-5 sm:grid-cols-3">
+            {(
+              [
+                {
+                  kind: "search",
+                  title: "Search",
+                  body: "Find a product, service, or local business by keyword, category, or location.",
+                },
+                {
+                  kind: "compare",
+                  title: "Compare",
+                  body: "Review the listing, shop details, location, and verification status.",
+                },
+                {
+                  kind: "connect",
+                  title: "Connect",
+                  body: "Start a conversation with the seller directly on WhatsApp. You arrange the deal yourselves.",
+                },
+              ] as const
+            ).map((item) => (
+              <li key={item.kind} className="step-card text-center">
+                <StepArt kind={item.kind} className="step-art" />
+                <h3 className="mt-2 text-lg font-semibold text-[var(--color-ink)]">{item.title}</h3>
+                <p className="mx-auto mt-2 max-w-xs text-sm leading-6 text-[var(--color-muted)]">{item.body}</p>
               </li>
             ))}
           </ol>
@@ -242,32 +286,49 @@ export default async function HomePage() {
               ))}
             </ul>
           ) : (
-            <p className="mt-4 text-sm text-[var(--color-muted)]">
-              When sellers publish shops, they appear here. Be the first — list your business.
-            </p>
+            <EmptyState
+              className="mt-6"
+              compact
+              kind="shops"
+              title="No shops yet"
+              description="Published shops will show up here. Yours could be the first."
+              action={
+                <Link href="/register" className={buttonVariants({ size: "lg" })}>
+                  Create your free shop
+                </Link>
+              }
+            />
           )}
         </section>
 
         {/* Seller CTA */}
-        <section className="home-feature-panel px-7 py-12 text-center sm:px-12 sm:py-16">
-          <h2 className="text-2xl font-semibold">Put your business where customers can find it</h2>
-          <p className="mx-auto mt-3 max-w-lg text-sm text-white/90">
-            Create a simple shop profile, showcase your products or services, and let
-            interested customers contact you on WhatsApp.
-          </p>
-          <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Link
-              href="/register"
-              className="inline-flex h-11 items-center justify-center rounded-md bg-white px-6 text-sm font-semibold text-[var(--color-primary)]"
-            >
-              Create your free shop
-            </Link>
-            <Link
-              href="/pricing"
-              className="inline-flex h-11 items-center justify-center rounded-md border border-white/40 px-6 text-sm font-medium text-white hover:bg-white/10"
-            >
-              See seller plans
-            </Link>
+        <section className="home-feature-panel seller-cta relative overflow-hidden px-7 py-12 sm:px-12 sm:py-16 lg:py-14">
+          <div className="seller-glow" aria-hidden="true" />
+          <div className="relative grid items-center gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,.9fr)]">
+            <div className="text-center lg:text-left">
+              <h2 className="text-2xl font-semibold sm:text-3xl">Put your business where customers can find it</h2>
+              <p className="mx-auto mt-3 max-w-lg text-sm leading-6 text-white/90 sm:text-base lg:mx-0">
+                Create a simple shop profile, showcase your products or services, and let
+                interested customers contact you on WhatsApp.
+              </p>
+              <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start">
+                <Link
+                  href="/register"
+                  className="inline-flex h-12 items-center justify-center rounded-xl bg-white px-6 text-sm font-semibold text-[var(--color-primary)] shadow-[0_8px_20px_-8px_rgb(0_0_0/.45)] transition hover:-translate-y-0.5 hover:bg-[var(--color-lime)] hover:text-[#173D2D]"
+                >
+                  Create your free shop
+                </Link>
+                <Link
+                  href="/pricing"
+                  className="inline-flex h-12 items-center justify-center rounded-xl border border-white/40 px-6 text-sm font-medium text-white transition-colors hover:bg-white/10"
+                >
+                  See seller plans
+                </Link>
+              </div>
+            </div>
+            <div className="hidden lg:block">
+              <SellerScene className="mx-auto h-auto w-full max-w-[26rem]" />
+            </div>
           </div>
         </section>
 

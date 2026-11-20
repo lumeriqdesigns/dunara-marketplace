@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { EmptyState } from "@/components/ui/empty-state";
+import { buttonVariants } from "@/components/ui/button";
 import { ShopCard } from "@/features/marketplace/components/ShopCard";
 import { ListingCard } from "@/features/listings/components/ListingCard";
 import { searchShops, searchListings } from "@/features/marketplace/lib/queries";
@@ -101,9 +103,18 @@ export default async function LocationStatePage({ params }: Props) {
             ))}
           </ul>
         ) : (
-          <p className="mt-3 text-sm text-[var(--color-muted)]">
-            No published shops in {state} yet.
-          </p>
+          <EmptyState
+            className="mt-4"
+            compact
+            kind="shops"
+            title={`No shops in ${state} yet`}
+            description="Shops appear here once sellers in this state publish their profile."
+            action={
+              <Link href="/register" className={buttonVariants({ size: "lg" })}>
+                Open a shop in {state}
+              </Link>
+            }
+          />
         )}
       </section>
 
@@ -124,9 +135,18 @@ export default async function LocationStatePage({ params }: Props) {
             ))}
           </ul>
         ) : (
-          <p className="mt-3 text-sm text-[var(--color-muted)]">
-            No published listings in {state} yet.
-          </p>
+          <EmptyState
+            className="mt-4"
+            compact
+            kind="listings"
+            title={`No listings in ${state} yet`}
+            description="Browse listings from the rest of Nigeria while this state fills up."
+            action={
+              <Link href="/explore" className={buttonVariants({ size: "lg" })}>
+                Explore all listings
+              </Link>
+            }
+          />
         )}
         {listingResult.total > listingResult.items.length ? (
           <Link

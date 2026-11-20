@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import { NIGERIAN_STATES, KWARA_LOCATIONS } from "../lib/nigerian-locations";
+import { Input } from "@/components/ui/input";
+import { Select } from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
 
 /**
  * State + city fields. When state is Kwara, city is a curated area select.
@@ -21,16 +24,15 @@ export function LocationFields({
   return (
     <>
       <div>
-        <label htmlFor="state" className="block text-sm font-medium">
+        <Label htmlFor="state" className="mb-1.5 block">
           State
-        </label>
-        <select
+        </Label>
+        <Select
           id="state"
           name="state"
           value={state}
           onChange={(e) => setState(e.target.value)}
           disabled={disabled}
-          className="mt-1 h-10 w-full rounded-md border border-[var(--color-border)] bg-white px-3 text-sm"
         >
           <option value="">Select state…</option>
           {NIGERIAN_STATES.map((s) => (
@@ -38,43 +40,31 @@ export function LocationFields({
               {s}
             </option>
           ))}
-        </select>
+        </Select>
       </div>
 
       <div>
-        <label htmlFor="city" className="block text-sm font-medium">
-          {state === "Kwara" ? "Area / town (Kwara)" : "City / area"}
-        </label>
+        <Label htmlFor="city" className="mb-1.5 block">
+          City / area
+        </Label>
         {state === "Kwara" ? (
-          <select
-            id="city"
-            name="city"
-            defaultValue={defaultCity ?? ""}
-            disabled={disabled}
-            className="mt-1 h-10 w-full rounded-md border border-[var(--color-border)] bg-white px-3 text-sm"
-          >
+          <Select id="city" name="city" defaultValue={defaultCity ?? ""} disabled={disabled}>
             <option value="">Select area…</option>
-            {KWARA_LOCATIONS.map((loc) => (
-              <option key={loc.slug} value={loc.name}>
-                {loc.name}
+            {KWARA_LOCATIONS.map((c) => (
+              <option key={c} value={c}>
+                {c}
               </option>
             ))}
-          </select>
+          </Select>
         ) : (
-          <input
+          <Input
             id="city"
             name="city"
             defaultValue={defaultCity ?? ""}
             disabled={disabled}
-            className="mt-1 h-10 w-full rounded-md border border-[var(--color-border)] px-3 text-sm"
             placeholder="e.g. Ikeja"
           />
         )}
-        {state === "Kwara" ? (
-          <p className="mt-1 text-xs text-[var(--color-muted)]">
-            Choose the nearest Ilorin neighbourhood or Kwara town.
-          </p>
-        ) : null}
       </div>
     </>
   );

@@ -22,6 +22,6 @@ describe("verification upload rules", () => {
 
   it("limits size and count", () => {
     expect(MAX_FILES).toBe(5);
-    expect(MAX_FILE_BYTES).toBe(5 * 1024 * 1024);
+    expect(MAX_FILE_BYTES).toBe(1024 * 1024);
   });
 });

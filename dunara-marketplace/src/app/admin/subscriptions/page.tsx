@@ -42,7 +42,7 @@ export default async function AdminSubscriptionsPage() {
       {rows.length === 0 ? (
         <EmptyState title="No subscriptions yet" />
       ) : (
-        <div className="overflow-x-auto rounded-2xl border border-[var(--color-border)] bg-white shadow-[var(--shadow-card)]">
+        <div className="max-h-[min(70vh,40rem)] overflow-auto rounded-2xl border border-[var(--color-border)] bg-white shadow-[var(--shadow-card)]">
           <table className="min-w-full text-left text-sm">
             <thead>
               <tr>

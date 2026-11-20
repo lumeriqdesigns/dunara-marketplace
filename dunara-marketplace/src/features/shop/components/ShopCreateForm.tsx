@@ -4,6 +4,10 @@ import { useActionState, useMemo, useState } from "react";
 import { createShopAction, type ShopActionState } from "../actions";
 import { slugify } from "../lib/slug";
 import type { Category } from "@/types";
+import { Input } from "@/components/ui/input";
+import { Select } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 
 const initial: ShopActionState = { ok: false };
 
@@ -19,7 +23,7 @@ export function ShopCreateForm({ categories }: { categories: Category[] }) {
     <form action={formAction} className="mx-auto max-w-lg space-y-5">
       {state.message && !state.ok ? (
         <div
-          className="rounded-md border border-[var(--color-error)]/30 bg-red-50 px-3 py-2 text-sm text-[var(--color-error)]"
+          className="rounded-xl border border-[var(--color-error)]/30 bg-red-50 px-3 py-2 text-sm text-[var(--color-error)]"
           role="alert"
         >
           {state.message}
@@ -27,10 +31,10 @@ export function ShopCreateForm({ categories }: { categories: Category[] }) {
       ) : null}
 
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-[var(--color-ink)]">
+        <Label htmlFor="name" className="mb-1.5 block">
           Shop name
-        </label>
-        <input
+        </Label>
+        <Input
           id="name"
           name="name"
           required
@@ -40,7 +44,6 @@ export function ShopCreateForm({ categories }: { categories: Category[] }) {
             setName(e.target.value);
             if (!slugTouched) setSlug(slugify(e.target.value));
           }}
-          className="mt-1 flex h-10 w-full rounded-md border border-[var(--color-border)] px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
           placeholder="e.g. Ada's Crafts"
         />
         {state.fieldErrors?.name?.[0] ? (
@@ -49,12 +52,12 @@ export function ShopCreateForm({ categories }: { categories: Category[] }) {
       </div>
 
       <div>
-        <label htmlFor="slug" className="block text-sm font-medium text-[var(--color-ink)]">
+        <Label htmlFor="slug" className="mb-1.5 block">
           Public URL
-        </label>
-        <div className="mt-1 flex items-center gap-1 text-sm text-[var(--color-muted)]">
+        </Label>
+        <div className="flex items-center gap-2 text-sm text-[var(--color-muted)]">
           <span className="shrink-0">/shop/</span>
-          <input
+          <Input
             id="slug"
             name="slug"
             required
@@ -64,11 +67,11 @@ export function ShopCreateForm({ categories }: { categories: Category[] }) {
               setSlugTouched(true);
               setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ""));
             }}
-            className="flex h-10 w-full rounded-md border border-[var(--color-border)] px-3 text-sm text-[var(--color-ink)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+            className="text-[var(--color-ink)]"
           />
         </div>
         {!slugTouched && suggested ? (
-          <p className="mt-1 text-xs text-[var(--color-muted)]">Suggested from name: {suggested}</p>
+          <p className="mt-1.5 text-xs text-[var(--color-muted)]">Suggested from name: {suggested}</p>
         ) : null}
         {state.fieldErrors?.slug?.[0] ? (
           <p className="mt-1 text-sm text-[var(--color-error)]">{state.fieldErrors.slug[0]}</p>
@@ -76,17 +79,10 @@ export function ShopCreateForm({ categories }: { categories: Category[] }) {
       </div>
 
       <div>
-        <label htmlFor="categoryId" className="block text-sm font-medium text-[var(--color-ink)]">
+        <Label htmlFor="categoryId" className="mb-1.5 block">
           Category
-        </label>
-        <select
-          id="categoryId"
-          name="categoryId"
-          required
-          disabled={pending}
-          className="mt-1 flex h-10 w-full rounded-md border border-[var(--color-border)] bg-white px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
-          defaultValue=""
-        >
+        </Label>
+        <Select id="categoryId" name="categoryId" required disabled={pending} defaultValue="">
           <option value="" disabled>
             Select a category
           </option>
@@ -95,7 +91,7 @@ export function ShopCreateForm({ categories }: { categories: Category[] }) {
               {c.name}
             </option>
           ))}
-        </select>
+        </Select>
         {state.fieldErrors?.categoryId?.[0] ? (
           <p className="mt-1 text-sm text-[var(--color-error)]">{state.fieldErrors.categoryId[0]}</p>
         ) : null}
@@ -103,7 +99,7 @@ export function ShopCreateForm({ categories }: { categories: Category[] }) {
 
       <fieldset>
         <legend className="text-sm font-medium text-[var(--color-ink)]">What do you offer?</legend>
-        <div className="mt-2 flex flex-wrap gap-3">
+        <div className="mt-3 flex flex-wrap gap-3">
           {(
             [
               ["product", "Products"],
@@ -111,7 +107,10 @@ export function ShopCreateForm({ categories }: { categories: Category[] }) {
               ["both", "Both"],
             ] as const
           ).map(([value, label]) => (
-            <label key={value} className="flex items-center gap-2 text-sm">
+            <label
+              key={value}
+              className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-[var(--color-border)] bg-white px-3.5 text-sm text-[var(--color-ink)]"
+            >
               <input type="radio" name="shopType" value={value} defaultChecked={value === "both"} />
               {label}
             </label>
@@ -119,13 +118,9 @@ export function ShopCreateForm({ categories }: { categories: Category[] }) {
         </div>
       </fieldset>
 
-      <button
-        type="submit"
-        disabled={pending}
-        className="flex h-11 w-full items-center justify-center rounded-md bg-[var(--color-primary)] text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-50"
-      >
+      <Button type="submit" size="lg" className="w-full" disabled={pending}>
         {pending ? "Creating…" : "Create shop"}
-      </button>
+      </Button>
     </form>
   );
 }

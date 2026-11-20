@@ -1,15 +1,13 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
+import { fieldBase } from "./field-styles";
 
 export type TextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, ...props }, ref) => (
     <textarea
-      className={cn(
-        "flex min-h-[96px] w-full rounded-md border border-[var(--color-border)] bg-white px-3 py-2 text-sm text-[var(--color-ink)] shadow-sm placeholder:text-[var(--color-muted)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50",
-        className
-      )}
+      className={cn(fieldBase, "flex min-h-[112px] resize-y px-4 py-3 leading-6", className)}
       ref={ref}
       {...props}
     />

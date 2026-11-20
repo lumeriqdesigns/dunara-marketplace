@@ -6,7 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { submitVerificationRequest } from "@/features/verification/actions";
-import { MAX_FILES, MAX_FILE_BYTES } from "@/features/verification/lib/constants";
+import { MAX_FILES } from "@/features/verification/lib/constants";
+import { MAX_UPLOAD_LABEL, isOverUploadLimit, uploadTooLargeMessage } from "@/lib/upload-limits";
+import { compressImageToLimit } from "@/lib/image-compress";
 
 export function VerificationSubmitForm() {
   const [pending, startTransition] = useTransition();
@@ -17,6 +19,17 @@ export function VerificationSubmitForm() {
     const form = e.currentTarget;
     const fd = new FormData(form);
     startTransition(async () => {
+      // Shrink large photos in the browser (PDFs cannot be shrunk and are only size-checked).
+      const originals = fd.getAll("documents").filter((f): f is File => f instanceof File);
+      const prepared = await Promise.all(
+        originals.map((f) => compressImageToLimit(f, { allowWebp: false }))
+      );
+      if (prepared.some((f) => isOverUploadLimit(f))) {
+        toast.error(uploadTooLargeMessage("Each file"));
+        return;
+      }
+      fd.delete("documents");
+      prepared.forEach((f) => fd.append("documents", f));
       const result = await submitVerificationRequest(fd);
       if (result.ok) {
         toast.success(result.message ?? "Submitted");
@@ -40,10 +53,10 @@ export function VerificationSubmitForm() {
           multiple
           required
           disabled={pending}
-          className="block w-full text-sm text-[var(--color-muted)] file:mr-3 file:rounded-md file:border-0 file:bg-[var(--color-soft-green)] file:px-3 file:py-2 file:text-sm file:font-medium file:text-[var(--color-primary)]"
+          className="block w-full text-sm text-[var(--color-muted)] file:mr-3 file:min-h-11 file:rounded-xl file:border-0 file:bg-[var(--color-soft-green)] file:px-4 file:py-2.5 file:text-sm file:font-semibold file:text-[var(--color-primary)]"
         />
         <p className="text-xs text-[var(--color-muted)]">
-          Up to {MAX_FILES} files, {MAX_FILE_BYTES / 1024 / 1024}MB each. Files are private and only
+          Up to {MAX_FILES} files, {MAX_UPLOAD_LABEL} each. Photos are resized automatically; PDFs must already be under {MAX_UPLOAD_LABEL}. Files are private and only
           visible to Dunara admins.
         </p>
       </div>

@@ -23,7 +23,7 @@ export function ResetPasswordForm() {
         required
         minLength={8}
         disabled={pending}
-        hint="Use at least 8 characters."
+        showStrength
         errors={state.fieldErrors?.password}
       />
 

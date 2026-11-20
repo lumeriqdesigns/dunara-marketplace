@@ -39,9 +39,9 @@ If storage SQL fails (permissions), create buckets in Dashboard:
 
 | Bucket | Public | Limit | MIME |
 |--------|--------|-------|------|
-| `shop-logos` | yes | 2MB | jpeg/png/webp/gif |
-| `listing-images` | yes | (see migration) | images |
-| `verification-documents` | **no** | 5MB | pdf/jpeg/png |
+| `shop-logos` | yes | 1MB | jpeg/png/webp/gif |
+| `listing-images` | yes | 1MB | images |
+| `verification-documents` | **no** | 1MB | pdf/jpeg/png |
 
 ### 2.2 Auth
 

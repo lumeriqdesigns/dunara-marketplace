@@ -17,6 +17,7 @@ export default async function LoginPage() {
 
   return (
     <AuthCard
+      variant="login"
       title="Sign in"
       description="Sign in with the email you registered to manage your shop."
       footer={
