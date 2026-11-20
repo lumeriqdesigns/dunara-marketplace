@@ -56,10 +56,10 @@ export default async function AdminOverviewPage() {
           <Link key={m.label} href={m.href} className="block">
             <div
               className={cn(
-                "h-full rounded-2xl p-4 shadow-sm transition hover:ring-1 hover:ring-[var(--color-primary)]/40",
+                "h-full rounded-2xl p-4 shadow-sm interactive hover:ring-1 hover:ring-[var(--color-primary)]/40",
                 m.glass
-                  ? "glass-panel ring-1 ring-black/5"
-                  : "border border-[var(--color-border)] bg-white"
+                  ? "glass-panel-strong ring-1 ring-black/5"
+                  : "border border-[var(--color-border)] bg-white interactive"
               )}
             >
               <p className="text-xs font-medium uppercase tracking-wide text-[var(--color-muted)]">
@@ -81,7 +81,7 @@ export default async function AdminOverviewPage() {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <section className="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-sm">
+        <section className="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-sm interactive">
           <div className="mb-3 flex items-center justify-between">
             <h2 className="text-sm font-semibold text-[var(--color-ink)]">Recent shops</h2>
             <Link href="/admin/shops" className="text-xs font-medium text-[var(--color-primary)]">
@@ -109,7 +109,7 @@ export default async function AdminOverviewPage() {
           )}
         </section>
 
-        <section className="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-sm">
+        <section className="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-sm interactive">
           <h2 className="mb-3 text-sm font-semibold text-[var(--color-ink)]">
             Recent moderation
           </h2>

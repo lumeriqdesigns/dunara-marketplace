@@ -16,7 +16,7 @@ export default async function AdminLayout({
       <div className="flex min-h-screen">
         <AdminNav email={user.email} />
         <div className="flex min-w-0 flex-1 flex-col">
-          <div className="sticky top-0 z-20 hidden h-14 items-center border-b border-[var(--color-border)]/70 bg-[var(--color-canvas)]/80 px-6 backdrop-blur-md lg:flex">
+          <div className="glass-chrome sticky top-0 z-20 hidden h-14 items-center border-b px-6 lg:flex">
             <p className="text-sm font-medium text-[var(--color-muted)]">Operations</p>
           </div>
           <div className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6 lg:py-8">

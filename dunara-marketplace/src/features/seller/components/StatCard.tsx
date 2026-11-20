@@ -18,7 +18,7 @@ export function StatCard({
   return (
     <div
       className={cn(
-        "rounded-2xl p-4 shadow-sm",
+        "interactive rounded-2xl p-4 shadow-sm",
         glass
           ? "glass-panel ring-1 ring-black/5"
           : "border border-[var(--color-border)] bg-white",

@@ -68,43 +68,37 @@ export default async function SellerHomePage() {
   }
 
   const bars = activityBars(stats.totalListings + stats.publishedListings);
+  const visibility = !shop
+    ? "No shop"
+    : shop.is_suspended
+      ? "Suspended"
+      : shop.is_published
+        ? "Published"
+        : "Draft";
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <PageHeader
         title={`Welcome, ${name}`}
         description="Manage your shop and listings. Buyers contact you on WhatsApp."
       />
 
-      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        <StatCard label="Total listings" value={stats.totalListings} />
-        <StatCard label="Published" value={stats.publishedListings} tone="success" />
-        <StatCard label="Drafts" value={stats.draftListings} />
-        <StatCard
-          label="Plan"
-          value={stats.planLabel}
-          glass
-          hint={
-            stats.listingLimit === -1
-              ? "Unlimited published listings"
-              : `Up to ${stats.listingLimit} published · ${stats.planStatus}`
-          }
-        />
-      </div>
-
-      <div className="grid gap-6 lg:grid-cols-12">
-        <section className="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-sm lg:col-span-7">
+      {/* Bento grid: 12-col desktop, stacks by priority on mobile */}
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-12 lg:grid-rows-[auto_auto_auto] lg:gap-4">
+        {/* Hero: activity — 6 cols × visual weight */}
+        <section className="interactive rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-sm sm:col-span-2 lg:col-span-6 lg:row-span-2">
           <div className="mb-4 flex items-center justify-between gap-2">
             <h2 className="text-sm font-semibold text-[var(--color-ink)]">Activity</h2>
             <span className="text-xs text-[var(--color-muted)]">Listings snapshot</span>
           </div>
-          <div className="flex h-40 items-end gap-2">
+          <div className="flex h-44 items-end gap-2 sm:h-52">
             {bars.map((bar, i) => (
               <div key={`${bar.label}-${i}`} className="flex flex-1 flex-col items-center gap-1">
                 <div
-                  className="w-full max-w-[2.5rem] rounded-t-md bg-[var(--color-primary)]/85"
+                  className="w-full max-w-[2.75rem] rounded-t-md bg-[var(--color-primary)]/85 motion-move"
                   style={{
                     height: `${Math.max(12, (bar.value / bar.max) * 100)}%`,
+                    transitionProperty: "height",
                   }}
                   title={String(bar.value)}
                 />
@@ -117,14 +111,48 @@ export default async function SellerHomePage() {
           </p>
         </section>
 
-        <section className="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-sm lg:col-span-5">
+        {/* Plan — glass elevated */}
+        <div className="lg:col-span-3">
+          <StatCard
+            className="h-full"
+            label="Plan"
+            value={stats.planLabel}
+            glass
+            hint={
+              stats.listingLimit === -1
+                ? "Unlimited published listings"
+                : `Up to ${stats.listingLimit} published · ${stats.planStatus}`
+            }
+          />
+        </div>
+
+        {/* Published */}
+        <div className="lg:col-span-3">
+          <StatCard
+            className="h-full"
+            label="Published"
+            value={stats.publishedListings}
+            tone="success"
+          />
+        </div>
+
+        {/* Total + Drafts */}
+        <div className="lg:col-span-3">
+          <StatCard className="h-full" label="Total listings" value={stats.totalListings} />
+        </div>
+        <div className="lg:col-span-3">
+          <StatCard className="h-full" label="Drafts" value={stats.draftListings} />
+        </div>
+
+        {/* Next steps — 5 cols */}
+        <section className="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-sm sm:col-span-2 lg:col-span-5">
           <h2 className="mb-3 text-sm font-semibold text-[var(--color-ink)]">Next steps</h2>
           <ul className="space-y-3">
             {nextActions.map((a) => (
               <li key={a.href + a.title}>
                 <Link
                   href={a.href}
-                  className="block rounded-xl border border-[var(--color-border)] px-3 py-3 transition hover:border-[var(--color-primary)] hover:bg-[var(--color-soft-green)]/40"
+                  className="interactive block rounded-xl border border-[var(--color-border)] px-3 py-3 hover:border-[var(--color-primary)] hover:bg-[var(--color-soft-green)]/40"
                 >
                   <p className="text-sm font-medium text-[var(--color-ink)]">{a.title}</p>
                   <p className="mt-0.5 text-xs text-[var(--color-muted)]">{a.body}</p>
@@ -133,10 +161,9 @@ export default async function SellerHomePage() {
             ))}
           </ul>
         </section>
-      </div>
 
-      <div className="grid gap-4 lg:grid-cols-3">
-        <div className="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-sm lg:col-span-2">
+        {/* Shop status — 7 cols */}
+        <section className="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-sm sm:col-span-2 lg:col-span-7">
           <h2 className="text-sm font-semibold text-[var(--color-ink)]">Shop status</h2>
           {shop ? (
             <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
@@ -146,13 +173,7 @@ export default async function SellerHomePage() {
               </div>
               <div>
                 <dt className="text-[var(--color-muted)]">Visibility</dt>
-                <dd className="font-medium text-[var(--color-ink)]">
-                  {shop.is_suspended
-                    ? "Suspended"
-                    : shop.is_published
-                      ? "Published"
-                      : "Draft"}
-                </dd>
+                <dd className="font-medium text-[var(--color-ink)]">{visibility}</dd>
               </div>
               <div>
                 <dt className="text-[var(--color-muted)]">Public URL</dt>
@@ -162,7 +183,7 @@ export default async function SellerHomePage() {
                       href={`/shop/${shop.slug}`}
                       target="_blank"
                       rel="noreferrer"
-                      className="font-medium text-[var(--color-primary)] hover:underline"
+                      className="interactive font-medium text-[var(--color-primary)] hover:underline"
                     >
                       /shop/{shop.slug}
                     </a>
@@ -186,38 +207,56 @@ export default async function SellerHomePage() {
             </p>
           )}
           <div className="mt-4 flex flex-wrap gap-3 text-sm">
-            <Link href="/seller/shop" className="font-medium text-[var(--color-primary)]">
+            <Link
+              href="/seller/shop"
+              className="interactive font-medium text-[var(--color-primary)] hover:underline"
+            >
               {shop ? "Edit shop" : "Create shop"} →
             </Link>
-            <Link href="/seller/listings" className="font-medium text-[var(--color-primary)]">
+            <Link
+              href="/seller/listings"
+              className="interactive font-medium text-[var(--color-primary)] hover:underline"
+            >
               Manage listings →
             </Link>
-            <Link href="/seller/billing" className="font-medium text-[var(--color-primary)]">
+            <Link
+              href="/seller/billing"
+              className="interactive font-medium text-[var(--color-primary)] hover:underline"
+            >
               Billing →
             </Link>
           </div>
-        </div>
+        </section>
 
-        <div className="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-sm">
-          <h2 className="text-sm font-semibold text-[var(--color-ink)]">Shortcuts</h2>
-          <ul className="mt-3 space-y-2 text-sm">
-            <li>
-              <Link href="/seller/ai" className="text-[var(--color-primary)] hover:underline">
-                AI assistant
-              </Link>
-            </li>
-            <li>
-              <Link href="/seller/verification" className="text-[var(--color-primary)] hover:underline">
-                Verification
-              </Link>
-            </li>
-            <li>
-              <Link href="/seller/settings" className="text-[var(--color-primary)] hover:underline">
-                Settings
-              </Link>
-            </li>
-          </ul>
-        </div>
+        {/* Shortcuts strip */}
+        <section className="rounded-2xl border border-[var(--color-border)] bg-white p-4 shadow-sm sm:col-span-2 lg:col-span-12">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+            <span className="text-xs font-medium uppercase tracking-wide text-[var(--color-muted)]">
+              Shortcuts
+            </span>
+            <Link href="/seller/ai" className="interactive text-[var(--color-primary)] hover:underline">
+              AI assistant
+            </Link>
+            <Link
+              href="/seller/verification"
+              className="interactive text-[var(--color-primary)] hover:underline"
+            >
+              Verification
+            </Link>
+            <Link
+              href="/seller/settings"
+              className="interactive text-[var(--color-primary)] hover:underline"
+            >
+              Settings
+            </Link>
+            <Link
+              href="/seller/listings/new"
+              className="interactive text-[var(--color-primary)] hover:underline"
+            >
+              New listing
+            </Link>
+          </div>
+        </section>
       </div>
     </div>
   );
