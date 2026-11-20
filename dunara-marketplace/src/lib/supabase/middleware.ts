@@ -1,6 +1,23 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
+/** Cookie payload shape used by @supabase/ssr setAll. */
+type CookieToSet = {
+  name: string;
+  value: string;
+  options?: {
+    path?: string;
+    domain?: string;
+    maxAge?: number;
+    expires?: Date;
+    httpOnly?: boolean;
+    secure?: boolean;
+    sameSite?: boolean | "lax" | "strict" | "none";
+    priority?: "low" | "medium" | "high";
+    partitioned?: boolean;
+  };
+};
+
 /**
  * Refresh Supabase session and enforce edge protection for /seller and /admin.
  * Layouts still call requireUser / requireAdmin — this is defence in depth only.
@@ -22,7 +39,7 @@ export async function updateSession(request: NextRequest) {
       getAll() {
         return request.cookies.getAll();
       },
-      setAll(cookiesToSet) {
+      setAll(cookiesToSet: CookieToSet[]) {
         cookiesToSet.forEach(({ name, value }) =>
           request.cookies.set(name, value)
         );

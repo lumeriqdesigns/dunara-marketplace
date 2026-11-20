@@ -445,13 +445,13 @@ export async function getAdminSubscriptionHealth(): Promise<ActionResult<Subscri
     return { ok: false, message: "Could not load subscriptions." };
   }
 
-  const counts = {
-    trialing: countResults[0].count ?? 0,
-    active: countResults[1].count ?? 0,
-    past_due: countResults[2].count ?? 0,
-    cancelled: countResults[3].count ?? 0,
-    free: countResults[4].count ?? 0,
-  };
+const counts = {
+  trialing: countResults[0]?.count ?? 0,
+  active: countResults[1]?.count ?? 0,
+  past_due: countResults[2]?.count ?? 0,
+  cancelled: countResults[3]?.count ?? 0,
+  free: countResults[4]?.count ?? 0,
+};
 
   const mapped = (rows ?? []).map((row: Record<string, unknown>) => {
     const shops = row.shops as { name?: string } | null;

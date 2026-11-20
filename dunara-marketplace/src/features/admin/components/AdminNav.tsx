@@ -8,87 +8,88 @@ import { LogoutButton } from "@/features/auth/components/LogoutButton";
 import { brand } from "@/config/brand";
 import { cn } from "@/lib/utils";
 
+function NavLinks({
+  pathname,
+  onNavigate,
+}: {
+  pathname: string;
+  onNavigate?: () => void;
+}) {
+  return (
+    <nav className="flex flex-col gap-0.5 p-2" aria-label="Admin">
+      {adminNav.map((item) => {
+        const active = isAdminNavActive(pathname, item);
+        return (
+          <Link
+            key={item.href}
+            href={item.href}
+            onClick={onNavigate}
+            className={cn(
+              "w-full rounded-lg px-3 py-2 text-sm font-medium transition",
+              active
+                ? "bg-[var(--color-soft-green)] text-[var(--color-primary)]"
+                : "text-[var(--color-ink)] hover:bg-[var(--color-canvas)]"
+            )}
+            aria-current={active ? "page" : undefined}
+          >
+            {item.label}
+          </Link>
+        );
+      })}
+    </nav>
+  );
+}
+
 export function AdminNav({ email }: { email?: string | null }) {
   const pathname = usePathname() ?? "/admin";
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-white">
-      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
-        <div className="flex min-w-0 items-center gap-3">
-          <Link href="/admin" className="shrink-0 text-sm font-semibold text-[var(--color-ink)]">
-            {brand.name}{" "}
-            <span className="font-normal text-[var(--color-muted)]">Admin</span>
+    <>
+      <aside className="hidden w-56 shrink-0 flex-col border-r border-[var(--color-border)] bg-white lg:flex">
+        <div className="flex h-14 items-center gap-2 border-b border-[var(--color-border)] px-4">
+          <Link href="/admin" className="text-sm font-semibold tracking-tight text-[var(--color-ink)]">
+            {brand.name}
+            <span className="ml-1 font-normal text-[var(--color-muted)]">Admin</span>
           </Link>
         </div>
-
-        <nav className="hidden items-center gap-1 md:flex" aria-label="Admin">
-          {adminNav.map((item) => {
-            const active = isAdminNavActive(pathname, item);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "rounded-md px-3 py-1.5 text-sm font-medium transition",
-                  active
-                    ? "bg-[var(--color-soft-green)] text-[var(--color-primary)]"
-                    : "text-[var(--color-muted)] hover:text-[var(--color-ink)]"
-                )}
-                aria-current={active ? "page" : undefined}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
-        </nav>
-
-        <div className="flex items-center gap-3">
-          <span className="hidden max-w-[160px] truncate text-xs text-[var(--color-muted)] lg:inline">
-            {email}
-          </span>
-          <LogoutButton className="hidden text-sm font-medium text-[var(--color-muted)] hover:text-[var(--color-ink)] md:inline" />
-          <button
-            type="button"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-[var(--color-border)] text-sm md:hidden"
-            aria-expanded={open}
-            aria-controls="admin-mobile-nav"
-            aria-label={open ? "Close menu" : "Open menu"}
-            onClick={() => setOpen((v) => !v)}
-          >
-            {open ? "✕" : "☰"}
-          </button>
+        <div className="flex-1 overflow-y-auto">
+          <NavLinks pathname={pathname} />
         </div>
-      </div>
+        <div className="border-t border-[var(--color-border)] p-3">
+          <p className="truncate text-[11px] text-[var(--color-muted)]">{email}</p>
+          <LogoutButton className="mt-2 text-xs font-medium text-[var(--color-muted)] hover:text-[var(--color-ink)]" />
+        </div>
+      </aside>
 
-      {open ? (
-        <div id="admin-mobile-nav" className="border-t border-[var(--color-border)] bg-white md:hidden">
-          <nav className="mx-auto flex max-w-6xl flex-col px-4 py-2" aria-label="Admin mobile">
-            {adminNav.map((item) => {
-              const active = isAdminNavActive(pathname, item);
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className={cn(
-                    "rounded-md px-3 py-2.5 text-sm font-medium",
-                    active
-                      ? "bg-[var(--color-soft-green)] text-[var(--color-primary)]"
-                      : "text-[var(--color-ink)]"
-                  )}
-                  aria-current={active ? "page" : undefined}
-                >
-                  {item.label}
-                </Link>
-              );
-            })}
-            <div className="border-t border-[var(--color-border)] px-3 py-2">
+      <header className="sticky top-0 z-40 border-b border-[var(--color-border)]/80 bg-[var(--color-canvas)]/85 backdrop-blur-md lg:hidden">
+        <div className="flex h-14 items-center justify-between gap-3 px-4">
+          <div className="flex min-w-0 items-center gap-2">
+            <button
+              type="button"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-[var(--color-border)] bg-white text-sm"
+              aria-expanded={open}
+              aria-controls="admin-mobile-nav"
+              aria-label={open ? "Close menu" : "Open menu"}
+              onClick={() => setOpen((v) => !v)}
+            >
+              {open ? "✕" : "☰"}
+            </button>
+            <Link href="/admin" className="truncate text-sm font-semibold text-[var(--color-ink)]">
+              {brand.name}{" "}
+              <span className="font-normal text-[var(--color-muted)]">Admin</span>
+            </Link>
+          </div>
+        </div>
+        {open ? (
+          <div id="admin-mobile-nav" className="border-t border-[var(--color-border)] bg-white">
+            <NavLinks pathname={pathname} onNavigate={() => setOpen(false)} />
+            <div className="border-t border-[var(--color-border)] px-4 py-3">
               <LogoutButton className="text-sm font-medium text-[var(--color-muted)]" />
             </div>
-          </nav>
-        </div>
-      ) : null}
-    </header>
+          </div>
+        ) : null}
+      </header>
+    </>
   );
 }

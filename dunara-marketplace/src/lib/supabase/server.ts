@@ -1,6 +1,23 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
+/** Cookie payload shape used by @supabase/ssr setAll. */
+type CookieToSet = {
+  name: string;
+  value: string;
+  options?: {
+    path?: string;
+    domain?: string;
+    maxAge?: number;
+    expires?: Date;
+    httpOnly?: boolean;
+    secure?: boolean;
+    sameSite?: boolean | "lax" | "strict" | "none";
+    priority?: "low" | "medium" | "high";
+    partitioned?: boolean;
+  };
+};
+
 /**
  * Server Component / Server Action Supabase client.
  * Reads/writes auth cookies via Next.js cookies().
@@ -22,7 +39,7 @@ export async function createClient() {
       getAll() {
         return cookieStore.getAll();
       },
-      setAll(cookiesToSet) {
+      setAll(cookiesToSet: CookieToSet[]) {
         try {
           cookiesToSet.forEach(({ name, value, options }) =>
             cookieStore.set(name, value, options)

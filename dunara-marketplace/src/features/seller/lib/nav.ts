@@ -2,7 +2,7 @@
  * Seller module navigation.
  */
 export const sellerNav = [
-  { href: "/seller", label: "Home", exact: true },
+  { href: "/seller", label: "Overview", exact: true },
   { href: "/seller/listings", label: "Listings", exact: false },
   { href: "/seller/shop", label: "Shop", exact: false },
   { href: "/seller/verification", label: "Verification", exact: false },

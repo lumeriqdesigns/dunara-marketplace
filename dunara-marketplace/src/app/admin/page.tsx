@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getAdminOverview } from "@/features/admin/actions";
 import { EmptyState } from "@/components/ui/empty-state";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 export const metadata = { title: "Admin overview · Dunara" };
 
@@ -17,13 +17,21 @@ export default async function AdminOverviewPage() {
   }
 
   const d = result.data;
-  const metrics = [
+  const metrics: {
+    label: string;
+    value: number;
+    href: string;
+    glass?: boolean;
+    tone?: "default" | "warning";
+  }[] = [
     { label: "Total shops", value: d.totalShops, href: "/admin/shops" },
     { label: "Published listings", value: d.publishedListings, href: "/admin/listings" },
     {
       label: "Pending verifications",
       value: d.pendingVerifications,
       href: "/admin/verifications",
+      glass: true,
+      tone: d.pendingVerifications > 0 ? "warning" : "default",
     },
     {
       label: "Active / trial / past-due subs",
@@ -35,33 +43,45 @@ export default async function AdminOverviewPage() {
   return (
     <div className="space-y-8">
       <header>
-        <h1 className="text-2xl font-semibold text-[var(--color-ink)]">Overview</h1>
+        <h1 className="text-2xl font-semibold tracking-tight text-[var(--color-ink)]">
+          Overview
+        </h1>
         <p className="mt-1 text-sm text-[var(--color-muted)]">
           Platform health for Dunara operations. Moderation actions are audited.
         </p>
       </header>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {metrics.map((m) => (
           <Link key={m.label} href={m.href} className="block">
-            <Card className="h-full transition hover:border-[var(--color-primary)]">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-[var(--color-muted)]">
-                  {m.label}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-3xl font-semibold tabular-nums text-[var(--color-ink)]">
-                  {m.value}
-                </p>
-              </CardContent>
-            </Card>
+            <div
+              className={cn(
+                "h-full rounded-2xl p-4 shadow-sm transition hover:ring-1 hover:ring-[var(--color-primary)]/40",
+                m.glass
+                  ? "glass-panel ring-1 ring-black/5"
+                  : "border border-[var(--color-border)] bg-white"
+              )}
+            >
+              <p className="text-xs font-medium uppercase tracking-wide text-[var(--color-muted)]">
+                {m.label}
+              </p>
+              <p
+                className={cn(
+                  "mt-2 text-3xl font-semibold tabular-nums tracking-tight",
+                  m.tone === "warning"
+                    ? "text-[var(--color-warning)]"
+                    : "text-[var(--color-ink)]"
+                )}
+              >
+                {m.value}
+              </p>
+            </div>
           </Link>
         ))}
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <section className="rounded-lg border border-[var(--color-border)] bg-white p-5 shadow-sm">
+        <section className="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-sm">
           <div className="mb-3 flex items-center justify-between">
             <h2 className="text-sm font-semibold text-[var(--color-ink)]">Recent shops</h2>
             <Link href="/admin/shops" className="text-xs font-medium text-[var(--color-primary)]">
@@ -89,7 +109,7 @@ export default async function AdminOverviewPage() {
           )}
         </section>
 
-        <section className="rounded-lg border border-[var(--color-border)] bg-white p-5 shadow-sm">
+        <section className="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-sm">
           <h2 className="mb-3 text-sm font-semibold text-[var(--color-ink)]">
             Recent moderation
           </h2>

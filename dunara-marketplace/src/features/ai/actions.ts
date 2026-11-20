@@ -33,11 +33,24 @@ const DEFAULT_SETTINGS: Pick<AiAssistantSettings, "language" | "personality" | "
   custom_instructions: null,
 };
 
-async function resolveShopAndUser() {
+type ResolvedShopContext =
+  | {
+      ok: true;
+      user: Awaited<ReturnType<typeof requireUser>>;
+      shop: NonNullable<Awaited<ReturnType<typeof getOwnShop>>>;
+    }
+  | {
+      ok: false;
+      error: string;
+    };
+
+async function resolveShopAndUser(): Promise<ResolvedShopContext> {
   const user = await requireUser("/seller/ai");
   const shop = await getOwnShop(user.id);
-  if (!shop) return { error: "Create a shop before using the AI assistant." as const };
-  return { user, shop };
+  if (!shop) {
+    return { ok: false, error: "Create a shop before using the AI assistant." };
+  }
+  return { ok: true, user, shop };
 }
 
 export async function getAiSettings(): Promise<
@@ -47,7 +60,7 @@ export async function getAiSettings(): Promise<
   }>
 > {
   const resolved = await resolveShopAndUser();
-  if ("error" in resolved) return { ok: false, message: resolved.error };
+  if (!resolved.ok) return { ok: false, message: resolved.error };
   const { shop } = resolved;
 
   const supabase = await createClient();
@@ -95,7 +108,7 @@ export async function getAiSettings(): Promise<
 
 export async function updateAiSettings(raw: unknown): Promise<ActionResult> {
   const resolved = await resolveShopAndUser();
-  if ("error" in resolved) return { ok: false, message: resolved.error };
+  if (!resolved.ok) return { ok: false, message: resolved.error };
   const { shop } = resolved;
 
   const parsed = updateAiSettingsSchema.safeParse(raw);
@@ -134,7 +147,7 @@ export async function draftAiReply(
   raw: unknown
 ): Promise<ActionResult<{ draft: string; usage: AiUsageSnapshot }>> {
   const resolved = await resolveShopAndUser();
-  if ("error" in resolved) return { ok: false, message: resolved.error };
+  if (!resolved.ok) return { ok: false, message: resolved.error };
   const { user, shop } = resolved;
 
   const rl = rateLimit(`ai-reply:${user.id}`, 20, 60_000);
@@ -289,7 +302,7 @@ export async function draftAiReply(
 
 export async function askAiGuide(raw: unknown): Promise<ActionResult<{ answer: string }>> {
   const resolved = await resolveShopAndUser();
-  if ("error" in resolved) return { ok: false, message: resolved.error };
+  if (!resolved.ok) return { ok: false, message: resolved.error };
   const { user, shop } = resolved;
 
   const rl = rateLimit(`ai-guide:${user.id}`, 20, 60_000);
