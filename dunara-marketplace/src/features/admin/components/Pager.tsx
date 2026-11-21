@@ -22,7 +22,7 @@ export function Pager({
 
   return (
     <nav className="flex items-center justify-between gap-3" aria-label="Pagination">
-      <p className="text-sm text-[var(--color-muted)]">
+      <p className="text-sm text-[var(--color-ink-soft)]">
         Page {page} of {totalPages}
       </p>
       <div className="flex gap-2">

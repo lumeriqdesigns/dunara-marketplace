@@ -19,7 +19,7 @@ export default async function CategoriesPage() {
         <h1 id="categories-title" className="discovery-title">
           Browse by category
         </h1>
-        <p className="mt-3 max-w-xl text-sm leading-6 text-[var(--color-muted)] sm:text-base">
+        <p className="mt-3 max-w-xl text-sm leading-6 text-[var(--color-ink-soft)] sm:text-base">
           From fashion and food to tutoring and short stays. Pick a category to see what local
           businesses are offering.
         </p>
@@ -33,7 +33,7 @@ export default async function CategoriesPage() {
       </section>
 
       {categories.length === 0 ? (
-        <p className="mt-8 rounded-2xl border border-dashed border-[#C8D4C9] bg-[var(--color-surface-warm)] px-6 py-10 text-center text-sm text-[var(--color-muted)]">
+        <p className="mt-8 rounded-2xl border border-dashed border-[#C8D4C9] bg-[var(--color-surface-warm)] px-6 py-10 text-center text-sm text-[var(--color-ink-soft)]">
           Categories will appear here soon.
         </p>
       ) : (
@@ -50,7 +50,7 @@ export default async function CategoriesPage() {
                     <CategoryIcon name={c.icon} className="size-5" />
                   </span>
                   <span className="text-sm font-semibold text-[var(--color-ink)]">{c.name}</span>
-                  <span className="mt-1 text-xs font-normal capitalize text-[var(--color-muted)]">
+                  <span className="mt-1 text-xs font-normal capitalize text-[var(--color-ink-soft)]">
                     {categoryTypeLabel(c.type)}
                     {count > 0 ? ` · ${count} listing${count === 1 ? "" : "s"}` : ""}
                   </span>

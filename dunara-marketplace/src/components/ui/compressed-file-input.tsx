@@ -62,7 +62,7 @@ export function CompressedFileInput({
   return (
     <>
       <input ref={ref} type="file" name={name} accept={accept} onChange={onChange} className={className} />
-      <span className="text-xs text-[var(--color-muted)]">
+      <span className="text-xs text-[var(--color-ink-soft)]">
         {busy ? "Optimising image…" : `Large photos are resized automatically (max ${MAX_UPLOAD_LABEL})`}
       </span>
     </>

@@ -60,12 +60,12 @@ export default async function AdminSubscriptionsPage() {
                       {row.shop_name ?? row.shop_id}
                     </p>
                   </td>
-                  <td className="text-[var(--color-muted)]">
+                  <td className="text-[var(--color-ink-soft)]">
                     {row.plan_name ?? row.plan_slug ?? "—"}
                     {row.billing_interval ? ` · ${row.billing_interval}` : ""}
                   </td>
                   <td>{subscriptionBadge(row.status)}</td>
-                  <td className="text-xs text-[var(--color-muted)]">
+                  <td className="text-xs text-[var(--color-ink-soft)]">
                     {row.current_period_end
                       ? new Date(row.current_period_end).toLocaleDateString("en-NG")
                       : row.trial_ends_at

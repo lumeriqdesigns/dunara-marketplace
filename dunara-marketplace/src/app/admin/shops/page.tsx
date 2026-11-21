@@ -114,9 +114,9 @@ export default async function AdminShopsPage({
                     >
                       {row.name}
                     </Link>
-                    <p className="text-xs text-[var(--color-muted)]">/{row.slug}</p>
+                    <p className="text-xs text-[var(--color-ink-soft)]">/{row.slug}</p>
                   </td>
-                  <td className="text-[var(--color-muted)]">{row.owner_email ?? "—"}</td>
+                  <td className="text-[var(--color-ink-soft)]">{row.owner_email ?? "—"}</td>
                   <td>
                     <div className="flex flex-wrap gap-1">
                       {publishedBadge(row.is_published)}
@@ -126,7 +126,7 @@ export default async function AdminShopsPage({
                   </td>
                   <td>
                     <div className="space-y-1">
-                      <p className="text-xs text-[var(--color-muted)]">{row.plan_slug ?? "—"}</p>
+                      <p className="text-xs text-[var(--color-ink-soft)]">{row.plan_slug ?? "—"}</p>
                       {row.subscription_status ? subscriptionBadge(row.subscription_status) : null}
                     </div>
                   </td>

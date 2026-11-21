@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { safeInternalPath } from "@/lib/safe-redirect";
 
 /** Cookie payload shape used by @supabase/ssr setAll. */
 type CookieToSet = {
@@ -77,10 +78,14 @@ export async function updateSession(request: NextRequest) {
   }
 
   if (user && (pathname === "/login" || pathname === "/register")) {
-    const sellerUrl = request.nextUrl.clone();
-    sellerUrl.pathname = "/seller";
-    sellerUrl.search = "";
-    return NextResponse.redirect(sellerUrl);
+    const requested = safeInternalPath(request.nextUrl.searchParams.get("next"), "/seller");
+    const target =
+      requested.startsWith("/login") || requested.startsWith("/register") ? "/seller" : requested;
+    const destination = request.nextUrl.clone();
+    const [path, query] = target.split("?");
+    destination.pathname = path;
+    destination.search = query ? `?${query}` : "";
+    return NextResponse.redirect(destination);
   }
 
   // Private surfaces must not be CDN-cached across users

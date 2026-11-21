@@ -1,5 +1,6 @@
 "use client";
 
+import { CharCount } from "@/components/ui/char-count";
 import { useActionState, useMemo, useState } from "react";
 import {
   createListingAction,
@@ -35,7 +36,7 @@ function Section({
     <section className="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-[var(--shadow-card)] sm:p-6">
       <h2 className="text-base font-semibold text-[var(--color-ink)]">{title}</h2>
       {description ? (
-        <p className="mt-1 text-sm text-[var(--color-muted)]">{description}</p>
+        <p className="mt-1 text-sm text-[var(--color-ink-soft)]">{description}</p>
       ) : null}
       <div className="mt-5 space-y-4">{children}</div>
     </section>
@@ -54,6 +55,7 @@ export function ListingForm({
   const action = mode === "create" ? createListingAction : updateListingAction;
   const [state, formAction, pending] = useActionState(action, initial);
   const [title, setTitle] = useState(listing?.title ?? "");
+  const [descLength, setDescLength] = useState((listing?.description ?? "").length);
   const [slug, setSlug] = useState(listing?.slug ?? "");
   const [slugTouched, setSlugTouched] = useState(!!listing);
   const [priceType, setPriceType] = useState(listing?.price_type ?? "fixed");
@@ -93,6 +95,7 @@ export function ListingForm({
             id="title"
             name="title"
             required
+            maxLength={150}
             value={title}
             disabled={pending}
             aria-invalid={Boolean(state.fieldErrors?.title) || undefined}
@@ -101,6 +104,7 @@ export function ListingForm({
               if (!slugTouched) setSlug(slugify(e.target.value));
             }}
           />
+          <CharCount value={title.length} max={150} />
           <FieldError messages={state.fieldErrors?.title} />
         </div>
 
@@ -121,7 +125,7 @@ export function ListingForm({
             }}
           />
           {!slugTouched && suggested ? (
-            <p className="mt-1.5 text-xs text-[var(--color-muted)]">Suggested: {suggested}</p>
+            <p className="mt-1.5 text-xs text-[var(--color-ink-soft)]">Suggested: {suggested}</p>
           ) : null}
           <FieldError messages={state.fieldErrors?.slug} />
         </div>
@@ -135,9 +139,12 @@ export function ListingForm({
             name="description"
             rows={5}
             defaultValue={listing?.description ?? ""}
+            maxLength={5000}
+            onChange={(e) => setDescLength(e.target.value.length)}
             disabled={pending}
             className="min-h-[8rem]"
           />
+          <CharCount value={descLength} max={5000} />
         </div>
       </Section>
 

@@ -10,6 +10,7 @@ import {
 } from "./schemas";
 import { mapAuthError } from "./lib/map-auth-error";
 import { safeInternalPath } from "@/lib/safe-redirect";
+import { getSiteUrl } from "@/lib/site-url";
 
 export type AuthActionState = {
   ok: boolean;
@@ -50,7 +51,7 @@ export async function registerAction(
 
   const { fullName, email, password } = parsed.data;
   const supabase = await createClient();
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const siteUrl = await getSiteUrl();
 
   const { data, error } = await supabase.auth.signUp({
     email,
@@ -92,7 +93,7 @@ export async function loginAction(
   }
 
   const { email, password } = parsed.data;
-  const safeNext = safeInternalPath((formData.get("next") as string) || "/seller", "/seller");
+  const requestedNext = String(formData.get("next") ?? "").trim();
 
   const supabase = await createClient();
   const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -101,7 +102,12 @@ export async function loginAction(
     return { ok: false, message: mapAuthError(error) };
   }
 
-  redirect(safeNext);
+  // Honour an explicit ?next=; otherwise send admins to the admin console and everyone else to /seller
+  if (requestedNext) {
+    redirect(safeInternalPath(requestedNext, "/seller"));
+  }
+  const { data: isAdmin } = await supabase.rpc("is_admin");
+  redirect(isAdmin === true ? "/admin" : "/seller");
 }
 
 /**
@@ -124,7 +130,7 @@ export async function forgotPasswordAction(
 
   const { email } = parsed.data;
   const supabase = await createClient();
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const siteUrl = await getSiteUrl();
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo: `${siteUrl}/auth/callback?next=/reset-password`,
@@ -196,7 +202,7 @@ export async function resendConfirmationAction(
   }
 
   const supabase = await createClient();
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const siteUrl = await getSiteUrl();
 
   const { error } = await supabase.auth.resend({
     type: "signup",

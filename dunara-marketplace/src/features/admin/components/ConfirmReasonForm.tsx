@@ -60,7 +60,7 @@ export function ConfirmReasonForm({
       <div>
         <p className="text-sm font-medium text-[var(--color-ink)]">{title}</p>
         {description ? (
-          <p className="mt-1 text-xs text-[var(--color-muted)]">{description}</p>
+          <p className="mt-1 text-xs text-[var(--color-ink-soft)]">{description}</p>
         ) : null}
       </div>
       <div className="space-y-1.5">

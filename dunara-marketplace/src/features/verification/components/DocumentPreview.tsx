@@ -35,7 +35,7 @@ export function DocumentPreview({ documents }: { documents: Doc[] }) {
 
   if (documents.length === 0) {
     return (
-      <p className="rounded-xl border border-dashed border-[var(--color-border)] bg-[var(--color-canvas)] px-4 py-8 text-center text-sm text-[var(--color-muted)]">
+      <p className="rounded-xl border border-dashed border-[var(--color-border)] bg-[var(--color-canvas)] px-4 py-8 text-center text-sm text-[var(--color-ink-soft)]">
         No documents available (missing files or signing failed).
       </p>
     );
@@ -92,7 +92,7 @@ export function DocumentPreview({ documents }: { documents: Doc[] }) {
                 ) : pdf ? (
                   <div className="flex flex-col items-center gap-3 rounded-xl border border-[var(--color-border)] bg-white px-4 py-10">
                     <FileText aria-hidden="true" className="size-10 text-[var(--color-primary)]" />
-                    <p className="text-sm text-[var(--color-muted)]">PDF document</p>
+                    <p className="text-sm text-[var(--color-ink-soft)]">PDF document</p>
                     <a
                       href={doc.signedUrl}
                       target="_blank"
@@ -104,7 +104,7 @@ export function DocumentPreview({ documents }: { documents: Doc[] }) {
                   </div>
                 ) : (
                   <div className="flex flex-col items-center gap-2 rounded-xl border border-[var(--color-border)] bg-white px-4 py-8">
-                    <FileText aria-hidden="true" className="size-8 text-[var(--color-muted)]" />
+                    <FileText aria-hidden="true" className="size-8 text-[var(--color-ink-soft)]" />
                     <a
                       href={doc.signedUrl}
                       target="_blank"

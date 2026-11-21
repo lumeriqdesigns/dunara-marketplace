@@ -10,6 +10,7 @@ import {
 } from "@/features/marketplace/components/FilterPanel";
 import { Pagination } from "@/features/marketplace/components/Pagination";
 import { ListingCard } from "@/features/listings/components/ListingCard";
+import { Reveal } from "@/components/ui/reveal";
 import { EmptyState } from "@/components/ui/empty-state";
 import { buttonVariants } from "@/components/ui/button";
 import { getCategoriesWithCounts, searchListings } from "@/features/marketplace/lib/queries";
@@ -91,16 +92,17 @@ export default async function ExplorePage({
 
           {result.items.length > 0 ? (
             <ul className="mt-4 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3">
-              {result.items.map((l) => (
-                <li key={l.id}>
+              {result.items.map((l, i) => (
+                <Reveal as="li" key={l.id} delay={(i % 6) * 45}>
                   <ListingCard
                     listing={l}
                     shopSlug={l.shops?.slug ?? ""}
                     shopName={l.shops?.name}
                     location={[l.shops?.city, l.shops?.state].filter(Boolean).join(", ")}
                     verified={l.shops?.verification_status === "verified"}
+                    phone={l.shops?.phone}
                   />
-                </li>
+                </Reveal>
               ))}
             </ul>
           ) : (
@@ -126,6 +128,26 @@ export default async function ExplorePage({
               }
             />
           )}
+
+          {result.items.length === 0 && categories.length > 0 ? (
+            <div className="mt-8">
+              <h2 className="text-sm font-semibold text-[var(--color-ink)]">
+                {hasFilters ? "Try a popular category instead" : "Browse by category"}
+              </h2>
+              <ul className="mt-3 flex flex-wrap gap-2">
+                {categories.slice(0, 8).map((c) => (
+                  <li key={c.id}>
+                    <Link
+                      href={`/categories/${c.slug}`}
+                      className="pill-link rounded-full border border-[var(--color-border)] bg-white px-4 text-sm font-medium text-[var(--color-ink)] transition-colors hover:border-[var(--color-primary)] hover:bg-[var(--color-soft-green)]"
+                    >
+                      {c.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
 
           <Pagination filters={filters} total={result.total} />
         </section>

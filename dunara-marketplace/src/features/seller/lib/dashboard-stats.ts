@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import type { Shop } from "@/types";
+import { TIERS } from "@/config/plans";
 import {
   getShopEntitlement,
   expireTrials,
@@ -24,8 +25,8 @@ export async function getSellerDashboardStats(
       publishedListings: 0,
       draftListings: 0,
       shop: null,
-      planLabel: "Open",
-      listingLimit: 5,
+      planLabel: TIERS.open.name,
+      listingLimit: TIERS.open.limits.publishedListings,
       planStatus: "free",
     };
   }

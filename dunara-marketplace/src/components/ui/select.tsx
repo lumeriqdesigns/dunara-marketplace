@@ -21,7 +21,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
       </select>
       <ChevronDown
         aria-hidden="true"
-        className="pointer-events-none absolute right-3.5 top-1/2 size-4 -translate-y-1/2 text-[var(--color-muted)] transition-transform duration-200 group-focus-within/select:text-[var(--color-primary)]"
+        className="pointer-events-none absolute right-3.5 top-1/2 size-4 -translate-y-1/2 text-[var(--color-ink-soft)] transition-transform duration-200 group-focus-within/select:text-[var(--color-primary)]"
       />
     </div>
   )

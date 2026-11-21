@@ -23,7 +23,7 @@ export default async function LocationsPage() {
         <h1 id="locations-title" className="discovery-title">
           Find businesses near you
         </h1>
-        <p className="mt-3 max-w-xl text-sm leading-6 text-[var(--color-muted)] sm:text-base">
+        <p className="mt-3 max-w-xl text-sm leading-6 text-[var(--color-ink-soft)] sm:text-base">
           Browse shops and service providers by state, then contact them directly on WhatsApp.
         </p>
         <div className="mt-6 flex flex-wrap items-center gap-3">
@@ -34,7 +34,7 @@ export default async function LocationsPage() {
             Discover Kwara and Ilorin
             <ArrowRight aria-hidden="true" className="size-4" />
           </Link>
-          <p className="text-sm text-[var(--color-muted)]">
+          <p className="text-sm text-[var(--color-ink-soft)]">
             {activeStates.length === 0
               ? "More states are opening soon"
               : `${activeStates.length} ${activeStates.length === 1 ? "state" : "states"} with active shops`}

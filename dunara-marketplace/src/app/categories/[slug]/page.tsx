@@ -43,7 +43,7 @@ export default async function CategoryPage({ params }: Props) {
         ← All categories
       </Link>
       <h1 className="mt-3 text-2xl font-semibold text-[var(--color-ink)]">{cat.name}</h1>
-      <p className="mt-1 text-sm capitalize text-[var(--color-muted)]">
+      <p className="mt-1 text-sm capitalize text-[var(--color-ink-soft)]">
         {cat.type} · {total} listing{total === 1 ? "" : "s"}
       </p>
       {items.length > 0 ? (
@@ -56,6 +56,7 @@ export default async function CategoryPage({ params }: Props) {
                 shopName={l.shops?.name}
                 location={[l.shops?.city, l.shops?.state].filter(Boolean).join(", ")}
                 verified={l.shops?.verification_status === "verified"}
+                phone={l.shops?.phone}
               />
             </li>
           ))}

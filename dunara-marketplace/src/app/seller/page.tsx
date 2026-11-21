@@ -200,13 +200,13 @@ export default async function SellerHomePage() {
                     <span className="block text-sm font-semibold text-[var(--color-ink)]">
                       {a.title}
                     </span>
-                    <span className="mt-0.5 block text-xs leading-5 text-[var(--color-muted)]">
+                    <span className="mt-0.5 block text-xs leading-5 text-[var(--color-ink-soft)]">
                       {a.body}
                     </span>
                   </span>
                   <ArrowRight
                     aria-hidden="true"
-                    className="mt-0.5 size-4 shrink-0 text-[var(--color-muted)] transition-transform group-hover:translate-x-0.5 group-hover:text-[var(--color-primary)]"
+                    className="mt-0.5 size-4 shrink-0 text-[var(--color-ink-soft)] transition-transform group-hover:translate-x-0.5 group-hover:text-[var(--color-primary)]"
                   />
                 </Link>
               </li>
@@ -228,17 +228,17 @@ export default async function SellerHomePage() {
           {shop ? (
             <dl className="mt-4 grid gap-5 text-sm sm:grid-cols-2">
               <div>
-                <dt className="text-[var(--color-muted)]">Shop name</dt>
+                <dt className="text-[var(--color-ink-soft)]">Shop name</dt>
                 <dd className="mt-1 font-medium text-[var(--color-ink)]">{shop.name}</dd>
               </div>
               <div>
-                <dt className="text-[var(--color-muted)]">Visibility</dt>
+                <dt className="text-[var(--color-ink-soft)]">Visibility</dt>
                 <dd className="mt-1">
                   <Badge variant={visibility.variant}>{visibility.label}</Badge>
                 </dd>
               </div>
               <div>
-                <dt className="text-[var(--color-muted)]">Public link</dt>
+                <dt className="text-[var(--color-ink-soft)]">Public link</dt>
                 <dd className="mt-1 break-all">
                   {shop.is_published ? (
                     <a
@@ -250,19 +250,19 @@ export default async function SellerHomePage() {
                       /shop/{shop.slug}
                     </a>
                   ) : (
-                    <span className="text-[var(--color-muted)]">
+                    <span className="text-[var(--color-ink-soft)]">
                       /shop/{shop.slug} (not live yet)
                     </span>
                   )}
                 </dd>
               </div>
               <div>
-                <dt className="text-[var(--color-muted)]">Verification</dt>
+                <dt className="text-[var(--color-ink-soft)]">Verification</dt>
                 <dd className="mt-1 font-medium text-[var(--color-ink)]">{verification}</dd>
               </div>
             </dl>
           ) : (
-            <p className="mt-3 text-sm text-[var(--color-muted)]">
+            <p className="mt-3 text-sm text-[var(--color-ink-soft)]">
               You haven&apos;t created a shop yet.
             </p>
           )}

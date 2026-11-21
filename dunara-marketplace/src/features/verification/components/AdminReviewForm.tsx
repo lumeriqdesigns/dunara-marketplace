@@ -24,7 +24,7 @@ export function AdminReviewForm({
 
   if (status !== "pending") {
     return (
-      <p className="rounded-xl border border-[var(--color-border)] bg-[var(--color-canvas)] px-4 py-5 text-sm text-[var(--color-muted)]">
+      <p className="rounded-xl border border-[var(--color-border)] bg-[var(--color-canvas)] px-4 py-5 text-sm text-[var(--color-ink-soft)]">
         This request is already <strong className="text-[var(--color-ink)]">{status}</strong>. No
         further action needed.
       </p>

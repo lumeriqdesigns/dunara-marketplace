@@ -48,7 +48,7 @@ export default async function AdminVerificationsPage() {
                     {row.priority ? (
                       <span className="text-xs font-semibold text-[var(--color-primary)]">Apex priority</span>
                     ) : null}
-                    <span className="text-xs text-[var(--color-muted)]">
+                    <span className="text-xs text-[var(--color-ink-soft)]">
                       {row.plan_slug_at_submission ? `${row.plan_slug_at_submission} · ` : ""}
                       {new Date(row.created_at).toLocaleString("en-NG")}
                     </span>

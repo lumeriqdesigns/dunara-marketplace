@@ -28,7 +28,7 @@ export default function SafetyPage() {
             <h1 className="dunara-display mt-4 max-w-xl text-4xl font-bold text-[var(--color-ink)] sm:text-5xl">
               Safety tips
             </h1>
-            <p className="mt-5 max-w-lg text-base leading-7 text-[var(--color-muted)]">
+            <p className="mt-5 max-w-lg text-base leading-7 text-[var(--color-ink-soft)]">
               Dunara connects you with local businesses on WhatsApp. Stay alert, verify details
               yourself, and never share secrets that unlock your accounts.
             </p>

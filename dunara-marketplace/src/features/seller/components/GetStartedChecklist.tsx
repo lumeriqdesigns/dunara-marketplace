@@ -26,7 +26,7 @@ export function GetStartedChecklist({ steps }: { steps: ChecklistStep[] }) {
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
               <h2 className="text-base font-semibold text-[var(--color-ink)]">Get started</h2>
-              <p className="mt-1 text-sm text-[var(--color-muted)]">
+              <p className="mt-1 text-sm text-[var(--color-ink-soft)]">
                 {completed} of {total} steps complete
               </p>
             </div>
@@ -67,7 +67,7 @@ export function GetStartedChecklist({ steps }: { steps: ChecklistStep[] }) {
                       "mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full",
                       step.done
                         ? "bg-[var(--color-primary)] text-white"
-                        : "border border-[var(--color-border)] bg-white text-[var(--color-muted)]"
+                        : "border border-[var(--color-border)] bg-white text-[var(--color-ink-soft)]"
                     )}
                     aria-hidden="true"
                   >
@@ -88,7 +88,7 @@ export function GetStartedChecklist({ steps }: { steps: ChecklistStep[] }) {
                     >
                       {step.title}
                     </span>
-                    <span className="mt-0.5 block text-xs leading-5 text-[var(--color-muted)]">
+                    <span className="mt-0.5 block text-xs leading-5 text-[var(--color-ink-soft)]">
                       {step.description}
                     </span>
                   </span>

@@ -123,7 +123,7 @@ export default async function PublicShopPage({ params }: Props) {
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           {/* Breadcrumbs */}
           <nav aria-label="Breadcrumb" className="absolute left-4 top-4 z-10 sm:left-6">
-            <ol className="flex flex-wrap items-center gap-1 rounded-full bg-white/85 px-3 py-1.5 text-xs text-[var(--color-muted)] shadow-sm backdrop-blur-sm sm:text-sm">
+            <ol className="flex flex-wrap items-center gap-1 rounded-full bg-white/85 px-3 py-1.5 text-xs text-[var(--color-ink-soft)] shadow-sm backdrop-blur-sm sm:text-sm">
               <li>
                 <Link href="/" className="hover:text-[var(--color-primary)]">
                   Home
@@ -170,7 +170,7 @@ export default async function PublicShopPage({ params }: Props) {
                 </h1>
                 {isVerified ? <VerifiedChip /> : null}
               </div>
-              <p className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-[var(--color-muted)]">
+              <p className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-[var(--color-ink-soft)]">
                 {[shop.categories?.name, typeLabel].filter(Boolean).join(" · ")}
                 {location ? (
                   <span className="inline-flex items-center gap-1">
@@ -238,7 +238,7 @@ export default async function PublicShopPage({ params }: Props) {
               Listings
             </h2>
             {shop.listings && shop.listings.length > 0 ? (
-              <p className="text-sm text-[var(--color-muted)]">
+              <p className="text-sm text-[var(--color-ink-soft)]">
                 {shop.listings.length}{" "}
                 {shop.listings.length === 1 ? "listing" : "listings"}
               </p>
@@ -255,6 +255,7 @@ export default async function PublicShopPage({ params }: Props) {
                     shopName={shop.name}
                     location={location}
                     verified={isVerified}
+                    phone={shop.phone}
                   />
                 </li>
               ))}
@@ -270,7 +271,7 @@ export default async function PublicShopPage({ params }: Props) {
           )}
         </section>
 
-        <p className="mt-12 text-center text-xs text-[var(--color-muted)]">
+        <p className="mt-12 text-center text-xs text-[var(--color-ink-soft)]">
           Contact this seller on WhatsApp. {brand.name} does not process payments or
           guarantee off-platform transactions.
           {shop.phone ? ` · ${formatPhoneDisplay(shop.phone)}` : null}

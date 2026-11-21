@@ -57,7 +57,7 @@ export default async function LocationStatePage({ params }: Props) {
         </Link>
         <h1 className="mt-3 text-2xl font-semibold text-[var(--color-ink)]">{state}</h1>
         {isKwara ? (
-          <p className="mt-1 text-sm text-[var(--color-muted)]">
+          <p className="mt-1 text-sm text-[var(--color-ink-soft)]">
             {KWARA_LOCATIONS.length} curated areas across Ilorin and Kwara towns
           </p>
         ) : null}
@@ -74,7 +74,7 @@ export default async function LocationStatePage({ params }: Props) {
             ] as const
           ).map(([label, list]) => (
             <div key={label}>
-              <h3 className="text-sm font-medium text-[var(--color-muted)]">{label}</h3>
+              <h3 className="text-sm font-medium text-[var(--color-ink-soft)]">{label}</h3>
               <ul className="mt-2 flex flex-wrap gap-2">
                 {list.map((loc) => (
                   <li key={loc.slug}>
@@ -130,6 +130,7 @@ export default async function LocationStatePage({ params }: Props) {
                   shopName={l.shops?.name}
                   location={[l.shops?.city, l.shops?.state].filter(Boolean).join(", ")}
                   verified={l.shops?.verification_status === "verified"}
+                  phone={l.shops?.phone}
                 />
               </li>
             ))}

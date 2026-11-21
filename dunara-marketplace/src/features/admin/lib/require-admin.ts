@@ -1,4 +1,4 @@
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import type { User } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/server";
 import { getUser } from "@/features/auth/lib/get-user";
@@ -29,13 +29,13 @@ export async function requireAdmin(returnTo = "/admin"): Promise<AdminUser> {
       .maybeSingle();
 
     if (!roleRow) {
-      redirect("/seller");
+      notFound();
     }
     return user;
   }
 
   if (data !== true) {
-    redirect("/seller");
+    notFound();
   }
 
   return user;

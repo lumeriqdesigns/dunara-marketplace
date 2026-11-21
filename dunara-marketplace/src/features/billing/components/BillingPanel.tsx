@@ -58,15 +58,15 @@ export function BillingPanel({
         <h2 className="text-sm font-semibold text-[var(--color-ink)]">Current plan</h2>
         <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
           <div>
-            <dt className="text-[var(--color-muted)]">Plan</dt>
+            <dt className="text-[var(--color-ink-soft)]">Plan</dt>
             <dd className="font-medium">{entitlement.planName}</dd>
           </div>
           <div>
-            <dt className="text-[var(--color-muted)]">Status</dt>
+            <dt className="text-[var(--color-ink-soft)]">Status</dt>
             <dd className="capitalize font-medium">{entitlement.status}</dd>
           </div>
           <div>
-            <dt className="text-[var(--color-muted)]">Published listings</dt>
+            <dt className="text-[var(--color-ink-soft)]">Published listings</dt>
             <dd className="font-medium">
               {publishedCount}
               {entitlement.listingLimit === -1
@@ -76,13 +76,13 @@ export function BillingPanel({
           </div>
           {entitlement.billingInterval ? (
             <div>
-              <dt className="text-[var(--color-muted)]">Billing interval</dt>
+              <dt className="text-[var(--color-ink-soft)]">Billing interval</dt>
               <dd className="capitalize font-medium">{entitlement.billingInterval}</dd>
             </div>
           ) : null}
           {trialDaysLeft != null ? (
             <div>
-              <dt className="text-[var(--color-muted)]">Trial remaining</dt>
+              <dt className="text-[var(--color-ink-soft)]">Trial remaining</dt>
               <dd className="font-medium">
                 {trialDaysLeft} day{trialDaysLeft === 1 ? "" : "s"}
                 {entitlement.trialEndsAt
@@ -93,14 +93,14 @@ export function BillingPanel({
           ) : null}
           {entitlement.currentPeriodEnd && !entitlement.isTrialing ? (
             <div>
-              <dt className="text-[var(--color-muted)]">Current period ends</dt>
+              <dt className="text-[var(--color-ink-soft)]">Current period ends</dt>
               <dd className="font-medium">
                 {new Date(entitlement.currentPeriodEnd).toLocaleDateString("en-NG")}
               </dd>
             </div>
           ) : null}
         </dl>
-        <p className="mt-4 text-xs text-[var(--color-muted)]">
+        <p className="mt-4 text-xs text-[var(--color-ink-soft)]">
           Dunara charges seller subscriptions only. There is no commission on WhatsApp
           deals between you and buyers.
         </p>
@@ -108,7 +108,7 @@ export function BillingPanel({
 
       <section>
         <h2 className="text-sm font-semibold text-[var(--color-ink)]">Upgrade</h2>
-        <p className="mt-1 text-sm text-[var(--color-muted)]">
+        <p className="mt-1 text-sm text-[var(--color-ink-soft)]">
           Choose monthly or annual. You will complete payment on Paystack.
         </p>
         {state.message && !state.ok ? (
@@ -139,12 +139,12 @@ export function BillingPanel({
                   <h3 className="font-semibold text-[var(--color-ink)]">{plan.name}</h3>
                   <span className="text-sm font-medium text-[var(--color-primary)]">
                     {formatNaira(Number(plan.price_kobo))}
-                    <span className="text-xs font-normal text-[var(--color-muted)]">
+                    <span className="text-xs font-normal text-[var(--color-ink-soft)]">
                       /{plan.interval === "annual" ? "yr" : "mo"}
                     </span>
                   </span>
                 </div>
-                <ul className="mt-3 flex-1 space-y-1 text-xs text-[var(--color-muted)]">
+                <ul className="mt-3 flex-1 space-y-1 text-xs text-[var(--color-ink-soft)]">
                   <li>
                     {plan.listing_limit === -1
                       ? "Unlimited published listings"

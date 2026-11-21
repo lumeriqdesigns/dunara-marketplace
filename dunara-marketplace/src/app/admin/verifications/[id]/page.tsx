@@ -27,7 +27,7 @@ export default async function AdminVerificationDetailPage({
   return (
     <div className="space-y-6">
       <div>
-        <p className="text-xs text-[var(--color-muted)]">
+        <p className="text-xs text-[var(--color-ink-soft)]">
           <Link href="/admin/verifications" className="hover:underline">
             Verifications
           </Link>{" "}
@@ -54,7 +54,7 @@ export default async function AdminVerificationDetailPage({
         <section className="space-y-3">
           <div>
             <h2 className="text-base font-semibold text-[var(--color-ink)]">Submitted documents</h2>
-            <p className="mt-1 text-xs text-[var(--color-muted)]">
+            <p className="mt-1 text-xs text-[var(--color-ink-soft)]">
               Signed links expire in about two minutes. Do not share them. Paths are never shown on
               public pages.
             </p>
@@ -68,7 +68,7 @@ export default async function AdminVerificationDetailPage({
             <h2 className="text-sm font-semibold text-[var(--color-ink)]">Shop & applicant</h2>
             <div className="mt-4 space-y-4">
               <div>
-                <p className="text-xs font-medium uppercase tracking-wide text-[var(--color-muted)]">
+                <p className="text-xs font-medium uppercase tracking-wide text-[var(--color-ink-soft)]">
                   Shop
                 </p>
                 <p className="mt-0.5 font-medium text-[var(--color-ink)]">{shop.name}</p>
@@ -84,14 +84,14 @@ export default async function AdminVerificationDetailPage({
                 </div>
               </div>
               <div className="border-t border-[var(--color-border)] pt-4">
-                <p className="text-xs font-medium uppercase tracking-wide text-[var(--color-muted)]">
+                <p className="text-xs font-medium uppercase tracking-wide text-[var(--color-ink-soft)]">
                   Applicant
                 </p>
                 <p className="mt-0.5 text-sm text-[var(--color-ink)]">
                   {owner?.full_name ?? "—"}
                 </p>
-                <p className="text-sm text-[var(--color-muted)]">{owner?.email ?? "—"}</p>
-                <p className="mt-2 text-xs text-[var(--color-muted)]">
+                <p className="text-sm text-[var(--color-ink-soft)]">{owner?.email ?? "—"}</p>
+                <p className="mt-2 text-xs text-[var(--color-ink-soft)]">
                   Submitted {new Date(request.created_at).toLocaleString("en-NG")}
                   {request.plan_slug_at_submission
                     ? ` · Plan at submit: ${request.plan_slug_at_submission}`

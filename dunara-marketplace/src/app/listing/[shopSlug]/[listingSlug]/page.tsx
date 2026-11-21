@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { MapPin, ChevronRight } from "lucide-react";
+import { MapPin, ChevronRight, Flag } from "lucide-react";
 import { getPublicListing } from "@/features/listings/lib/get-listings";
 import { formatPriceLabel } from "@/features/listings/lib/price";
 import { buildWhatsAppUrl } from "@/features/shop/lib/whatsapp";
 import { brand } from "@/config/brand";
 import { VerifiedChip } from "@/components/ui/verified-chip";
-import { NoPhoto } from "@/components/illustrations/NoPhoto";
+import { ListingGallery } from "@/features/listings/components/ListingGallery";
+import { legal } from "@/config/legal";
 import { SafetyShield } from "@/components/illustrations/SafetyShield";
 
 type Props = {
@@ -43,8 +44,36 @@ export default async function PublicListingPage({ params }: Props) {
   const gallery = (listing.listing_media ?? [])
     .slice()
     .sort((a, b) => a.sort_order - b.sort_order);
-  const mainImage = listing.cover_image_url ?? gallery[0]?.url ?? null;
+  const photos: { id: string; url: string }[] = [];
+  if (listing.cover_image_url) photos.push({ id: "cover", url: listing.cover_image_url });
+  for (const m of gallery) {
+    if (!photos.some((p) => p.url === m.url)) photos.push({ id: m.id, url: m.url });
+  }
   const isVerified = shop.verification_status === "verified";
+
+  const memberSince = (() => {
+    const d = new Date(shop.created_at);
+    return Number.isNaN(d.getTime())
+      ? null
+      : d.toLocaleDateString("en-NG", { month: "short", year: "numeric" });
+  })();
+
+  // People here usually open with a short question, so offer the common ones as one-tap messages.
+  const quickQuestions: { label: string; href: string }[] = [];
+  if (shop.phone) {
+    const asks: [string, string][] = [
+      ["Is this available?", `Hi! Is "${listing.title}" still available?`],
+      ["Do you deliver?", `Hi! Do you deliver "${listing.title}"? What's the cost to my area?`],
+      ["Last price?", `Hi! What's your best price for "${listing.title}"?`],
+    ];
+    for (const [label, text] of asks) {
+      try {
+        quickQuestions.push({ label, href: buildWhatsAppUrl(shop.phone, `${text} (seen on Dunara)`) });
+      } catch {
+        break;
+      }
+    }
+  }
 
   let whatsappHref: string | null = null;
   if (shop.phone) {
@@ -56,11 +85,53 @@ export default async function PublicListingPage({ params }: Props) {
     }
   }
 
+  const pageUrl = `${brand.url}/listing/${shop.slug}/${listing.slug}`;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: brand.url },
+          { "@type": "ListItem", position: 2, name: "Explore", item: `${brand.url}/explore` },
+          { "@type": "ListItem", position: 3, name: shop.name, item: `${brand.url}/shop/${shop.slug}` },
+          { "@type": "ListItem", position: 4, name: listing.title, item: pageUrl },
+        ],
+      },
+      {
+        "@type": listing.listing_type === "service" ? "Service" : "Product",
+        name: listing.title,
+        description: listing.description?.slice(0, 300) ?? listing.title,
+        url: pageUrl,
+        ...(photos.length ? { image: photos.map((p) => p.url) } : {}),
+        ...(listing.price_kobo != null && listing.price_type !== "negotiable"
+          ? {
+              offers: {
+                "@type": "Offer",
+                priceCurrency: "NGN",
+                price: (listing.price_kobo / 100).toFixed(2),
+                url: pageUrl,
+              },
+            }
+          : {}),
+        ...(listing.listing_type === "service"
+          ? { provider: { "@type": "LocalBusiness", name: shop.name } }
+          : { brand: { "@type": "Brand", name: shop.name } }),
+      },
+    ],
+  };
+  const reportHref = `mailto:${legal.email}?subject=${encodeURIComponent(`Report listing: ${listing.title}`)}&body=${encodeURIComponent(`I'd like to report this listing: ${pageUrl}\n\nReason:\n`)}`;
+
   return (
-    <div className="mx-auto max-w-7xl px-4 pb-16 pt-6 sm:px-6 sm:pt-8">
+    <div className={`mx-auto max-w-7xl px-4 pb-16 pt-6 sm:px-6 sm:pt-8${whatsappHref ? " has-contact-bar" : ""}`}>
+      <script
+        type="application/ld+json"
+        // JSON.stringify output; "<" escaped so listing text can never close the tag.
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
       {/* Breadcrumbs */}
       <nav aria-label="Breadcrumb" className="mb-6">
-        <ol className="flex flex-wrap items-center gap-1.5 text-sm text-[var(--color-muted)]">
+        <ol className="flex flex-wrap items-center gap-1.5 text-sm text-[var(--color-ink-soft)]">
           <li>
             <Link href="/" className="hover:text-[var(--color-primary)]">
               Home
@@ -97,46 +168,11 @@ export default async function PublicListingPage({ params }: Props) {
       <div className="grid gap-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(18rem,22rem)] lg:items-start xl:grid-cols-[minmax(0,1.25fr)_minmax(20rem,24rem)]">
         {/* Left: gallery + description */}
         <div className="min-w-0 space-y-8">
-          {/* Image gallery */}
-          <div>
-            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-canvas)] shadow-[0_1px_2px_rgb(24_37_31/.04)] sm:aspect-[16/11]">
-              {mainImage ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={mainImage}
-                  alt={listing.title}
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                <div className="flex h-full flex-col items-center justify-center gap-3">
-                  <NoPhoto className="w-28 opacity-90" />
-                  <span className="text-sm text-[var(--color-muted)]">No photo yet</span>
-                </div>
-              )}
-            </div>
-
-            {gallery.length > 1 ? (
-              <ul
-                className="mt-3 flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-                aria-label="Listing photos"
-              >
-                {gallery.map((m) => (
-                  <li key={m.id} className="shrink-0">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={m.url}
-                      alt=""
-                      className="h-16 w-16 rounded-xl border border-[var(--color-border)] object-cover sm:h-[4.5rem] sm:w-[4.5rem]"
-                    />
-                  </li>
-                ))}
-              </ul>
-            ) : null}
-          </div>
+          <ListingGallery title={listing.title} photos={photos} />
 
           {/* Title + meta (mobile / below gallery) */}
           <div className="lg:hidden">
-            <p className="text-xs font-semibold uppercase tracking-wide text-[var(--color-muted)]">
+            <p className="text-xs font-semibold uppercase tracking-wide text-[var(--color-ink-soft)]">
               {listing.listing_type}
               {listing.categories?.name ? ` · ${listing.categories.name}` : null}
             </p>
@@ -159,7 +195,7 @@ export default async function PublicListingPage({ params }: Props) {
         {/* Right: sticky purchase / contact panel */}
         <aside className="lg:sticky lg:top-[calc(var(--header-h,4.5rem)+1.25rem)]">
           <div className="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-[0_1px_2px_rgb(24_37_31/.05),0_12px_28px_-14px_rgb(24_37_31/.12)] sm:p-6">
-            <p className="hidden text-xs font-semibold uppercase tracking-wide text-[var(--color-muted)] lg:block">
+            <p className="hidden text-xs font-semibold uppercase tracking-wide text-[var(--color-ink-soft)] lg:block">
               {listing.listing_type}
               {listing.categories?.name ? ` · ${listing.categories.name}` : null}
             </p>
@@ -171,7 +207,7 @@ export default async function PublicListingPage({ params }: Props) {
             </p>
 
             {location ? (
-              <p className="mt-4 flex items-start gap-2 text-sm text-[var(--color-muted)]">
+              <p className="mt-4 flex items-start gap-2 text-sm text-[var(--color-ink-soft)]">
                 <MapPin aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-[var(--color-primary)]" />
                 <span>{location}</span>
               </p>
@@ -202,7 +238,10 @@ export default async function PublicListingPage({ params }: Props) {
                   {isVerified ? <VerifiedChip /> : null}
                 </div>
                 {location ? (
-                  <p className="mt-0.5 truncate text-xs text-[var(--color-muted)]">{location}</p>
+                  <p className="mt-0.5 truncate text-xs text-[var(--color-ink-soft)]">{location}</p>
+                ) : null}
+                {memberSince ? (
+                  <p className="mt-0.5 text-xs text-[var(--color-ink-soft)]">On Dunara since {memberSince}</p>
                 ) : null}
               </div>
             </div>
@@ -223,10 +262,37 @@ export default async function PublicListingPage({ params }: Props) {
               </p>
             )}
 
-            <p className="mt-4 text-center text-[11px] leading-4 text-[var(--color-muted)]">
+            {quickQuestions.length > 0 ? (
+              <div className="mt-3">
+                <p className="text-xs font-medium text-[var(--color-ink-soft)]">Or send a quick question:</p>
+                <ul className="mt-2 flex flex-wrap gap-2">
+                  {quickQuestions.map((q) => (
+                    <li key={q.label}>
+                      <a
+                        href={q.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="pill-link rounded-full border border-[var(--color-border)] bg-white px-3.5 text-xs font-semibold text-[var(--color-ink)] transition-colors hover:border-[#25D366] hover:bg-[#F0FBF4]"
+                      >
+                        {q.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+
+            <p className="mt-4 text-center text-[11px] leading-4 text-[var(--color-ink-soft)]">
               {brand.name} does not process payments or hold funds. Arrange the deal
               directly with the seller.
             </p>
+            <a
+              href={reportHref}
+              className="mt-3 flex min-h-11 items-center justify-center gap-1.5 rounded-lg text-xs font-medium text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-error)]"
+            >
+              <Flag aria-hidden="true" className="size-3.5" />
+              Report this listing
+            </a>
           </div>
 
           {/* Safety reminder */}
@@ -234,7 +300,7 @@ export default async function PublicListingPage({ params }: Props) {
             <SafetyShield className="hidden w-16 shrink-0 sm:block" />
             <div className="min-w-0">
               <h2 className="text-sm font-semibold text-[var(--color-ink)]">Stay safe</h2>
-              <ul className="mt-2 space-y-1.5 text-xs leading-5 text-[var(--color-muted)]">
+              <ul className="mt-2 space-y-1.5 text-xs leading-5 text-[var(--color-ink-soft)]">
                 <li>Never share OTPs, PINs, or bank codes with anyone.</li>
                 <li>Confirm the product or service before making any payment.</li>
                 <li>Meet in public or use a trusted delivery option when possible.</li>
@@ -249,6 +315,23 @@ export default async function PublicListingPage({ params }: Props) {
           </div>
         </aside>
       </div>
+      {whatsappHref ? (
+        <div className="mobile-contact-bar">
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-semibold text-[var(--color-ink)]">{price}</p>
+            <p className="truncate text-xs text-[var(--color-ink-soft)]">{shop.name}</p>
+          </div>
+          <a
+            href={whatsappHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#25D366] px-5 text-sm font-semibold text-white transition hover:bg-[#1ebe57] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2"
+          >
+            <WhatsAppIcon className="size-5" />
+            Chat on WhatsApp
+          </a>
+        </div>
+      ) : null}
     </div>
   );
 }

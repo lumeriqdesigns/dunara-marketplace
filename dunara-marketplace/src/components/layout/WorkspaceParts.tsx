@@ -76,9 +76,9 @@ export function WorkspaceUser({
       </span>
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-medium text-[var(--color-ink)]">{primary}</p>
-        {secondary ? <p className="truncate text-xs text-[var(--color-muted)]">{secondary}</p> : null}
+        {secondary ? <p className="truncate text-xs text-[var(--color-ink-soft)]">{secondary}</p> : null}
       </div>
-      <LogoutButton className="interactive shrink-0 rounded-lg px-2 py-1.5 text-xs font-medium text-[var(--color-muted)] hover:bg-[var(--color-soft-green)] hover:text-[var(--color-primary)]" />
+      <LogoutButton className="interactive shrink-0 rounded-lg px-2 py-1.5 text-xs font-medium text-[var(--color-ink-soft)] hover:bg-[var(--color-soft-green)] hover:text-[var(--color-primary)]" />
     </div>
   );
 }

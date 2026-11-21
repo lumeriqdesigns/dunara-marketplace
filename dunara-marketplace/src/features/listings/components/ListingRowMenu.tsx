@@ -42,7 +42,7 @@ export function ListingRowMenu({
         aria-controls={id}
         aria-label={`Actions for ${title}`}
         onClick={() => setOpen((v) => !v)}
-        className="inline-flex size-11 items-center justify-center rounded-xl text-[var(--color-muted)] transition hover:bg-[var(--color-soft-green)] hover:text-[var(--color-ink)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+        className="inline-flex size-11 items-center justify-center rounded-xl text-[var(--color-ink-soft)] transition hover:bg-[var(--color-soft-green)] hover:text-[var(--color-ink)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
       >
         <MoreHorizontal aria-hidden="true" className="size-5" />
       </button>
@@ -58,7 +58,7 @@ export function ListingRowMenu({
             className="flex items-center gap-2 px-3.5 py-2.5 text-sm font-medium text-[var(--color-ink)] hover:bg-[var(--color-soft-green)]"
             onClick={() => setOpen(false)}
           >
-            <Pencil aria-hidden="true" className="size-4 text-[var(--color-muted)]" />
+            <Pencil aria-hidden="true" className="size-4 text-[var(--color-ink-soft)]" />
             Edit
           </Link>
           {publicHref ? (
@@ -70,7 +70,7 @@ export function ListingRowMenu({
               className="flex items-center gap-2 px-3.5 py-2.5 text-sm font-medium text-[var(--color-ink)] hover:bg-[var(--color-soft-green)]"
               onClick={() => setOpen(false)}
             >
-              <ExternalLink aria-hidden="true" className="size-4 text-[var(--color-muted)]" />
+              <ExternalLink aria-hidden="true" className="size-4 text-[var(--color-ink-soft)]" />
               View public
             </a>
           ) : null}

@@ -5,75 +5,38 @@ import Link from "next/link";
 import { Check } from "lucide-react";
 import { PlanStack } from "@/components/illustrations/PlanStack";
 import { cn } from "@/lib/utils";
+import {
+  ANNUAL_DISCOUNT_PERCENT,
+  ANNUAL_MONTHS_CHARGED,
+  TIER_LIST,
+  TIERS,
+  TRIAL_DAYS,
+  TRIAL_REQUIRES_CARD,
+  TRIAL_TIER,
+  annualPriceKobo,
+  formatPlanPrice,
+  isPaidTier,
+  listingLimitLabel,
+  monthlyPriceKobo,
+  tierHighlights,
+  type TierId,
+} from "@/config/plans";
 
-type Plan = {
-  name: string;
-  eyebrow: string;
-  description: string;
-  monthly: string;
-  annual: string;
-  limit: string;
-  features: string[];
-  cta: string;
-  href: string;
-  stack: "open" | "pulse" | "apex";
-  mostChosen?: boolean;
-};
-
-const PLANS: Plan[] = [
-  {
-    name: "Open",
-    eyebrow: "Start selling",
-    description: "A simple way to get your business discovered on Dunara.",
-    monthly: "Free",
-    annual: "Free",
-    limit: "5 published listings",
-    features: [
-      "Create a public shop page",
-      "Publish up to 5 listings",
-      "Receive enquiries through WhatsApp",
-      "No subscription payment",
-    ],
-    cta: "Create a free shop",
-    href: "/register",
-    stack: "open",
-  },
-  {
-    name: "Pulse",
-    eyebrow: "Grow consistently",
-    description: "More room to showcase your products and services.",
-    monthly: "₦4,000",
-    annual: "₦38,400",
-    limit: "30 published listings",
-    features: [
-      "Everything in Open",
-      "Publish up to 30 listings",
-      "Featured placement",
-      "Eligible to apply for seller verification",
-    ],
-    cta: "Choose Pulse",
-    href: "/register",
-    stack: "pulse",
-    mostChosen: true,
-  },
-  {
-    name: "Apex",
-    eyebrow: "For established sellers",
-    description: "Maximum listing capacity with priority verification handling.",
-    monthly: "₦20,000",
-    annual: "₦192,000",
-    limit: "Unlimited published listings",
-    features: [
-      "Everything in Pulse",
-      "Unlimited published listings",
-      "Featured placement with priority boost",
-      "Priority position in the verification review queue",
-    ],
-    cta: "Choose Apex",
-    href: "/register",
-    stack: "apex",
-  },
-];
+/** Cards are generated from the plan policy (src/config/plans.ts), never typed by hand. */
+const PLANS = TIER_LIST.map((tier) => ({
+  id: tier.id as TierId,
+  name: tier.name,
+  eyebrow: tier.eyebrow,
+  description: tier.tagline,
+  monthly: formatPlanPrice(monthlyPriceKobo(tier.id)),
+  annual: formatPlanPrice(annualPriceKobo(tier.id)),
+  limit: listingLimitLabel(tier.limits.publishedListings),
+  features: tierHighlights(tier.id),
+  cta: isPaidTier(tier.id) ? `Choose ${tier.name}` : "Create a free shop",
+  href: "/register",
+  stack: tier.id,
+  mostChosen: tier.id === "pulse",
+}));
 
 export function PricingPlans() {
   const [billing, setBilling] = useState<"monthly" | "annual">("monthly");
@@ -95,7 +58,7 @@ export function PricingPlans() {
               "rounded-full px-4 py-2 text-sm font-semibold transition-colors",
               billing === "monthly"
                 ? "bg-[var(--color-ink)] text-white"
-                : "text-[var(--color-muted)] hover:text-[var(--color-ink)]"
+                : "text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]"
             )}
           >
             Monthly
@@ -108,12 +71,12 @@ export function PricingPlans() {
               "rounded-full px-4 py-2 text-sm font-semibold transition-colors",
               billing === "annual"
                 ? "bg-[var(--color-ink)] text-white"
-                : "text-[var(--color-muted)] hover:text-[var(--color-ink)]"
+                : "text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]"
             )}
           >
             Annual
             <span className="ml-1.5 rounded-full bg-[var(--color-lime)] px-1.5 py-0.5 text-[10px] font-bold text-[#173D2D]">
-              −20%
+              −{ANNUAL_DISCOUNT_PERCENT}%
             </span>
           </button>
         </div>
@@ -131,7 +94,7 @@ export function PricingPlans() {
 
           return (
             <article
-              key={plan.name}
+              key={plan.id}
               className={cn(
                 "relative flex flex-col rounded-2xl border bg-white p-6 shadow-[0_1px_2px_rgb(24_37_31/.04)] sm:p-7",
                 plan.mostChosen
@@ -157,7 +120,7 @@ export function PricingPlans() {
                 <PlanStack variant={plan.stack} className="w-20 shrink-0 sm:w-24" />
               </div>
 
-              <p className="mt-3 text-sm leading-6 text-[var(--color-muted)]">
+              <p className="mt-3 text-sm leading-6 text-[var(--color-ink-soft)]">
                 {plan.description}
               </p>
 
@@ -167,12 +130,12 @@ export function PricingPlans() {
                     {price}
                   </span>
                   {period ? (
-                    <span className="text-sm text-[var(--color-muted)]">{period}</span>
+                    <span className="text-sm text-[var(--color-ink-soft)]">{period}</span>
                   ) : null}
                 </p>
                 {plan.name !== "Open" && billing === "annual" ? (
                   <p className="mt-1 text-xs font-semibold text-[var(--color-primary)]">
-                    Save 20% vs monthly
+                    Save {ANNUAL_DISCOUNT_PERCENT}% vs monthly
                   </p>
                 ) : null}
                 <p className="mt-1.5 text-sm font-medium text-[var(--color-ink)]">
@@ -209,11 +172,12 @@ export function PricingPlans() {
         })}
       </div>
 
-      <p className="mx-auto mt-6 max-w-3xl text-center text-xs leading-6 text-[var(--color-muted)]">
-        A new shop receives a 3-day Pulse trial when billing is enabled. The trial does
-        not require a card and moves to Open when it expires. Paid plan checkout is
-        processed through Paystack. Annual billing equals 9.6 monthly payments (20% less
-        than paying month by month).
+      <p className="mx-auto mt-6 max-w-3xl text-center text-xs leading-6 text-[var(--color-ink-soft)]">
+        A new shop receives a {TRIAL_DAYS}-day {TIERS[TRIAL_TIER].name} trial when billing is
+        enabled. The trial {TRIAL_REQUIRES_CARD ? "requires a card" : "does not require a card"} and
+        moves to {TIERS.open.name} when it expires. Paid plan checkout is processed through Paystack.
+        Annual billing equals {ANNUAL_MONTHS_CHARGED} monthly payments ({ANNUAL_DISCOUNT_PERCENT}%
+        less than paying month by month).
       </p>
     </div>
   );

@@ -46,7 +46,7 @@ export function ShopEditForm({
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h2 className="text-sm font-semibold text-[var(--color-ink)]">Visibility</h2>
-            <p className="mt-1 text-sm text-[var(--color-muted)]">
+            <p className="mt-1 text-sm text-[var(--color-ink-soft)]">
               {shop.is_published
                 ? "Your shop is public on Dunara."
                 : "Your shop is a draft (not visible publicly)."}
@@ -169,7 +169,7 @@ export function ShopEditForm({
               <label htmlFor="slug" className="block text-sm font-medium">
                 URL slug
               </label>
-              <div className="mt-1 flex items-center gap-1 text-sm text-[var(--color-muted)]">
+              <div className="mt-1 flex items-center gap-1 text-sm text-[var(--color-ink-soft)]">
                 <span>/shop/</span>
                 <input
                   id="slug"

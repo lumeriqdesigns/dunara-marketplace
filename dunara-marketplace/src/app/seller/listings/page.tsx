@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ImageOff, Package, Plus, Search, Store } from "lucide-react";
 import { requireUser } from "@/features/auth/lib/require-user";
 import { getOwnShop } from "@/features/shop/lib/get-shop";
-import { getShopListings } from "@/features/listings/lib/get-listings";
+import { getShopListings, countPublishedListings } from "@/features/listings/lib/get-listings";
 import { formatPriceLabel } from "@/features/listings/lib/price";
 import { PageHeader } from "@/features/seller/components/PageHeader";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/select";
 import { ListingRowMenu } from "@/features/listings/components/ListingRowMenu";
+import { ListingLimitNudge } from "@/features/billing/components/ListingLimitNudge";
 
 export const metadata: Metadata = { title: "Listings" };
 
@@ -47,7 +48,10 @@ export default async function SellerListingsPage({
 
   const status =
     params.status === "published" || params.status === "draft" ? params.status : "all";
-  const listings = await getShopListings(shop.id, { q: params.q, status });
+  const [listings, publishedCount] = await Promise.all([
+    getShopListings(shop.id, { q: params.q, status }),
+    countPublishedListings(shop.id),
+  ]);
   const isFiltered = Boolean(params.q?.trim()) || status !== "all";
 
   return (
@@ -63,6 +67,8 @@ export default async function SellerListingsPage({
         }
       />
 
+      <ListingLimitNudge publishedCount={publishedCount} />
+
       <form
         method="get"
         role="search"
@@ -71,7 +77,7 @@ export default async function SellerListingsPage({
         <div className="relative min-w-[200px] flex-1">
           <Search
             aria-hidden="true"
-            className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-[var(--color-muted)]"
+            className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-[var(--color-ink-soft)]"
           />
           <Input
             name="q"
@@ -132,7 +138,7 @@ export default async function SellerListingsPage({
                   className="flex min-w-0 flex-1 items-center gap-3.5 sm:gap-4"
                   aria-label={`Edit ${l.title}`}
                 >
-                  <span className="flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[var(--color-soft-green)] text-[var(--color-muted)] sm:size-14">
+                  <span className="flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[var(--color-soft-green)] text-[var(--color-ink-soft)] sm:size-14">
                     {l.cover_image_url ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
@@ -149,7 +155,7 @@ export default async function SellerListingsPage({
                     <span className="block truncate font-medium text-[var(--color-ink)] group-hover:text-[var(--color-primary)]">
                       {l.title}
                     </span>
-                    <span className="mt-0.5 block text-xs capitalize text-[var(--color-muted)]">
+                    <span className="mt-0.5 block text-xs capitalize text-[var(--color-ink-soft)]">
                       {l.listing_type} · {formatPriceLabel(l.price_kobo, l.price_type)}
                     </span>
                   </span>

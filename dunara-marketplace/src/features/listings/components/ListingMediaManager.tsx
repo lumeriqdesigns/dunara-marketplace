@@ -47,7 +47,7 @@ export function ListingMediaManager({
             className="mt-2 h-40 w-full max-w-md rounded-lg border border-[var(--color-border)] object-cover"
           />
         ) : (
-          <p className="mt-2 text-sm text-[var(--color-muted)]">No cover yet.</p>
+          <p className="mt-2 text-sm text-[var(--color-ink-soft)]">No cover yet.</p>
         )}
         <form action={coverAction} className="mt-3 flex flex-wrap items-center gap-2">
           <input type="hidden" name="listingId" value={listingId} />

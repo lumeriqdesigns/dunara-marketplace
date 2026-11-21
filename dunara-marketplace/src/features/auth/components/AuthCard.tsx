@@ -59,7 +59,7 @@ export function AuthCard({
           </div>
           <Link
             href="/"
-            className="ml-auto inline-flex min-h-10 items-center gap-1.5 rounded-full px-3 text-sm font-medium text-[var(--color-muted)] transition-colors hover:bg-[var(--color-soft-green)] hover:text-[var(--color-primary)]"
+            className="ml-auto inline-flex min-h-10 items-center gap-1.5 rounded-full px-3 text-sm font-medium text-[var(--color-ink-soft)] transition-colors hover:bg-[var(--color-soft-green)] hover:text-[var(--color-primary)]"
           >
             <ArrowLeft aria-hidden="true" className="size-4" />
             <span className="hidden sm:inline">Back to Dunara</span>
@@ -74,12 +74,12 @@ export function AuthCard({
                 {title}
               </h1>
               {description ? (
-                <p className="mt-2 text-sm leading-6 text-[var(--color-muted)]">{description}</p>
+                <p className="mt-2 text-sm leading-6 text-[var(--color-ink-soft)]">{description}</p>
               ) : null}
               <div className="mt-6">{children}</div>
             </div>
             {footer ? (
-              <div className="mt-6 text-center text-sm text-[var(--color-muted)]">{footer}</div>
+              <div className="mt-6 text-center text-sm text-[var(--color-ink-soft)]">{footer}</div>
             ) : null}
           </div>
         </div>

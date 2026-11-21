@@ -46,7 +46,7 @@ export function EmptyState({
       ) : null}
       <h3 className="text-base font-semibold text-[var(--color-ink)]">{title}</h3>
       {description ? (
-        <p className="mt-2 max-w-sm text-sm leading-6 text-[var(--color-muted)]">{description}</p>
+        <p className="mt-2 max-w-sm text-sm leading-6 text-[var(--color-ink-soft)]">{description}</p>
       ) : null}
       {action ? <div className="mt-6 flex flex-wrap justify-center gap-3">{action}</div> : null}
       {!action && actionLabel && onAction ? (

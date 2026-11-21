@@ -24,7 +24,7 @@ export function FilterBar({
       <div className="relative min-w-[200px] flex-1">
         <Search
           aria-hidden="true"
-          className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-[var(--color-muted)]"
+          className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-[var(--color-ink-soft)]"
         />
         <Input
           name={searchName}

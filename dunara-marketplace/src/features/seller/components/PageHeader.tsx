@@ -17,7 +17,7 @@ export function PageHeader({
           {title}
         </h1>
         {description ? (
-          <p className="mt-1.5 max-w-2xl text-sm leading-6 text-[var(--color-muted)]">
+          <p className="mt-1.5 max-w-2xl text-sm leading-6 text-[var(--color-ink-soft)]">
             {description}
           </p>
         ) : null}

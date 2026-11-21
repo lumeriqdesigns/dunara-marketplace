@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowUpRight, MapPin } from "lucide-react";
 import type { Shop, Category } from "@/types";
 import { VerifiedChip } from "@/components/ui/verified-chip";
@@ -25,11 +26,12 @@ export function ShopCard({ shop }: { shop: ShopCardShop }) {
       className="group relative flex h-full gap-4 rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-[0_1px_2px_rgb(24_37_31/.05),0_10px_24px_-12px_rgb(24_37_31/.14)] transition duration-300 ease-out hover:-translate-y-1 hover:border-[#9EBEAA] hover:shadow-[0_2px_4px_rgb(24_37_31/.05),0_24px_40px_-16px_rgb(24_37_31/.22)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--color-primary)]/20"
     >
       {shop.logo_url ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
+        <Image
           src={shop.logo_url}
           alt={`${shop.name} logo`}
-          loading="lazy"
+          width={80}
+          height={80}
+          sizes="80px"
           className="size-20 shrink-0 rounded-2xl object-cover shadow-[0_0_0_1px_rgb(24_37_31/.06),0_6px_14px_-6px_rgb(24_37_31/.25)]"
         />
       ) : (
@@ -45,7 +47,7 @@ export function ShopCard({ shop }: { shop: ShopCardShop }) {
           </h3>
           {shop.verification_status === "verified" ? <VerifiedChip /> : null}
         </div>
-        <p className="mt-1 flex items-center gap-1 text-xs text-[var(--color-muted)]">
+        <p className="mt-1 flex items-center gap-1 text-xs text-[var(--color-ink-soft)]">
           {location ? (
             <>
               <MapPin aria-hidden="true" className="size-3 shrink-0" />
@@ -56,7 +58,7 @@ export function ShopCard({ shop }: { shop: ShopCardShop }) {
           )}
         </p>
         {shop.bio ? (
-          <p className="mt-2 line-clamp-2 text-sm leading-5 text-[var(--color-muted)]">{shop.bio}</p>
+          <p className="mt-2 line-clamp-2 text-sm leading-5 text-[var(--color-ink-soft)]">{shop.bio}</p>
         ) : null}
         <p className="mt-auto flex flex-wrap items-center gap-1.5 pt-3 text-[11px] font-medium text-[var(--color-ink)]/70">
           <span className="rounded-full bg-[var(--color-soft-green)] px-2 py-0.5 text-[var(--color-primary)]">{typeLabel}</span>

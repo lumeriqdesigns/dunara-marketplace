@@ -102,7 +102,7 @@ export function SearchForm({
           <div className="relative">
             <Search
               aria-hidden="true"
-              className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-[var(--color-muted)]"
+              className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-[var(--color-ink-soft)]"
             />
             <Input
               id="q"
@@ -164,7 +164,7 @@ export function SearchForm({
           <select id="category" name="category" defaultValue={f.category ?? ""}>
             {categoryOptions}
           </select>
-          <ChevronDown aria-hidden="true" className="pointer-events-none absolute right-0 top-1/2 size-4 -translate-y-1/2 text-[var(--color-muted)]" />
+          <ChevronDown aria-hidden="true" className="pointer-events-none absolute right-0 top-1/2 size-4 -translate-y-1/2 text-[var(--color-ink-soft)]" />
         </div>
       </div>
 
@@ -174,7 +174,7 @@ export function SearchForm({
           <select id="state" name="state" defaultValue={f.state ?? ""}>
             {stateOptions}
           </select>
-          <ChevronDown aria-hidden="true" className="pointer-events-none absolute right-0 top-1/2 size-4 -translate-y-1/2 text-[var(--color-muted)]" />
+          <ChevronDown aria-hidden="true" className="pointer-events-none absolute right-0 top-1/2 size-4 -translate-y-1/2 text-[var(--color-ink-soft)]" />
         </div>
       </div>
 

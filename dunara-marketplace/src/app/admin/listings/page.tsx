@@ -76,7 +76,7 @@ export default async function AdminListingsPage({
             >
               <div className="min-w-0">
                 <p className="truncate font-medium text-[var(--color-ink)]">{row.title}</p>
-                <p className="mt-0.5 text-xs capitalize text-[var(--color-muted)]">
+                <p className="mt-0.5 text-xs capitalize text-[var(--color-ink-soft)]">
                   {row.shop_name ?? "Shop"} · {row.listing_type}
                 </p>
                 <div className="mt-2">{publishedBadge(row.is_published)}</div>

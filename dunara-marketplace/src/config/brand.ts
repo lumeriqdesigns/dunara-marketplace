@@ -3,6 +3,8 @@
  * Do not scatter brand values across components.
  */
 
+import { PLANS_BRAND } from "./plans";
+
 export const brand = {
   name: "Dunara",
   shortName: "Dunara",
@@ -55,7 +57,7 @@ export const nav = {
     { href: "/explore", label: "Explore" },
     { href: "/categories", label: "Categories" },
     { href: "/locations", label: "Locations" },
-    { href: "/pricing", label: "Pricing" },
+    { href: PLANS_BRAND.route, label: PLANS_BRAND.navLabel },
     { href: "/contact", label: "Contact" },
   ],
   sellerCta: { href: "/register", label: "List your business" },

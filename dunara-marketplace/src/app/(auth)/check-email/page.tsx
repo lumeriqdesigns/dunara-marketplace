@@ -34,7 +34,7 @@ export default async function CheckEmailPage({
         <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-[var(--color-soft-green)] text-[var(--color-primary)]">
           <Mail aria-hidden="true" className="size-4" />
         </span>
-        <p className="text-sm leading-6 text-[var(--color-muted)]">
+        <p className="text-sm leading-6 text-[var(--color-ink-soft)]">
           Didn’t get it? Check your spam folder or resend the email. The link expires after a while.
         </p>
       </div>

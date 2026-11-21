@@ -57,3 +57,31 @@ Visual direction is unchanged (same palette, Inter, radii). This pass fixes cons
 - `/terms` and `/privacy` are linked from the sign-up form and footer but no such pages exist yet.
 - `/pricing` still renders its own `<main>` inside the site chrome.
 - Not built or browser-tested in this environment (no network for `npm install`). Run `npm run typecheck && npm run lint && npm test && npm run build`.
+
+## Design polish pass 2
+
+### Fixed
+- `.category-arrow` hover now actually moves (the rule repeated the base declaration).
+- Merged duplicated `.home-hero`, `.home-feature-panel` and `--ease-enter` declarations.
+- Homepage, listing card, shop card, listing page and 404 use `--color-ink-soft` (AA on white/canvas/sage) instead of `--color-muted` for small text.
+- Removed unused Next starter SVGs, `actions.ts.bak` and `tsconfig.tsbuildinfo`.
+
+### Added
+- Homepage: trust strip under search, one-time attention ring on the search bar, scroll-reveal sections (`components/ui/reveal.tsx`, with a `<noscript>` fallback), mobile scroll-snap carousels for categories and recent listings, FAQ as native `<details>` accordions, 44px chips.
+- Listing card: whole-card stretched link, "New" pill (< 7 days), "Posted today / Nd ago", save heart (device-local, `SaveButton`), WhatsApp quick action on hover/focus when the shop has a phone, softer styling for "Negotiable / Contact for price", `next/image`.
+- Listing page: interactive gallery with arrows, keyboard and thumbnails (`ListingGallery`), `Product`/`Service` + `BreadcrumbList` JSON-LD, "Report this listing" mailto, sticky mobile WhatsApp bar (Back-to-top moves above it).
+- Verified chip has a tooltip. Buttons press down 1px on `:active`. Card-like links share a focus ring.
+- Seller and admin `loading.tsx` skeletons. 404 page has a search box and a categories link.
+
+## Design polish pass 3
+
+- Explore: sort submits on change (Apply button only renders without JS); pagination links land on `#results` with correct sticky-header offset; result cards fade in with a short stagger; empty results now suggest popular categories.
+- Listing form: live character counters on title (150) and description (5000), with `maxLength` set to match the schema.
+- Contrast: every remaining `text-[var(--color-muted)]` (185) now uses `--color-ink-soft`.
+- Header gains a scroll-based shadow (CSS scroll timeline; no JS, ignored where unsupported). `html` gets `scroll-padding-top` so anchor jumps clear the sticky header.
+- Loading skeletons for the listing page and shop page.
+
+## Design polish pass 4 (from market research)
+
+- Homepage: bento "Built for how Nigeria trades" section. Tiles state product facts only (no invented numbers or testimonials).
+- Listing page: "Or send a quick question" chips (Is this available? / Do you deliver? / Last price?) that open WhatsApp with a pre-filled message; seller row shows "On Dunara since <month year>".

@@ -25,7 +25,7 @@ export function StatCard({
   const body = (
     <>
       <div className="flex items-start justify-between gap-3">
-        <p className="text-sm font-medium text-[var(--color-muted)]">{label}</p>
+        <p className="text-sm font-medium text-[var(--color-ink-soft)]">{label}</p>
         {Icon ? (
           <span
             aria-hidden="true"
@@ -51,7 +51,7 @@ export function StatCard({
         {value}
       </p>
       {hint ? (
-        <p className="mt-1.5 text-xs leading-5 text-[var(--color-muted)]">{hint}</p>
+        <p className="mt-1.5 text-xs leading-5 text-[var(--color-ink-soft)]">{hint}</p>
       ) : null}
     </>
   );

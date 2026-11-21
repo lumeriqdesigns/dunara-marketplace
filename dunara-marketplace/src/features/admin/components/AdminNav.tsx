@@ -95,7 +95,7 @@ export function AdminNav({ email }: { email?: string | null }) {
 export function AdminTopBar() {
   return (
     <div className="workspace-topbar sticky top-0 z-20 hidden items-center justify-between gap-3 px-8 lg:flex">
-      <p className="text-sm font-medium text-[var(--color-muted)]">Operations console</p>
+      <p className="text-sm font-medium text-[var(--color-ink-soft)]">Operations console</p>
       <Link
         href="/admin/verifications"
         className="interactive inline-flex min-h-10 items-center gap-1.5 rounded-xl border border-[var(--color-border)] bg-white px-4 text-sm font-semibold text-[var(--color-ink)] hover:bg-[var(--color-soft-green)] hover:text-[var(--color-primary)]"

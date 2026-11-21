@@ -13,12 +13,19 @@ const initial: AuthActionState = { ok: false };
 
 export function LoginForm() {
   const searchParams = useSearchParams();
-  const next = searchParams.get("next") ?? "/seller";
+  const next = searchParams.get("next") ?? "";
+  const linkError = searchParams.get("error");
   const [state, formAction, pending] = useActionState(loginAction, initial);
 
   return (
     <form action={formAction} className="space-y-5" noValidate>
       <input type="hidden" name="next" value={next} />
+
+      {linkError === "auth_callback" && !state.message ? (
+        <Alert variant="destructive">
+          That email link is invalid or has expired. Sign in below, or request a new link from the sign-up or reset page.
+        </Alert>
+      ) : null}
 
       {state.message && !state.ok ? <Alert variant="destructive">{state.message}</Alert> : null}
 

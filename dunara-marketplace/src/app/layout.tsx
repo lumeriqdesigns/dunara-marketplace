@@ -60,6 +60,9 @@ export default function RootLayout({
   return (
     <html lang="en-NG">
       <body className={`${inter.variable} min-h-screen antialiased`}>
+        <noscript>
+          <style>{`.reveal{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
         <a href="#main-content" className="skip-link">
           Skip to main content
         </a>

@@ -23,7 +23,7 @@ export default function ContactPage() {
           <h1 className="dunara-display mt-4 max-w-3xl text-4xl font-bold text-[var(--color-ink)] sm:text-5xl">
             Let’s get your questions <span className="text-[var(--color-primary)]">answered.</span>
           </h1>
-          <p className="mt-5 max-w-2xl text-base leading-7 text-[var(--color-muted)]">
+          <p className="mt-5 max-w-2xl text-base leading-7 text-[var(--color-ink-soft)]">
             Whether you’re setting up a shop, managing a subscription, or need a hand using Dunara,
             send us a message. We’ll point you in the right direction.
           </p>
@@ -37,7 +37,7 @@ export default function ContactPage() {
           <h2 className="mt-3 text-2xl font-bold tracking-tight text-[var(--color-ink)]">
             How can we help?
           </h2>
-          <p className="mt-2 mb-8 text-sm leading-6 text-[var(--color-muted)]">
+          <p className="mt-2 mb-8 text-sm leading-6 text-[var(--color-ink-soft)]">
             Complete the form. We’ll open WhatsApp with your message so you can review and send it.
           </p>
           <ContactForm />
@@ -52,10 +52,10 @@ export default function ContactPage() {
               </span>
               <div>
                 <p className="text-sm font-semibold text-[var(--color-ink)]">Response time</p>
-                <p className="text-xs text-[var(--color-muted)]">Typical weekday replies</p>
+                <p className="text-xs text-[var(--color-ink-soft)]">Typical weekday replies</p>
               </div>
             </div>
-            <p className="mt-4 text-sm leading-6 text-[var(--color-muted)]">
+            <p className="mt-4 text-sm leading-6 text-[var(--color-ink-soft)]">
               We aim to reply within <strong className="text-[var(--color-ink)]">one business day</strong>{" "}
               on WhatsApp. Email may take a little longer. Include your shop name or listing link
               when it helps.
@@ -73,7 +73,7 @@ export default function ContactPage() {
             </span>
             <span className="min-w-0 flex-1">
               <span className="block text-sm font-semibold text-[var(--color-ink)]">WhatsApp</span>
-              <span className="mt-1 block text-sm text-[var(--color-muted)]">
+              <span className="mt-1 block text-sm text-[var(--color-ink-soft)]">
                 {legal.whatsappDisplay}
               </span>
               <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-[var(--color-primary)]">
@@ -92,7 +92,7 @@ export default function ContactPage() {
             </span>
             <span className="min-w-0 flex-1">
               <span className="block text-sm font-semibold text-[var(--color-ink)]">Email</span>
-              <span className="mt-1 block break-all text-sm text-[var(--color-muted)]">
+              <span className="mt-1 block break-all text-sm text-[var(--color-ink-soft)]">
                 {legal.email}
               </span>
               <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-[var(--color-primary)]">
@@ -104,7 +104,7 @@ export default function ContactPage() {
 
           <div className="flex gap-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-warm)] p-4">
             <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-[var(--color-primary)]" />
-            <p className="text-xs leading-5 text-[var(--color-muted)]">
+            <p className="text-xs leading-5 text-[var(--color-ink-soft)]">
               Never send your password, one-time passcode, or full payment card details in a support
               message.
             </p>
@@ -116,7 +116,7 @@ export default function ContactPage() {
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-10 sm:px-6 md:flex-row md:items-center md:justify-between">
           <div>
             <h2 className="text-lg font-bold text-[var(--color-ink)]">Looking for an instant answer?</h2>
-            <p className="mt-1 text-sm text-[var(--color-muted)]">
+            <p className="mt-1 text-sm text-[var(--color-ink-soft)]">
               You may find what you need in our seller guide.
             </p>
           </div>

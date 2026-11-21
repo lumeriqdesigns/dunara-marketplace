@@ -84,7 +84,7 @@ export function ReplyDraftForm({ initialUsage, onUsageChange }: Props) {
             rows={3}
             disabled={pending || exhausted}
           />
-          <p className="text-xs text-[var(--color-muted)]">
+          <p className="text-xs text-[var(--color-ink-soft)]">
             Only include facts you confirm. The AI will not invent stock, prices, or payment status.
           </p>
         </div>
@@ -109,7 +109,7 @@ export function ReplyDraftForm({ initialUsage, onUsageChange }: Props) {
             rows={6}
             className="bg-white"
           />
-          <p className="text-xs text-[var(--color-muted)]">
+          <p className="text-xs text-[var(--color-ink-soft)]">
             Dunara never sends this message. You copy it into WhatsApp yourself.
           </p>
         </div>

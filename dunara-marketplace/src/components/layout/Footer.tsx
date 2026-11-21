@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Mail } from "lucide-react";
 import { brand } from "@/config/brand";
 import { legal } from "@/config/legal";
+import { PLANS_BRAND } from "@/config/plans";
 import { BrandLogo } from "@/components/brand/BrandLogo";
 import { BackToTop } from "@/components/layout/BackToTop";
 
@@ -13,7 +14,7 @@ const footerLinks = {
   ],
   sellers: [
     { href: "/register", label: "Create a shop" },
-    { href: "/pricing", label: "Pricing & seller guide" },
+    { href: PLANS_BRAND.route, label: PLANS_BRAND.footerLabel },
     { href: "/login", label: "Seller login" },
   ],
   help: [

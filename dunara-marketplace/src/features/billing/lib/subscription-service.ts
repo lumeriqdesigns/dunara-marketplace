@@ -6,6 +6,7 @@ import {
   type SubscriptionWithPlan,
 } from "./entitlements";
 import type { Plan } from "@/types";
+import { TRIAL_DAYS } from "@/config/plans";
 
 export async function getActivePlans(): Promise<Plan[]> {
   const supabase = await createClient();
@@ -45,7 +46,7 @@ export async function getShopEntitlement(
 }
 
 /**
- * Start 3-day Pulse trial for a new shop (server-side / admin).
+ * Start the Pulse trial (TRIAL_DAYS, see config/plans.ts) for a new shop (server-side / admin).
  * Idempotent: skips if subscription row already exists.
  */
 export async function startPulseTrial(shopId: string): Promise<void> {
@@ -69,7 +70,7 @@ export async function startPulseTrial(shopId: string): Promise<void> {
   }
 
   const trialEnds = new Date();
-  trialEnds.setDate(trialEnds.getDate() + 3);
+  trialEnds.setDate(trialEnds.getDate() + TRIAL_DAYS);
 
   const { error } = await admin.from("subscriptions").insert({
     shop_id: shopId,

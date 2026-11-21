@@ -55,7 +55,7 @@ export function ShopCreateForm({ categories }: { categories: Category[] }) {
         <Label htmlFor="slug" className="mb-1.5 block">
           Public URL
         </Label>
-        <div className="flex items-center gap-2 text-sm text-[var(--color-muted)]">
+        <div className="flex items-center gap-2 text-sm text-[var(--color-ink-soft)]">
           <span className="shrink-0">/shop/</span>
           <Input
             id="slug"
@@ -71,7 +71,7 @@ export function ShopCreateForm({ categories }: { categories: Category[] }) {
           />
         </div>
         {!slugTouched && suggested ? (
-          <p className="mt-1.5 text-xs text-[var(--color-muted)]">Suggested from name: {suggested}</p>
+          <p className="mt-1.5 text-xs text-[var(--color-ink-soft)]">Suggested from name: {suggested}</p>
         ) : null}
         {state.fieldErrors?.slug?.[0] ? (
           <p className="mt-1 text-sm text-[var(--color-error)]">{state.fieldErrors.slug[0]}</p>

@@ -63,7 +63,7 @@ export default async function SellerAiPage() {
       <div className="grid gap-6 lg:grid-cols-2">
         <section className="space-y-3 rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-[var(--shadow-card)]">
           <h2 className="text-base font-semibold text-[var(--color-ink)]">Draft a reply</h2>
-          <p className="text-xs text-[var(--color-muted)]">
+          <p className="text-xs text-[var(--color-ink-soft)]">
             Paste what the buyer said, add any facts they need to know, then copy the draft into
             WhatsApp.
           </p>
@@ -72,7 +72,7 @@ export default async function SellerAiPage() {
 
         <section className="space-y-3 rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-[var(--shadow-card)]">
           <h2 className="text-base font-semibold text-[var(--color-ink)]">Seller guide</h2>
-          <p className="text-xs text-[var(--color-muted)]">
+          <p className="text-xs text-[var(--color-ink-soft)]">
             Ask how to complete your profile, listings, billing, or verification. Guide answers do
             not use your reply quota.
           </p>
@@ -82,7 +82,7 @@ export default async function SellerAiPage() {
 
       <section className="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-[var(--shadow-card)]">
         <h2 className="text-base font-semibold text-[var(--color-ink)]">Language and personality</h2>
-        <p className="mt-1 mb-4 text-xs text-[var(--color-muted)]">
+        <p className="mt-1 mb-4 text-xs text-[var(--color-ink-soft)]">
           Defaults for drafts and guide answers. You can change them anytime.
         </p>
         <AiSettingsForm

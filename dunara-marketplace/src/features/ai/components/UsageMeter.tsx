@@ -14,7 +14,7 @@ export function UsageMeter({ usage }: { usage: AiUsageSnapshot }) {
     <div className="rounded-lg border border-[var(--color-border)] bg-white p-4 shadow-sm">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h2 className="text-sm font-semibold text-[var(--color-ink)]">AI reply allowance</h2>
-        <p className="text-xs text-[var(--color-muted)]">
+        <p className="text-xs text-[var(--color-ink-soft)]">
           Resets {usage.resetDate} (Africa/Lagos month)
         </p>
       </div>
@@ -22,12 +22,12 @@ export function UsageMeter({ usage }: { usage: AiUsageSnapshot }) {
         {unlimited ? (
           <>
             {usage.replyCount}{" "}
-            <span className="text-sm font-normal text-[var(--color-muted)]">used · unlimited</span>
+            <span className="text-sm font-normal text-[var(--color-ink-soft)]">used · unlimited</span>
           </>
         ) : (
           <>
             {usage.replyCount}
-            <span className="text-sm font-normal text-[var(--color-muted)]"> / {usage.limit}</span>
+            <span className="text-sm font-normal text-[var(--color-ink-soft)]"> / {usage.limit}</span>
           </>
         )}
       </p>
@@ -57,7 +57,7 @@ export function UsageMeter({ usage }: { usage: AiUsageSnapshot }) {
           or wait for the next reset.
         </p>
       ) : (
-        <p className="mt-3 text-xs text-[var(--color-muted)]">
+        <p className="mt-3 text-xs text-[var(--color-ink-soft)]">
           Only successful reply drafts count. Guide help does not use this quota. Failed generations
           are not charged.
         </p>

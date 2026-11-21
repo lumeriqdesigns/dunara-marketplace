@@ -1,4 +1,5 @@
 import type { Plan, Subscription, SubscriptionStatus } from "@/types";
+import { TIERS } from "@/config/plans";
 
 export type EffectiveEntitlement = {
   planSlug: string;
@@ -19,12 +20,12 @@ export type EffectiveEntitlement = {
 
 const OPEN: EffectiveEntitlement = {
   planSlug: "open",
-  planName: "Open",
-  listingLimit: 5,
-  featured: false,
-  priorityBoost: false,
-  canApplyVerification: false,
-  aiReplyLimitMonthly: 10,
+  planName: TIERS.open.name,
+  listingLimit: TIERS.open.limits.publishedListings,
+  featured: TIERS.open.perks.featuredPlacement,
+  priorityBoost: TIERS.open.perks.priorityBoost,
+  canApplyVerification: TIERS.open.perks.verification !== "not_available",
+  aiReplyLimitMonthly: TIERS.open.limits.aiReplyDraftsPerMonth,
   status: "free",
   trialEndsAt: null,
   isTrialing: false,

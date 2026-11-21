@@ -90,7 +90,7 @@ export function PasswordField({
           disabled={disabled}
           aria-label={visible ? "Hide password" : "Show password"}
           aria-pressed={visible}
-          className="absolute right-1 top-1/2 inline-flex size-9 -translate-y-1/2 items-center justify-center rounded-lg text-[var(--color-muted)] transition-colors hover:bg-[var(--color-soft-green)] hover:text-[var(--color-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] disabled:opacity-50"
+          className="absolute right-1 top-1/2 inline-flex size-9 -translate-y-1/2 items-center justify-center rounded-lg text-[var(--color-ink-soft)] transition-colors hover:bg-[var(--color-soft-green)] hover:text-[var(--color-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] disabled:opacity-50"
         >
           {visible ? (
             <EyeOff aria-hidden="true" className="size-4" />
@@ -125,7 +125,7 @@ export function PasswordField({
             className={cn(
               "mt-1.5 text-xs font-medium",
               !strength?.label
-                ? "text-[var(--color-muted)]"
+                ? "text-[var(--color-ink-soft)]"
                 : strength.score <= 1
                   ? "text-[var(--color-error)]"
                   : strength.score === 2
@@ -141,7 +141,7 @@ export function PasswordField({
       ) : null}
 
       {hint && !hasError && !showStrength ? (
-        <p id={`${id}-hint`} className="mt-1.5 text-xs text-[var(--color-muted)]">
+        <p id={`${id}-hint`} className="mt-1.5 text-xs text-[var(--color-ink-soft)]">
           {hint}
         </p>
       ) : null}

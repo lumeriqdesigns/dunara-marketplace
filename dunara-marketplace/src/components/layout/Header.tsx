@@ -118,7 +118,7 @@ export function Header() {
                   "relative z-10 rounded-full px-3.5 py-2 text-sm font-medium transition-colors",
                   active
                     ? "text-[var(--color-primary)]"
-                    : "text-[var(--color-muted)] hover:text-[var(--color-ink)]"
+                    : "text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]"
                 )}
               >
                 {item.label}

@@ -31,8 +31,8 @@ export function LegalDocument({
           <h1 className="dunara-display mt-4 text-4xl font-bold text-[var(--color-ink)] sm:text-5xl">
             {title}
           </h1>
-          <p className="mt-4 text-sm text-[var(--color-muted)]">Effective {effectiveDate}</p>
-          <div className="legal-measure mt-6 text-base leading-8 text-[var(--color-muted)]">
+          <p className="mt-4 text-sm text-[var(--color-ink-soft)]">Effective {effectiveDate}</p>
+          <div className="legal-measure mt-6 text-base leading-8 text-[var(--color-ink-soft)]">
             {intro}
           </div>
         </div>
@@ -51,7 +51,7 @@ export function LegalDocument({
                   href={`#${s.id}`}
                   className="block rounded-lg px-2.5 py-1.5 text-[var(--color-ink-soft)] transition-colors hover:bg-[var(--color-soft-green)] hover:text-[var(--color-primary)]"
                 >
-                  <span className="tabular-nums text-[var(--color-muted)]">{i + 1}.</span> {s.title}
+                  <span className="tabular-nums text-[var(--color-ink-soft)]">{i + 1}.</span> {s.title}
                 </a>
               </li>
             ))}
@@ -66,7 +66,7 @@ export function LegalDocument({
             <ol className="mt-3 space-y-2 text-sm">
               {sections.map((s, i) => (
                 <li key={s.id}>
-                  <a href={`#${s.id}`} className="text-[var(--color-muted)] hover:text-[var(--color-primary)]">
+                  <a href={`#${s.id}`} className="text-[var(--color-ink-soft)] hover:text-[var(--color-primary)]">
                     {i + 1}. {s.title}
                   </a>
                 </li>
@@ -85,7 +85,7 @@ export function LegalDocument({
               <h2 className="text-xl font-bold tracking-tight text-[var(--color-ink)]">
                 {i + 1}. {s.title}
               </h2>
-              <div className="mt-4 space-y-4 text-[0.9375rem] leading-7 text-[var(--color-muted)]">
+              <div className="mt-4 space-y-4 text-[0.9375rem] leading-7 text-[var(--color-ink-soft)]">
                 {s.blocks.map((b, j) =>
                   isList(b) ? (
                     <ul key={j} className="list-disc space-y-2 pl-5">
@@ -100,7 +100,7 @@ export function LegalDocument({
               </div>
             </section>
           ))}
-          <p className="mt-10 text-sm text-[var(--color-muted)]">
+          <p className="mt-10 text-sm text-[var(--color-ink-soft)]">
             Also read our{" "}
             <Link
               href={otherDoc.href}

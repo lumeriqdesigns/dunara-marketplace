@@ -50,7 +50,7 @@ export function AiSettingsForm({ initialLanguage, initialPersonality, initialCus
     <form onSubmit={onSubmit} className="space-y-5">
       <fieldset className="space-y-2">
         <legend className="text-sm font-medium text-[var(--color-ink)]">Response language</legend>
-        <p className="text-xs text-[var(--color-muted)]">
+        <p className="text-xs text-[var(--color-ink-soft)]">
           Applies to AI guide answers and reply drafts. The rest of Dunara stays in English.
         </p>
         <div className="flex flex-wrap gap-2">
@@ -88,7 +88,7 @@ export function AiSettingsForm({ initialLanguage, initialPersonality, initialCus
               aria-pressed={personality === opt.value}
             >
               <span className="font-medium text-[var(--color-ink)]">{opt.label}</span>
-              <span className="mt-0.5 block text-xs text-[var(--color-muted)]">{opt.hint}</span>
+              <span className="mt-0.5 block text-xs text-[var(--color-ink-soft)]">{opt.hint}</span>
             </button>
           ))}
         </div>
@@ -105,7 +105,7 @@ export function AiSettingsForm({ initialLanguage, initialPersonality, initialCus
             placeholder="e.g. Keep replies short. Always mention that prices include delivery within Lagos."
             rows={3}
           />
-          <p className="text-xs text-[var(--color-muted)]">
+          <p className="text-xs text-[var(--color-ink-soft)]">
             {custom.length}/500 · Do not include secrets or customer private data.
           </p>
         </div>

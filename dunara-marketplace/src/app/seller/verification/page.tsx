@@ -45,13 +45,13 @@ export default async function SellerVerificationPage() {
     <div className="mx-auto max-w-2xl space-y-8">
       <header className="space-y-2">
         <h1 className="text-2xl font-semibold text-[var(--color-ink)]">Verification</h1>
-        <p className="text-sm text-[var(--color-muted)]">
+        <p className="text-sm text-[var(--color-ink-soft)]">
           A verified badge means Dunara completed a manual document review for this shop. It does
           not guarantee product quality, delivery, or payment safety.
         </p>
         <div className="flex flex-wrap items-center gap-2">
           {verificationBadge(d.shopStatus === "verified" ? "verified" : d.shopStatus === "pending" ? "pending" : d.shopStatus === "rejected" ? "rejected" : "none")}
-          <span className="text-xs text-[var(--color-muted)]">
+          <span className="text-xs text-[var(--color-ink-soft)]">
             Current plan: {d.planName}
           </span>
         </div>
@@ -62,7 +62,7 @@ export default async function SellerVerificationPage() {
           <h2 className="text-base font-semibold text-[var(--color-ink)]">
             Upgrade to apply
           </h2>
-          <p className="mt-2 text-sm text-[var(--color-muted)]">
+          <p className="mt-2 text-sm text-[var(--color-ink-soft)]">
             Verification is available on <strong>Pulse</strong> and <strong>Apex</strong>. Open plan
             shops cannot submit documents.
           </p>
@@ -78,7 +78,7 @@ export default async function SellerVerificationPage() {
       {d.shopStatus === "verified" ? (
         <section className="rounded-lg border border-[var(--color-soft-green)] bg-[var(--color-soft-green)]/40 p-5">
           <h2 className="text-base font-semibold text-[var(--color-ink)]">You are verified</h2>
-          <p className="mt-2 text-sm text-[var(--color-muted)]">
+          <p className="mt-2 text-sm text-[var(--color-ink-soft)]">
             Your public shop page shows the verified badge
             {d.verifiedAt
               ? ` (since ${new Date(d.verifiedAt).toLocaleDateString("en-NG")})`
@@ -93,7 +93,7 @@ export default async function SellerVerificationPage() {
           <h2 className="text-base font-semibold text-[var(--color-ink)]">
             Awaiting review
           </h2>
-          <p className="mt-2 text-sm text-[var(--color-muted)]">
+          <p className="mt-2 text-sm text-[var(--color-ink-soft)]">
             Submitted {new Date(d.latest.created_at).toLocaleString("en-NG")}
             {d.latest.priority ? " · Apex priority queue" : ""}. We do not promise a fixed review
             time. You cannot submit another request while this one is pending.
@@ -110,7 +110,7 @@ export default async function SellerVerificationPage() {
             {d.latest.rejection_reason || d.verificationNote || "Please correct and resubmit."}
           </p>
           {d.canSubmit ? (
-            <p className="mt-2 text-sm text-[var(--color-muted)]">
+            <p className="mt-2 text-sm text-[var(--color-ink-soft)]">
               You can upload corrected documents below.
             </p>
           ) : null}
@@ -122,7 +122,7 @@ export default async function SellerVerificationPage() {
           <h2 className="text-base font-semibold text-[var(--color-ink)]">
             Submit documents
           </h2>
-          <p className="text-sm text-[var(--color-muted)]">{d.evidenceHelp}</p>
+          <p className="text-sm text-[var(--color-ink-soft)]">{d.evidenceHelp}</p>
           <VerificationSubmitForm />
         </section>
       ) : null}
@@ -139,7 +139,7 @@ export default async function SellerVerificationPage() {
                     <span className="text-xs text-[var(--color-primary)]">Priority</span>
                   ) : null}
                 </div>
-                <span className="text-xs text-[var(--color-muted)]">
+                <span className="text-xs text-[var(--color-ink-soft)]">
                   {new Date(h.created_at).toLocaleDateString("en-NG")}
                 </span>
               </li>

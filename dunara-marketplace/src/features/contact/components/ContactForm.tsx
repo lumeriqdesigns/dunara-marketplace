@@ -116,7 +116,7 @@ export function ContactForm() {
       <Button type="submit" size="lg" className="w-full sm:w-auto">
         Continue to WhatsApp <Send className="h-4 w-4" />
       </Button>
-      <p className="text-xs leading-5 text-[var(--color-muted)]">
+      <p className="text-xs leading-5 text-[var(--color-ink-soft)]">
         Your message will open in WhatsApp for you to review and send. This form does not submit or
         store messages on this website.
       </p>

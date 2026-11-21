@@ -6,6 +6,7 @@ import { requireUser } from "@/features/auth/lib/require-user";
 import { getOwnShop } from "@/features/shop/lib/get-shop";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { getSiteUrl } from "@/lib/site-url";
 import {
   initializeTransaction,
   verifyTransaction,
@@ -53,7 +54,7 @@ export async function startCheckoutAction(
     return { ok: false, message: "Plan not available." };
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const siteUrl = await getSiteUrl();
   const reference = `dunara_${shop.id.slice(0, 8)}_${randomUUID().replace(/-/g, "").slice(0, 12)}`;
 
   // Store pending intent metadata in payment_events for audit (optional ref key)

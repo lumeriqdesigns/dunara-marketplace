@@ -37,7 +37,7 @@ export default function HowItWorksPage() {
           <h1 className="dunara-display mt-4 max-w-2xl text-4xl font-bold text-[var(--color-ink)] sm:text-5xl">
             How Dunara works
           </h1>
-          <p className="mt-5 max-w-xl text-base leading-7 text-[var(--color-muted)]">
+          <p className="mt-5 max-w-xl text-base leading-7 text-[var(--color-ink-soft)]">
             Dunara helps you discover local businesses. Conversations and deals happen on WhatsApp —
             we never process buyer–seller payments or hold funds.
           </p>
@@ -55,7 +55,7 @@ export default function HowItWorksPage() {
                 </span>
                 <StepArt kind={item.kind} className="step-art-lg mx-auto h-auto w-full max-w-[11rem]" />
                 <h2 className="mt-3 text-lg font-semibold text-[var(--color-ink)]">{item.title}</h2>
-                <p className="mx-auto mt-2 max-w-xs text-sm leading-6 text-[var(--color-muted)]">
+                <p className="mx-auto mt-2 max-w-xs text-sm leading-6 text-[var(--color-ink-soft)]">
                   {item.body}
                 </p>
               </div>
@@ -64,7 +64,7 @@ export default function HowItWorksPage() {
         </ol>
 
         <div className="mt-12 flex flex-col items-start gap-4 rounded-2xl border border-[var(--color-border)] bg-white p-6 shadow-[var(--shadow-card)] sm:flex-row sm:items-center sm:justify-between">
-          <p className="max-w-lg text-sm leading-6 text-[var(--color-muted)]">
+          <p className="max-w-lg text-sm leading-6 text-[var(--color-ink-soft)]">
             Ready to find something local? Browse listings or create a free shop if you sell
             products or services.
           </p>

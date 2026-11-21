@@ -19,6 +19,7 @@ export type PublicListingDetail = ListingWithMedia & {
     | "verification_status"
     | "is_published"
     | "is_suspended"
+    | "created_at"
   > | null;
 };
 
@@ -75,7 +76,7 @@ export async function getPublicListing(
   // Resolve published non-suspended shop first
   const { data: shop } = await supabase
     .from("shops")
-    .select("id, name, slug, phone, city, state, logo_url, verification_status, is_published, is_suspended")
+    .select("id, name, slug, phone, city, state, logo_url, verification_status, is_published, is_suspended, created_at")
     .eq("slug", shopSlug)
     .eq("is_published", true)
     .eq("is_suspended", false)

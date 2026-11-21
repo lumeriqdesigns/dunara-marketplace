@@ -101,7 +101,7 @@ export function SellerNav({
             style={{ animation: "dunara-drawer-in var(--dur-panel) var(--ease-enter)" }}
           >
             {links(() => setOpen(false))}
-            <div className="border-t border-[var(--color-border)] p-4">
+                <div className="border-t border-[var(--color-border)] p-4">
               <WorkspaceUser primary={shopName ?? "No shop yet"} secondary={email} />
             </div>
           </div>

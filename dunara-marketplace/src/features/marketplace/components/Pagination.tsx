@@ -34,7 +34,7 @@ export function Pagination({
     >
       {prev ? (
         <Link
-          href={`/explore${filtersToQueryString(filters, { page: prev })}`}
+          href={`/explore${filtersToQueryString(filters, { page: prev })}#results`}
           rel="prev"
           className={`${base} ${enabled}`}
         >
@@ -52,7 +52,7 @@ export function Pagination({
       </span>
       {next ? (
         <Link
-          href={`/explore${filtersToQueryString(filters, { page: next })}`}
+          href={`/explore${filtersToQueryString(filters, { page: next })}#results`}
           rel="next"
           className={`${base} ${enabled}`}
         >

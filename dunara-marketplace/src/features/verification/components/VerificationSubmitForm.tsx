@@ -53,9 +53,9 @@ export function VerificationSubmitForm() {
           multiple
           required
           disabled={pending}
-          className="block w-full text-sm text-[var(--color-muted)] file:mr-3 file:min-h-11 file:rounded-xl file:border-0 file:bg-[var(--color-soft-green)] file:px-4 file:py-2.5 file:text-sm file:font-semibold file:text-[var(--color-primary)]"
+          className="block w-full text-sm text-[var(--color-ink-soft)] file:mr-3 file:min-h-11 file:rounded-xl file:border-0 file:bg-[var(--color-soft-green)] file:px-4 file:py-2.5 file:text-sm file:font-semibold file:text-[var(--color-primary)]"
         />
-        <p className="text-xs text-[var(--color-muted)]">
+        <p className="text-xs text-[var(--color-ink-soft)]">
           Up to {MAX_FILES} files, {MAX_UPLOAD_LABEL} each. Photos are resized automatically; PDFs must already be under {MAX_UPLOAD_LABEL}. Files are private and only
           visible to Dunara admins.
         </p>

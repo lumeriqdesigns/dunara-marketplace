@@ -29,7 +29,7 @@ export function LocationsGrid({ activeStates, upcomingStates }: Props) {
       <div className="relative max-w-md">
         <Search
           aria-hidden="true"
-          className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-[var(--color-muted)]"
+          className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-[var(--color-ink-soft)]"
         />
         <input
           type="search"
@@ -42,7 +42,7 @@ export function LocationsGrid({ activeStates, upcomingStates }: Props) {
       </div>
 
       {totalShown === 0 ? (
-        <p className="rounded-2xl border border-dashed border-[#C8D4C9] bg-[var(--color-surface-warm)] px-6 py-10 text-center text-sm text-[var(--color-muted)]">
+        <p className="rounded-2xl border border-dashed border-[#C8D4C9] bg-[var(--color-surface-warm)] px-6 py-10 text-center text-sm text-[var(--color-ink-soft)]">
           No states match “{q.trim()}”.
         </p>
       ) : null}
@@ -56,7 +56,7 @@ export function LocationsGrid({ activeStates, upcomingStates }: Props) {
             >
               Active now
             </h2>
-            <p className="text-sm text-[var(--color-muted)]">
+            <p className="text-sm text-[var(--color-ink-soft)]">
               <span className="inline-flex items-center gap-1.5">
                 <span className="size-2 rounded-full bg-[var(--color-primary)] ring-2 ring-[var(--color-primary)]/25" />
                 {filteredActive.length} with shops
@@ -76,7 +76,7 @@ export function LocationsGrid({ activeStates, upcomingStates }: Props) {
                   </span>
                   <MapPin
                     aria-hidden="true"
-                    className="size-4 shrink-0 text-[var(--color-muted)] transition group-hover:text-[var(--color-primary)]"
+                    className="size-4 shrink-0 text-[var(--color-ink-soft)] transition group-hover:text-[var(--color-primary)]"
                   />
                 </Link>
               </li>

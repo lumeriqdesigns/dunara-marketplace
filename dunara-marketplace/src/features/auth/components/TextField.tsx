@@ -35,7 +35,7 @@ export function TextField({ id, name, label, errors, hint, labelAside, ...props 
         {...props}
       />
       {hint && !hasError ? (
-        <p id={`${id}-hint`} className="mt-1.5 text-xs text-[var(--color-muted)]">
+        <p id={`${id}-hint`} className="mt-1.5 text-xs text-[var(--color-ink-soft)]">
           {hint}
         </p>
       ) : null}

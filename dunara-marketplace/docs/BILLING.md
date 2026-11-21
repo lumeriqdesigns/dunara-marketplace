@@ -1,5 +1,8 @@
 # Dunara billing (Paystack)
 
+> Plan names, prices, limits and rules are defined in `src/config/plans.ts` and explained in
+> [PLANS-POLICY.md](./PLANS-POLICY.md). The table below is a summary; change the policy there first.
+
 ## Plans (V3)
 
 | Plan | Price | Published listings | Featured | Verification |

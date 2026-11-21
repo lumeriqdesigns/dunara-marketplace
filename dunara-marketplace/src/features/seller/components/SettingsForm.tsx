@@ -61,9 +61,9 @@ export function SettingsForm({
             value={email}
             disabled
             readOnly
-            className="bg-[var(--color-canvas)] text-[var(--color-muted)]"
+            className="bg-[var(--color-canvas)] text-[var(--color-ink-soft)]"
           />
-          <p className="mt-1.5 text-xs text-[var(--color-muted)]">
+          <p className="mt-1.5 text-xs text-[var(--color-ink-soft)]">
             Email is your sign-in identity and cannot be changed here.
           </p>
         </div>
@@ -75,7 +75,7 @@ export function SettingsForm({
 
       <div className="max-w-md rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-[var(--shadow-card)]">
         <h2 className="text-sm font-semibold text-[var(--color-ink)]">WhatsApp number</h2>
-        <p className="mt-2 text-sm text-[var(--color-muted)]">
+        <p className="mt-2 text-sm text-[var(--color-ink-soft)]">
           Your public WhatsApp contact is managed on the shop profile so buyers can reach the right
           business number.
         </p>
@@ -89,7 +89,7 @@ export function SettingsForm({
 
       <div className="max-w-md rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-[var(--shadow-card)]">
         <h2 className="text-sm font-semibold text-[var(--color-ink)]">Sign out</h2>
-        <p className="mt-2 text-sm text-[var(--color-muted)]">
+        <p className="mt-2 text-sm text-[var(--color-ink-soft)]">
           End your session on this device.
         </p>
         <div className="mt-3">

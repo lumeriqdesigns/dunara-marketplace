@@ -32,7 +32,7 @@ export default async function AdminShopDetailPage({
     <div className="space-y-8">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="text-xs text-[var(--color-muted)]">
+          <p className="text-xs text-[var(--color-ink-soft)]">
             <Link href="/admin/shops" className="hover:underline">
               Shops
             </Link>{" "}
@@ -70,14 +70,14 @@ export default async function AdminShopDetailPage({
       <section className="grid gap-4 rounded-lg border border-[var(--color-border)] bg-white p-5 shadow-sm sm:grid-cols-2">
         <div>
           <h2 className="text-sm font-semibold text-[var(--color-ink)]">Owner</h2>
-          <p className="mt-1 text-sm text-[var(--color-muted)]">
+          <p className="mt-1 text-sm text-[var(--color-ink-soft)]">
             {owner?.full_name ?? "—"}
           </p>
-          <p className="text-sm text-[var(--color-muted)]">{owner?.email ?? "—"}</p>
+          <p className="text-sm text-[var(--color-ink-soft)]">{owner?.email ?? "—"}</p>
         </div>
         <div>
           <h2 className="text-sm font-semibold text-[var(--color-ink)]">Location</h2>
-          <p className="mt-1 text-sm text-[var(--color-muted)]">
+          <p className="mt-1 text-sm text-[var(--color-ink-soft)]">
             {[shop.city, shop.state].filter(Boolean).join(", ") || "—"}
           </p>
           {shop.suspension_reason ? (
@@ -91,13 +91,13 @@ export default async function AdminShopDetailPage({
           {subscription ? (
             <div className="mt-1 space-y-1">
               {subscriptionBadge(subscription.status)}
-              <p className="text-sm text-[var(--color-muted)]">
+              <p className="text-sm text-[var(--color-ink-soft)]">
                 {(subscription as { plans?: { name?: string } | null }).plans?.name ??
                   "Plan"}
               </p>
             </div>
           ) : (
-            <p className="mt-1 text-sm text-[var(--color-muted)]">No subscription row</p>
+            <p className="mt-1 text-sm text-[var(--color-ink-soft)]">No subscription row</p>
           )}
         </div>
         <div>
@@ -114,7 +114,7 @@ export default async function AdminShopDetailPage({
       <section className="space-y-3">
         <h2 className="text-base font-semibold text-[var(--color-ink)]">Listings</h2>
         {listings.length === 0 ? (
-          <p className="text-sm text-[var(--color-muted)]">No listings.</p>
+          <p className="text-sm text-[var(--color-ink-soft)]">No listings.</p>
         ) : (
           <ul className="divide-y divide-[var(--color-border)] rounded-lg border border-[var(--color-border)] bg-white">
             {listings.map((l) => (
@@ -126,7 +126,7 @@ export default async function AdminShopDetailPage({
                   <p className="font-medium text-[var(--color-ink)]">{l.title}</p>
                   <div className="mt-1 flex gap-1">
                     {publishedBadge(l.is_published)}
-                    <span className="text-xs text-[var(--color-muted)]">
+                    <span className="text-xs text-[var(--color-ink-soft)]">
                       {l.listing_type}
                     </span>
                   </div>
@@ -161,7 +161,7 @@ export default async function AdminShopDetailPage({
           Verification history
         </h2>
         {verifications.length === 0 ? (
-          <p className="text-sm text-[var(--color-muted)]">No verification requests.</p>
+          <p className="text-sm text-[var(--color-ink-soft)]">No verification requests.</p>
         ) : (
           <ul className="divide-y divide-[var(--color-border)] rounded-lg border border-[var(--color-border)] bg-white">
             {verifications.map((v) => (
@@ -172,7 +172,7 @@ export default async function AdminShopDetailPage({
                     <span className="text-xs text-[var(--color-primary)]">Priority</span>
                   ) : null}
                 </div>
-                <p className="mt-1 text-xs text-[var(--color-muted)]">
+                <p className="mt-1 text-xs text-[var(--color-ink-soft)]">
                   Submitted {new Date(v.created_at).toLocaleString("en-NG")}
                   {v.rejection_reason ? ` · ${v.rejection_reason}` : ""}
                 </p>

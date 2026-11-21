@@ -53,7 +53,7 @@ export default async function AdminOverviewPage() {
             </Link>
           </div>
           {d.recentShops.length === 0 ? (
-            <p className="py-4 text-sm text-[var(--color-muted)]">No shops yet.</p>
+            <p className="py-4 text-sm text-[var(--color-ink-soft)]">No shops yet.</p>
           ) : (
             <ul className="divide-y divide-[var(--color-border)]">
               {d.recentShops.map((s) => (
@@ -64,7 +64,7 @@ export default async function AdminOverviewPage() {
                   >
                     {s.name}
                   </Link>
-                  <span className="shrink-0 text-xs text-[var(--color-muted)]">
+                  <span className="shrink-0 text-xs text-[var(--color-ink-soft)]">
                     {new Date(s.created_at).toLocaleDateString("en-NG")}
                   </span>
                 </li>
@@ -76,13 +76,13 @@ export default async function AdminOverviewPage() {
         <section className="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-[var(--shadow-card)]">
           <h2 className="mb-3 text-base font-semibold text-[var(--color-ink)]">Recent moderation</h2>
           {d.recentAudit.length === 0 ? (
-            <p className="py-4 text-sm text-[var(--color-muted)]">No admin actions yet.</p>
+            <p className="py-4 text-sm text-[var(--color-ink-soft)]">No admin actions yet.</p>
           ) : (
             <ul className="divide-y divide-[var(--color-border)]">
               {d.recentAudit.map((a) => (
                 <li key={a.id} className="py-3 text-sm">
                   <p className="font-medium text-[var(--color-ink)]">{a.action}</p>
-                  <p className="mt-0.5 text-xs text-[var(--color-muted)]">
+                  <p className="mt-0.5 text-xs text-[var(--color-ink-soft)]">
                     {a.target_type} · {new Date(a.created_at).toLocaleString("en-NG")}
                     {a.reason ? ` · ${a.reason}` : ""}
                   </p>

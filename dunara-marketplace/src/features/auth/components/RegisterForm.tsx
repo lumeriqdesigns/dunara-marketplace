@@ -76,7 +76,7 @@ export function RegisterForm() {
             aria-describedby={state.fieldErrors?.acceptTerms?.length ? "acceptTerms-error" : undefined}
             className="mt-0.5 size-5 min-h-5 min-w-5 shrink-0 rounded-md border-[var(--color-border)] accent-[var(--color-primary)]"
           />
-          <label htmlFor="acceptTerms" className="text-sm leading-6 text-[var(--color-muted)]">
+          <label htmlFor="acceptTerms" className="text-sm leading-6 text-[var(--color-ink-soft)]">
             I agree to the{" "}
             <Link href="/terms" className="font-medium text-[var(--color-primary)] hover:underline">
               Terms of use
